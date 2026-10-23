@@ -845,5 +845,180 @@ window.HDB = {
    "cobre": "registros do SUS e dos planos no mesmo padrão, desde outubro de 2025",
    "confianca": "provavel"
   }
- ]
+ ],
+ "publicacoes": [
+  {
+   "data": "2026-10-23",
+   "titulo": "Primeira publicação",
+   "o_que_mudou": "Sistemática em quatro camadas e painel do caso econômico publicados pela primeira vez · site criado como repositório público, só com arquivos gerados do vault",
+   "versao": 1
+  },
+  {
+   "data": "2026-10-23",
+   "titulo": "Uma história só",
+   "o_que_mudou": "Entrada em três passos, barra comum nas três páginas e o painel ligado ao fim da Sistemática · a camada 02 passou a mostrar as dez bases públicas e como viram uma coorte, em vez de números da conta",
+   "versao": 2
+  },
+  {
+   "data": "2026-10-23",
+   "titulo": "A marca do HDB",
+   "o_que_mudou": "As três páginas vestiram a identidade do site oficial: Montserrat, azul-marinho, céu e verde-água · rótulos de seção com travessão e cartões com borda colorida",
+   "versao": 3
+  },
+  {
+   "data": "2026-10-23",
+   "titulo": "O percurso",
+   "o_que_mudou": "A entrada virou um percurso em seis movimentos: de onde partimos, o que olhamos, o que encontramos, o que fecha e em que condições, o que falta e quem resolve, o que mudou. Carimbo de versão em toda página e publicação em um comando",
+   "versao": 4
+  }
+ ],
+ "sintese": {
+  "em_uma_frase": {
+   "texto": "O Health Data Brasil liga a mesma pessoa entre as bases públicas de saúde do Brasil e entrega a coorte com a análise pronta para quem decide: indústria farmacêutica, pesquisadores, gestores",
+   "confianca": "confirmado"
+  },
+  "pergunta": {
+   "texto": "Em que condições o spin-off Health Data Brasil para de pé?",
+   "confianca": "confirmado"
+  },
+  "por_que_agora": {
+   "texto": "O sprint de 20 dias terminou com o modelo escolhido, mas sem três dados que só os fundadores e o Einstein têm: a licença da propriedade intelectual, a dedicação da equipe e o volume de clientes dispostos a pagar",
+   "confianca": "confirmado"
+  },
+  "resposta": {
+   "texto": "No caso-base, ainda não. Cada pacote paga com folga o próprio custo, mas uma equipe de três pessoas exige 17 pacotes por ano, e o histórico é de 3 no total. O gargalo é demanda, não capacidade",
+   "confianca": "provavel"
+  },
+  "porque": {
+   "texto": "Contra consultoria, o pacote é dominante em todos os cenários · contra uma equipe interna enxuta, só empata. O que mais pesa no resultado é a equipe, depois o volume, depois o preço",
+   "confianca": "provavel"
+  },
+  "teste_de_valor": {
+   "texto": "Depois de ler isto, a mesa consegue decidir as condições de constituição do spin-off e quem fecha cada lacuna. Se não conseguir, a peça falhou, não a mesa",
+   "confianca": "confirmado"
+  },
+  "olhar_do_cliente": {
+   "texto": "Para a gerente de acesso de uma farmacêutica, o pacote é uma pergunta de evidência respondida em semanas, não meses: ela define a pergunta, espera o cruzamento, recebe o rascunho, leva ao dossiê. O que ela ainda não tem é garantia de qualidade publicada nem a certeza de que o fornecedor existirá no ano que vem",
+   "confianca": "provavel"
+  }
+ },
+ "glossario": [
+  {
+   "termo": "Coorte",
+   "explicacao": "Um grupo de pessoas acompanhado ao longo do tempo nos registros de saúde: quem fez tal procedimento, o que aconteceu depois, com que frequência. É a matéria-prima da evidência de mundo real"
+  },
+  {
+   "termo": "Cruzamento pela mesma pessoa",
+   "explicacao": "Ligar os registros de uma mesma pessoa que aparecem em bases diferentes (internação, óbito, nascimento, vacina) sem um número comum entre elas: pelo nome, nome da mãe, data de nascimento e município. É o que o HDB faz em cerca de 20 minutos e que, à mão, leva semanas"
+  },
+  {
+   "termo": "Pacote",
+   "explicacao": "O que o HDB vende hoje: uma pergunta, uma coorte cruzada e a análise pronta (p-valor e tamanho de efeito), entregue à farmacêutica para o dossiê que vai à CONITEC ou à operadora"
+  },
+  {
+   "termo": "Spin-off",
+   "explicacao": "Uma empresa nova, fora do Einstein, que licencia a propriedade intelectual e opera o produto. Foi o modelo escolhido · a pergunta aberta é em que condições ela se sustenta"
+  },
+  {
+   "termo": "Dossiê",
+   "explicacao": "O conjunto de evidências que a indústria farmacêutica apresenta à CONITEC ou a uma operadora para que um medicamento seja incorporado. É onde a coorte do HDB é usada"
+  }
+ ],
+ "lacunas_publicas": [
+  {
+   "titulo": "Preço recorrente e faixas de preço",
+   "gate": "G2",
+   "papel": "fundadores, com entrevistas de mercado",
+   "prazo": "a definir"
+  },
+  {
+   "titulo": "Custo por coorte entregue",
+   "gate": "G3",
+   "papel": "fundadores",
+   "prazo": "a definir"
+  },
+  {
+   "titulo": "Disposição a pagar e ciclo de venda por segmento",
+   "gate": "G2",
+   "papel": "mesa de decisão",
+   "prazo": "a definir"
+  },
+  {
+   "titulo": "Dedicação e participação dos 3 fundadores",
+   "gate": "G1",
+   "papel": "fundadores",
+   "prazo": "a definir"
+  },
+  {
+   "titulo": "Custo de nuvem em escala",
+   "gate": "G3",
+   "papel": "fundadores",
+   "prazo": "a definir"
+  },
+  {
+   "titulo": "Propriedade intelectual em 5 camadas",
+   "gate": "G1",
+   "papel": "jurídico do Einstein e fundadores",
+   "prazo": "a definir"
+  },
+  {
+   "titulo": "Tempo medido: geração da coorte e entrega do pacote",
+   "gate": "G3",
+   "papel": "fundadores",
+   "prazo": "a definir"
+  },
+  {
+   "titulo": "Teste do cruzamento de bases contra a Techtrials",
+   "gate": "G2",
+   "papel": "mesa de decisão",
+   "prazo": "a definir"
+  },
+  {
+   "titulo": "Curva de adoção (clientes por ano)",
+   "gate": "G2",
+   "papel": "a definir",
+   "prazo": "a definir"
+  },
+  {
+   "titulo": "Apetite do Einstein por participação e por operar um produto",
+   "gate": "G1",
+   "papel": "direção do Einstein",
+   "prazo": "a definir"
+  },
+  {
+   "titulo": "Mapear a Precision Data",
+   "gate": "G2",
+   "papel": "equipe do projeto",
+   "prazo": "antes de qualquer pitch"
+  },
+  {
+   "titulo": "Dimensionar o segmento farmacêutico de baixo para cima",
+   "gate": "G2",
+   "papel": "equipe do projeto",
+   "prazo": "a definir"
+  },
+  {
+   "titulo": "Quem financia o capital até o primeiro lucro",
+   "gate": "G2",
+   "papel": "mesa de decisão e fundadores",
+   "prazo": "a definir"
+  },
+  {
+   "titulo": "Posição da Precision Data no mapa, inferida e não medida",
+   "gate": "G2",
+   "papel": "equipe do projeto",
+   "prazo": "junto com o mapa da Precision Data"
+  },
+  {
+   "titulo": "Certificado do site oficial vencido",
+   "gate": "G2",
+   "papel": "fundadores",
+   "prazo": "imediato"
+  }
+ ],
+ "versao": {
+  "numero": 4,
+  "data": "2026-10-23",
+  "titulo": "O percurso"
+ }
 };

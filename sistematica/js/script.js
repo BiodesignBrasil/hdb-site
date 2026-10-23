@@ -409,6 +409,14 @@
       }).join("") + "</ol></div>" + elo("jornadas"));
   })();
 
+  /* ---------- carimbo de versão (publicacoes.csv → data.js) ---------- */
+  (function () {
+    var V = D.versao, el = document.getElementById("carimbo");
+    if (!V || !el) return;
+    var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(V.data || ""), data = m ? m[3] + "/" + m[2] + "/" + m[1] : V.data;
+    el.textContent = "Estado em " + data + " · publicação " + V.numero + " · base: vault do projeto Health Data Brasil. Sem valores em reais nesta peça.";
+  })();
+
   /* ---------- início: estado vindo da URL ---------- */
   var q = new URLSearchParams(location.search);
   tempo(+q.get("tempo") || 1);

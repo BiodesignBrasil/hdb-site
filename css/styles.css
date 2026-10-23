@@ -1,0 +1,160 @@
+/* ============================================================
+   Percurso · Health Data Brasil (23/10/2026)
+   A entrada do conjunto público: uma página que rola, em seis movimentos, costurada
+   por um fio vertical (padrão da Longevidade). Identidade do site oficial:
+   Montserrat; navy #003d73 / #00539a; tinta #16233a; céu #0ea5e9; teal #0f766e; fundo #f5f5f7.
+   Semântica própria da síntese: ouro = dinheiro · vermelho = em aberto / risco.
+   Movimento: reveal por IntersectionObserver e fio ligado ao scroll (passivo); reduced-motion desliga.
+   ============================================================ */
+:root{
+  --papel:#f5f5f7;--branco:#fff;--tinta:#16233a;--azul:#00539a;--brand-dark:#003d73;--azul-claro:#e3eef8;--ceu:#0ea5e9;--ceu-claro:#e0f4fd;--ceu-ink:#0369a1;
+  --ouro:#a8730e;--ouro-claro:#f6ebcf;--ok:#0f766e;--ok-claro:#d9efec;--risco:#b91c1c;--risco-claro:#f8dedb;
+  --cinza:#5b6b7f;--cinza-escuro:#3b4a5c;--filete:#d9dee6;--filete-forte:#b4bfcd;--noite:#16233a;
+  --font:"Montserrat",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--papel:#0f1826;--branco:#172338;--tinta:#dce8f7;--azul:#6fb1ff;--azul-claro:#1f2e48;--ceu-claro:#12324a;--ceu-ink:#7dd3fc;--ouro:#e0b04a;--ouro-claro:#3a3018;--ok:#7ccfb6;--ok-claro:#1a3330;--risco:#f08a7e;--risco-claro:#3a1f1c;--cinza:#9db0c9;--cinza-escuro:#c6d3e3;--filete:#2a3a52;--filete-forte:#3f5572;color-scheme:dark}}
+:root[data-theme="dark"]{--papel:#0f1826;--branco:#172338;--tinta:#dce8f7;--azul:#6fb1ff;--azul-claro:#1f2e48;--ceu-claro:#12324a;--ceu-ink:#7dd3fc;--ouro:#e0b04a;--ouro-claro:#3a3018;--ok:#7ccfb6;--ok-claro:#1a3330;--risco:#f08a7e;--risco-claro:#3a1f1c;--cinza:#9db0c9;--cinza-escuro:#c6d3e3;--filete:#2a3a52;--filete-forte:#3f5572;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:60px}
+body{margin:0;background:var(--papel);color:var(--tinta);font-family:var(--font);line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+a{color:var(--azul)}
+
+/* ---- herói escuro: a mesma barra das outras duas peças, aberta em palco ---- */
+.heroi{background:radial-gradient(1200px 600px at 80% -20%,#0ea5e944,transparent 60%),linear-gradient(160deg,#003d73 0%,#16233a 75%);color:#fff;position:relative;overflow:hidden}
+.heroi::after{content:"";position:absolute;inset:0;background-image:linear-gradient(#ffffff0d 1px,transparent 1px),linear-gradient(90deg,#ffffff0d 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.heroi .wrap{position:relative;z-index:1}
+.barra{display:flex;align-items:center;gap:14px;min-height:68px;padding-block:12px}
+.wordmark{display:flex;flex-direction:column;text-decoration:none;color:#fff;flex-shrink:0;line-height:1.1}
+.wm-nome{font-weight:800;font-size:17px;letter-spacing:-.01em}
+.wm-nome span{color:#0ea5e9}
+.wm-sub{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.7;margin-top:3px}
+.trilha{margin-left:auto;display:flex;gap:6px;font-size:12.5px;white-space:nowrap}
+.trilha a,.trilha span{padding:5px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.85);text-decoration:none}
+.trilha a:hover{background:rgba(255,255,255,.1)}
+.trilha span{background:#fff;color:#003d73;border-color:#fff;font-weight:600}
+.trilha a.conta{border-color:#0ea5e9;color:#7dd3fc}
+.palco{padding:52px 0 48px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:40px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#7dd3fc;font-weight:600}
+.pill::before{content:"";width:22px;height:1px;background:#0ea5e9}
+.titulo{font-size:50px;line-height:1.08;font-weight:800;letter-spacing:-.02em;margin:18px 0 16px}
+.titulo em{font-style:normal;color:#38bdf8}
+.lead{font-size:17px;color:#c9d8ec;max-width:56ch;margin:0 0 26px}
+.acoes{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;font-weight:600;font-size:14px;text-decoration:none;border:1px solid transparent}
+.btn.azul{background:#fff;color:#003d73}.btn.azul:hover{background:#e0f4fd}
+.btn.ouro{border-color:rgba(255,255,255,.35);color:#fff}.btn.ouro:hover{background:rgba(255,255,255,.1)}
+.btn.navy{background:var(--azul);color:#fff;margin-top:14px}.btn.navy:hover{background:var(--brand-dark)}
+.numeros{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid rgba(255,255,255,.14);border-radius:12px;overflow:hidden;background:rgba(255,255,255,.04)}
+.num{padding:20px 18px;border-right:1px solid rgba(255,255,255,.12);border-bottom:1px solid rgba(255,255,255,.12)}
+.num:nth-child(2n){border-right:0}.num:nth-child(n+3){border-bottom:0}
+.num b{display:block;font-size:34px;font-weight:800;color:#fff;line-height:1;letter-spacing:-.02em}
+.num span{display:block;margin-top:8px;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#7dd3fc;font-weight:600}
+.num small{display:block;margin-top:6px;font-size:12px;color:#9db0c9}
+
+/* ---- as âncoras dos seis movimentos: fixas no topo depois do herói ---- */
+.ancoras{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--papel) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--filete)}
+.ancoras .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.ancoras a{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:14px 12px 12px;font-size:12.5px;font-weight:500;color:var(--cinza);text-decoration:none;border-bottom:2px solid transparent;white-space:nowrap}
+.ancoras a b{font-size:11px;color:var(--filete-forte);font-weight:700}
+.ancoras a:hover{color:var(--tinta)}
+.ancoras a.on{color:var(--tinta);border-bottom-color:var(--azul);font-weight:600}
+.ancoras a.on b{color:var(--ceu)}
+
+/* ---- o percurso: o fio desce costurando os movimentos ---- */
+#percurso{position:relative}
+.fio{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.fio line{stroke:var(--ceu);stroke-width:2;stroke-dasharray:100;stroke-dashoffset:100;opacity:.55}
+.mov{position:relative;z-index:1;padding:64px 0 56px}
+.mov:nth-child(even of .mov){background:var(--branco)}
+.mov .wrap{position:relative}
+.mov::before{content:"";position:absolute;left:50%;top:0;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:var(--papel);border:2px solid var(--ceu);transform:translateY(-7px);z-index:2}
+.rotulo{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--azul);font-weight:600;margin:0 0 8px}
+.rotulo::before{content:"";width:22px;height:1px;background:var(--ceu)}
+h2{font-size:30px;font-weight:700;letter-spacing:-.02em;margin:0 0 8px;line-height:1.15}
+.sub{color:var(--cinza);font-size:15px;max-width:72ch;margin:0 0 26px}
+.texto{font-size:15.5px;color:var(--cinza-escuro);max-width:62ch;margin:0 0 14px}
+.texto.grande{font-size:19px;color:var(--tinta);font-weight:500;line-height:1.4}
+.duas{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:start}
+.pergunta-mov{font-size:24px;font-weight:700;letter-spacing:-.01em;line-height:1.25;margin:0 0 14px}
+.conf{display:inline-block;font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:0 6px;border-radius:3px;line-height:1.8;vertical-align:middle;margin-left:6px}
+.conf-confirmado{color:var(--ok);border:1px solid #0f766e66}
+.conf-provavel{color:var(--ouro);border:1px solid #a8730e66;font-style:italic}
+.conf-aberto{color:var(--risco);border:1px dashed var(--risco)}
+
+/* glossário: as palavras para ler o resto */
+.glossario{display:grid;gap:10px}
+.gl{background:var(--branco);border:1px solid var(--filete);border-left:3px solid var(--ceu);border-radius:10px;padding:12px 14px}
+.gl b{display:block;font-size:14px;font-weight:700;margin-bottom:2px}
+.gl p{margin:0;font-size:13px;color:var(--cinza-escuro)}
+
+/* cartões das camadas (os mesmos da entrada anterior, agora lendo os achados) */
+.cartoes{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+a.passo{display:flex;flex-direction:column;gap:9px;text-decoration:none;color:inherit;background:var(--branco);border:1px solid var(--filete);border-top:3px solid var(--azul);border-radius:12px;padding:20px 18px 18px;box-shadow:0 1px 2px rgba(16,33,58,.06);transition:box-shadow .15s,transform .15s}
+a.passo:nth-child(2){border-top-color:var(--ceu)}a.passo:nth-child(3){border-top-color:var(--ok)}a.passo:nth-child(4){border-top-color:var(--ouro)}
+a.passo:hover{box-shadow:0 8px 24px rgba(16,33,58,.12);transform:translateY(-2px)}
+.icone{width:40px;height:40px;border-radius:10px;background:var(--azul-claro);color:var(--azul);display:flex;align-items:center;justify-content:center}
+a.passo:nth-child(2) .icone{background:var(--ceu-claro);color:var(--ceu-ink)}a.passo:nth-child(3) .icone{background:var(--ok-claro);color:var(--ok)}a.passo:nth-child(4) .icone{background:var(--ouro-claro);color:var(--ouro)}
+.icone svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.cat{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cinza);font-weight:600}
+a.passo b{font-size:17px;font-weight:700;line-height:1.25;letter-spacing:-.01em}
+a.passo p{margin:0;color:var(--cinza);font-size:13.5px;flex:1}
+.ir{margin-top:4px;font-weight:600;font-size:13px;color:var(--azul)}
+
+/* achados: por camada, com a etiqueta que leva à camada */
+.achados{display:grid;grid-template-columns:repeat(2,1fr);gap:12px 28px}
+.ach{display:grid;grid-template-columns:auto 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--filete)}
+.ach .et{align-self:start;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:999px;text-decoration:none;white-space:nowrap;margin-top:3px}
+.et-ecossistema{background:var(--azul-claro);color:var(--azul)}.et-sistema{background:var(--ceu-claro);color:var(--ceu-ink)}.et-servicos{background:var(--ok-claro);color:var(--ok)}.et-jornadas{background:var(--ouro-claro);color:var(--ouro)}
+.ach b{display:block;font-size:15px;font-weight:700;line-height:1.3;margin-bottom:2px}
+.ach span{font-size:13.5px;color:var(--cinza-escuro)}
+.olhar{margin-top:28px;background:var(--branco);border:1px solid var(--filete);border-left:4px solid var(--ouro);border-radius:12px;padding:18px 22px;max-width:80ch}
+.olhar .rotulo{color:var(--ouro)}.olhar .rotulo::before{background:var(--ouro)}
+.olhar p{margin:0;font-size:15px;color:var(--cinza-escuro)}
+
+/* o que fecha: resposta, contagens e as três condições */
+.contagem-dupla{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:520px;margin:18px 0 6px}
+.cd{background:var(--branco);border:1px solid var(--filete);border-radius:12px;padding:14px 16px}
+.cd b{display:block;font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1}
+.cd.ouro b{color:var(--ouro)}.cd.risco b{color:var(--risco)}
+.cd span{display:block;margin-top:6px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--cinza);font-weight:600}
+.cd small{display:block;margin-top:4px;font-size:12px;color:var(--cinza)}
+.condicoes{counter-reset:c;display:grid;gap:12px}
+.cond{counter-increment:c;display:grid;grid-template-columns:44px 1fr;gap:12px;background:var(--branco);border:1px solid var(--filete);border-radius:12px;padding:16px 18px}
+.cond::before{content:"— 0" counter(c);font-size:12px;font-weight:700;color:var(--ceu);letter-spacing:.06em;margin-top:3px}
+.cond b{display:block;font-size:15.5px;font-weight:700;line-height:1.3;margin-bottom:3px}
+.cond span{font-size:13.5px;color:var(--cinza-escuro)}
+.teste{margin:28px 0 0;padding:14px 18px;border:1px dashed var(--filete-forte);border-radius:10px;font-size:14px;color:var(--cinza-escuro);max-width:80ch}
+.teste::before{content:"Teste de valor · ";font-weight:700;color:var(--tinta)}
+
+/* o que falta: três portões */
+.portoes{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.portao{background:var(--branco);border:1px solid var(--filete);border-radius:12px;padding:18px}
+.portao.g1{border-top:3px solid var(--azul)}.portao.g2{border-top:3px solid var(--ouro)}.portao.g3{border-top:3px solid var(--ok)}
+.portao h3{margin:0 0 2px;font-size:16px;font-weight:700}
+.portao .decide{font-size:12.5px;color:var(--cinza);margin:0 0 12px}
+.portao ul{list-style:none;margin:0;padding:0}
+.portao li{padding:9px 0;border-top:1px solid var(--filete);font-size:13.5px}
+.portao li b{display:block;font-weight:600;line-height:1.3}
+.portao li span{display:block;font-size:12px;color:var(--cinza);margin-top:2px}
+.portao li .aberto{color:var(--risco)}
+
+/* o que mudou: a lista de publicações */
+.publicacoes{list-style:none;margin:0 0 20px;padding:0;max-width:80ch}
+.publicacoes li{display:grid;grid-template-columns:72px 1fr;gap:16px;padding:14px 0;border-top:1px solid var(--filete)}
+.publicacoes li:first-child{border-top:0}
+.publicacoes .v{font-size:12px;font-weight:700;color:var(--ceu);letter-spacing:.06em}
+.publicacoes .v small{display:block;font-weight:500;color:var(--cinza);letter-spacing:0;margin-top:2px}
+.publicacoes b{display:block;font-size:15px;font-weight:700;margin-bottom:2px}
+.publicacoes p{margin:0;font-size:13.5px;color:var(--cinza-escuro)}
+.publicacoes li.atual b::after{content:" · esta";font-weight:600;color:var(--ceu);font-size:12px}
+
+footer{border-top:1px solid var(--filete);color:var(--cinza);font-size:12.5px;padding:18px 0 34px;position:relative;z-index:1;background:var(--papel)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* ---- movimento: revelar ao entrar; nada se mexe para quem pediu menos movimento ---- */
+.rv{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}
+.rv.visto{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.rv{opacity:1;transform:none;transition:none}.fio line{stroke-dashoffset:0}a.passo{transition:none}}
+
+@media (max-width:900px){.palco{grid-template-columns:1fr;gap:28px;padding-top:36px}.titulo{font-size:36px}.trilha{display:none}.duas,.achados,.portoes,.cartoes{grid-template-columns:1fr}.mov::before{display:none}.fio{display:none}}
