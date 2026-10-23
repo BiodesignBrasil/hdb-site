@@ -58,7 +58,7 @@ main .wrap{padding-block:20px 36px;display:grid;gap:18px}
 .resultado .d{font-size:12px;opacity:.85;margin-top:3px}
 .faixa{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px}
 .chip{background:var(--branco);border:1px solid var(--filete);border-radius:8px;padding:9px 11px}
-.chip .l{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--cinza);display:flex;justify-content:space-between;gap:6px}
+.chip .l{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--cinza);display:flex;flex-direction:column;align-items:flex-start;gap:4px}
 .chip .v{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--tinta);margin-top:2px;font-variant-numeric:tabular-nums}
 .chip .s{font-size:11px;color:var(--cinza)}
 .mk{font-size:9.5px;font-weight:700;border-radius:3px;padding:0 5px;letter-spacing:.04em;white-space:nowrap}
@@ -67,15 +67,17 @@ main .wrap{padding-block:20px 36px;display:grid;gap:18px}
 .mk.declarado{background:var(--ambar-claro);color:var(--ouro);border:1px dashed var(--ouro)}
 .mk.estimativa{background:var(--ouro-claro);color:var(--ouro)}
 .mk.aberto{background:var(--papel-3);color:var(--cinza);border:1px dashed var(--filete-forte)}
-.bloco{border:1px solid var(--filete);border-radius:12px;background:var(--branco);padding:16px 18px;display:grid;gap:10px;min-width:0}
+.bloco{border:1px solid var(--filete);border-radius:12px;background:var(--branco);padding:16px 18px;display:grid;gap:10px;min-width:0;align-content:start}
+#g-tornado svg{max-width:760px;display:block}
 .bloco h3{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--cinza);margin:0;font-weight:700}
 .bloco h4{font-family:var(--serif);font-size:17px;margin:0;font-weight:600;color:var(--tinta)}
 .bloco p{margin:0;font-size:13px;max-width:72ch}
 .duo{display:grid;grid-template-columns:1.1fr 1fr;gap:14px}
 @media (max-width:860px){.duo{grid-template-columns:1fr}}
 svg text{font-family:var(--font)}
-table{border-collapse:collapse;width:100%;font-size:13px}
-th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--filete);vertical-align:top}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th,td{text-align:left;padding:6px 6px;border-bottom:1px solid var(--filete);vertical-align:top}
+td:first-child,th:first-child{white-space:nowrap}
 th{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--cinza);font-weight:600}
 td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 tr.forte td{font-weight:600;color:var(--tinta)}
@@ -151,7 +153,7 @@ footer{border-top:1px solid var(--filete);color:var(--cinza);font-size:12px;padd
   </section>
 
   <section class="vista" id="v-pesa" role="tabpanel" hidden>
-    <div class="duo">
+    <div style="display:grid;gap:14px">
       <div class="bloco">
         <h3>O que mais mexe no resultado</h3>
         <h4>Amplitude do resultado em 5 anos ao variar cada premissa</h4>
@@ -293,7 +295,7 @@ footer{border-top:1px solid var(--filete);color:var(--cinza);font-size:12px;padd
       var x = L + gap * i + (gap - bw) / 2, y0 = y(0), y1 = y(v);
       s += "<rect x='" + x + "' y='" + Math.min(y0, y1) + "' width='" + bw + "' height='" + Math.max(2, Math.abs(y1 - y0)) + "' rx='3' fill='" + (v < 0 ? "#B3261E" : "#0F7A64") + "'/>";
       s += "<text x='" + (x + bw / 2) + "' y='" + (H - Bm + 16) + "' text-anchor='middle' font-size='11' fill='#0C3A6F'>ano " + (i + 1) + "</text>";
-      s += "<text x='" + (x + bw / 2) + "' y='" + (v < 0 ? y1 + 14 : y1 - 5) + "' text-anchor='middle' font-size='10' fill='" + (v < 0 ? "#FFFFFF" : "#0F7A64") + "'>" + esc(brl(v, true)) + "</text>";
+      s += "<text x='" + (x + bw / 2) + "' y='" + (v < 0 ? y1 - 6 : y1 - 5) + "' text-anchor='middle' font-size='10' fill='" + (v < 0 ? "#FFFFFF" : "#0F7A64") + "'>" + esc(brl(v, true)) + "</text>";
     });
     s += "</svg>";
     el.innerHTML = s;
@@ -370,7 +372,7 @@ footer{border-top:1px solid var(--filete);color:var(--cinza);font-size:12px;padd
   /* ---------- 03 · o que pesa ---------- */
   (function () {
     var T = C.tornado.slice().sort(function (a, b) { return a.rank - b.rank; });
-    var W = 560, H = 36 * T.length + 30, L = 200, R = 20;
+    var W = 560, H = 36 * T.length + 30, L = 200, R = 110;
     var vals = []; T.forEach(function (t) { vals.push(t.vpl_baixo, t.vpl_alto); }); vals.push(PJ.vpl);
     var min = Math.min.apply(null, vals), max = Math.max.apply(null, vals);
     var x = function (v) { return L + (v - min) / (max - min) * (W - L - R); };
@@ -379,7 +381,7 @@ footer{border-top:1px solid var(--filete);color:var(--cinza);font-size:12px;padd
     s += "<text x='" + x(PJ.vpl) + "' y='" + (H - 4) + "' text-anchor='middle' font-size='10' fill='#0C3A6F'>caso-base " + esc(brl(PJ.vpl, true)) + "</text>";
     T.forEach(function (t, i) {
       var yy = 12 + i * 36, lo = Math.min(t.vpl_baixo, t.vpl_alto), hi = Math.max(t.vpl_baixo, t.vpl_alto);
-      s += "<text x='" + (L - 8) + "' y='" + (yy + 16) + "' text-anchor='end' font-size='11' fill='#0C3A6F'>" + esc(semSigla(t.premissa)) + "</text>";
+      s += "<text x='" + (L - 8) + "' y='" + (yy + 16) + "' text-anchor='end' font-size='11' fill='#0C3A6F'>" + esc(semSigla(t.premissa).replace(/\s*\([^)]*P\d{2}[^)]*\)/g, "")) + "</text>";
       s += "<rect x='" + x(lo) + "' y='" + yy + "' width='" + Math.max(2, x(hi) - x(lo)) + "' height='22' rx='4' fill='#A8730E' opacity='.85'/>";
       s += "<text x='" + (x(hi) + 4) + "' y='" + (yy + 15) + "' font-size='10' fill='#5B6B7F'>" + esc(brl(t.amplitude, true)) + "</text>";
     });
