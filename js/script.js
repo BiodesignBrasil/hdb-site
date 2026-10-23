@@ -94,6 +94,8 @@
   if ("IntersectionObserver" in window && !reduz) {
     var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("visto"); io.unobserve(e.target); } }); }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
     Array.prototype.forEach.call(rvs, function (el) { io.observe(el); });
+    /* rede de segurança: se o observador não disparar (salto por âncora, navegador sem layout), nada fica escondido */
+    setTimeout(function () { Array.prototype.forEach.call(rvs, function (el) { el.classList.add("visto"); }); }, 1200);
   } else {
     Array.prototype.forEach.call(rvs, function (el) { el.classList.add("visto"); });
   }
