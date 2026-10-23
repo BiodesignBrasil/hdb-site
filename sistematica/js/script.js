@@ -314,7 +314,7 @@
       seta("fio-ouro", 650, yMeio, xs, 119, "ponta");
       seta("fio-ouro", xs + ws / 2, 154, xs + ws / 2, yMeio - 38, "ponta");
       seta("fio-ouro", xs + ws / 2, yMeio + 38, xs + ws / 2, 300, "ponta");
-      texto(sis, 400, 372, "Os identificadores pessoais entram só no cruzamento; a coorte sai sem eles (ética e proteção de dados).", "nota-svg");
+      texto(sis, 400, 372, "Identificadores pessoais só no cruzamento; a coorte sai sem eles (ética e proteção de dados).", "nota-svg");
       texto(sis, 400, 386, "O cruzamento ainda não foi testado lado a lado com a Techtrials.", "nota-svg");
     }
     texto(sis, 20, 425, "clique numa base para ver o que ela cobre · alterne \"hoje, à mão\" e \"com o HDB\" para ver o que muda", "nota-svg");

@@ -8,15 +8,15 @@
 <meta name="description" content="Passo 3 da síntese do Health Data Brasil: quantos pacotes por ano o spin-off precisa vender? Controles de equipe, volume, preço, licença e taxa recalculam o resultado em 5 anos.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* Painel do caso econômico do HDB. Identidade do deck do HDB: papel claro, tinta navy, azul, ouro para dinheiro, vermelho de risco.
    Diferente do painel do hernia, este recalcula o modelo em JavaScript (aba 02). As fórmulas espelham a aba Cenarios do livro. */
 :root{
-  --papel:#F5F9FE; --papel-2:#EAF1FA; --papel-3:#DFECFB; --tinta:#0C3A6F; --azul:#1C7CF9; --ouro:#A8730E; --ouro-claro:#F6EBCF;
-  --risco:#B3261E; --risco-claro:#F8DEDB; --ok:#0F7A64; --ok-claro:#DEF2EC; --ambar:#E0A526; --ambar-claro:#FBF0D5;
-  --filete:#CBD8EA; --filete-forte:#9CB5D6; --cinza:#5B6B7F; --cinza-escuro:#3B4A5C; --texto:#1A2333; --branco:#FFFFFF;
-  --font:"Inter","Segoe UI",system-ui,sans-serif; --serif:"Source Serif 4",Georgia,serif;
+  --papel:#f5f5f7; --papel-2:#e9ecf1; --papel-3:#dde6f0; --tinta:#16233a; --azul:#00539a; --brand-dark:#003d73; --ceu:#0ea5e9; --ouro:#a8730e; --ouro-claro:#f6ebcf;
+  --risco:#b91c1c; --risco-claro:#f8dedb; --ok:#0f766e; --ok-claro:#d9efec; --ambar:#e0a526; --ambar-claro:#fbf0d5;
+  --filete:#d9dee6; --filete-forte:#b4bfcd; --cinza:#5b6b7f; --cinza-escuro:#3b4a5c; --texto:#16233a; --branco:#ffffff;
+  --font:"Montserrat","Segoe UI",system-ui,sans-serif; --serif:"Montserrat","Segoe UI",system-ui,sans-serif;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --papel:#0F1826; --papel-2:#172338; --papel-3:#1F2E48; --tinta:#DCE8F7; --azul:#6FB1FF; --ouro:#E0B04A; --ouro-claro:#3A3018;
@@ -29,42 +29,46 @@
 *{box-sizing:border-box}
 body{margin:0;font-family:var(--font);background:var(--papel);color:var(--texto);line-height:1.5;font-size:14px;-webkit-font-smoothing:antialiased}
 a{color:var(--azul)}
-header{background:linear-gradient(120deg,#0C3A6F,#0A2F5C);color:#fff;border-bottom:3px solid #1C7CF9}
+header{background:linear-gradient(120deg,#003d73,#16233a);color:#fff;border-bottom:3px solid #0ea5e9}
+.wordmark{display:flex;flex-direction:column;text-decoration:none;color:#fff;flex-shrink:0;line-height:1.1}
+.wm-nome{font-weight:800;font-size:17px;letter-spacing:-.01em}
+.wm-nome span{color:#0ea5e9}
+.wm-sub{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.7;margin-top:3px}
 .wrap{max-width:1200px;margin:0 auto;padding:0 16px}
 header .wrap{display:flex;align-items:center;gap:16px;min-height:72px;padding-block:12px}
 nav.trilha{margin-left:auto;background:none;border:0;display:flex;gap:6px;font-size:12.5px;white-space:nowrap}
 .trilha a,.trilha span{padding:5px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.85);text-decoration:none}
 .trilha a:hover{background:rgba(255,255,255,.1)}
-.trilha span{background:#F2CB6E;color:#0C3A6F;border-color:#F2CB6E;font-weight:600}
+.trilha span{background:#f2cb6e;color:#16233a;border-color:#f2cb6e;font-weight:600}
 @media (max-width:640px){.trilha{display:none}}
-.marca{width:40px;height:40px;border-radius:8px;background:#1C7CF9;color:#fff;font-family:var(--serif);font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.kicker{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.7}
-header h1{font-family:var(--serif);font-size:21px;font-weight:600;margin:0;line-height:1.2}
+header h1{font-family:var(--font);font-size:17px;font-weight:600;margin:0;line-height:1.25;opacity:.92;border-left:1px solid rgba(255,255,255,.25);padding-left:22px}
 nav{border-bottom:1px solid var(--filete);background:var(--papel)}
 nav .wrap{display:flex;gap:22px;overflow-x:auto}
 .aba{background:none;border:0;border-bottom:3px solid transparent;color:var(--cinza);padding:12px 0;cursor:pointer;display:flex;gap:8px;align-items:baseline;white-space:nowrap;font:inherit}
 .aba .n{font-family:var(--serif);font-size:13px;color:var(--filete-forte)}
 .aba .t{font-size:13px;font-weight:600}
 .aba.on{color:var(--tinta);border-bottom-color:var(--azul)}
+.aba.on .n{color:var(--ceu)}
 .aba:focus-visible{outline:2px solid var(--azul);outline-offset:2px}
 main .wrap{padding-block:20px 36px;display:grid;gap:18px}
 .vista{display:grid;gap:14px}
 .vista[hidden]{display:none}
-.pergunta{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--cinza-escuro);margin:0}
+.pergunta{font-family:var(--font);font-weight:500;font-size:15.5px;color:var(--cinza-escuro);margin:0}
+.pergunta::before{content:"—";color:var(--ceu);margin-right:8px}
 .aviso{display:none;background:var(--risco-claro);color:var(--risco);border:1px solid var(--risco);border-radius:8px;padding:10px 14px;font-weight:600}
 .aviso.on{display:block}
-.resultado{background:var(--tinta);color:#fff;border-radius:12px;padding:18px 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.resultado{background:linear-gradient(120deg,#003d73,#16233a);color:#fff;border-radius:12px;padding:18px 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 :root[data-theme="dark"] .resultado,:root:not([data-theme="light"]) .resultado{color:#fff}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .resultado{background:#1F2E48}}
 @media (max-width:760px){.resultado{grid-template-columns:1fr}}
 .resultado .k{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;opacity:.75}
-.resultado .v{font-family:var(--serif);font-size:32px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
-.resultado .v.neg{color:#FFB4A8}.resultado .v.pos{color:#9FE3C9}.resultado .v.ouro{color:#F2CB6E}
+.resultado .v{font-family:var(--font);font-size:30px;font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums}
+.resultado .v.neg{color:#ffb4a8}.resultado .v.pos{color:#7fe0c4}.resultado .v.ouro{color:#f2cb6e}
 .resultado .d{font-size:12px;opacity:.85;margin-top:3px}
 .faixa{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px}
 .chip{background:var(--branco);border:1px solid var(--filete);border-radius:8px;padding:9px 11px}
 .chip .l{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--cinza);display:flex;flex-direction:column;align-items:flex-start;gap:4px}
-.chip .v{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--tinta);margin-top:2px;font-variant-numeric:tabular-nums}
+.chip .v{font-family:var(--font);font-size:16px;font-weight:700;color:var(--tinta);margin-top:2px;font-variant-numeric:tabular-nums}
 .chip .s{font-size:11px;color:var(--cinza)}
 .mk{font-size:9.5px;font-weight:700;border-radius:3px;padding:0 5px;letter-spacing:.04em;white-space:nowrap}
 .mk.fonte{background:var(--ok-claro);color:var(--ok)}
@@ -75,7 +79,7 @@ main .wrap{padding-block:20px 36px;display:grid;gap:18px}
 .bloco{border:1px solid var(--filete);border-radius:12px;background:var(--branco);padding:16px 18px;display:grid;gap:10px;min-width:0;align-content:start}
 #g-tornado svg{max-width:760px;display:block}
 .bloco h3{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--cinza);margin:0;font-weight:700}
-.bloco h4{font-family:var(--serif);font-size:17px;margin:0;font-weight:600;color:var(--tinta)}
+.bloco h4{font-family:var(--font);font-size:15.5px;margin:0;font-weight:700;color:var(--tinta)}
 .bloco p{margin:0;font-size:13px;max-width:72ch}
 .duo{display:grid;grid-template-columns:1.1fr 1fr;gap:14px}
 @media (max-width:860px){.duo{grid-template-columns:1fr}}
@@ -92,7 +96,7 @@ td.neg{color:var(--risco)}td.pos{color:var(--ok)}
 .controles{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
 .ctl{background:var(--branco);border:1px solid var(--filete);border-radius:10px;padding:10px 12px;display:grid;gap:4px}
 .ctl label{font-size:12px;font-weight:600;color:var(--tinta);display:flex;justify-content:space-between;gap:8px}
-.ctl label output{font-family:var(--serif);font-size:15px;color:var(--ouro);font-variant-numeric:tabular-nums}
+.ctl label output{font-family:var(--font);font-size:14px;font-weight:700;color:var(--ouro);font-variant-numeric:tabular-nums}
 .ctl input[type=range]{width:100%;accent-color:var(--azul)}
 .ctl .s{font-size:11px;color:var(--cinza)}
 .presets{display:flex;gap:8px;flex-wrap:wrap}
@@ -108,9 +112,8 @@ footer{border-top:1px solid var(--filete);color:var(--cinza);font-size:12px;padd
 </head>
 <body>
 <header><div class="wrap">
-  <div class="marca">HDB</div>
+  <a class="wordmark" href="../"><span class="wm-nome">Health<span>Data</span> Brasil</span><span class="wm-sub">Síntese do projeto · A conta</span></a>
   <div>
-    <div class="kicker">Caso econômico · Health Data Brasil · spin-off</div>
     <h1>Quantos pacotes por ano o spin-off precisa vender?</h1>
   </div>
   <nav class="trilha" aria-label="as três peças"><a href="../">Início</a><a href="../sistematica/">Sistemática</a><span>A conta</span></nav>
@@ -291,7 +294,7 @@ footer{border-top:1px solid var(--filete);color:var(--cinza);font-size:12px;padd
     var vals = m.acumulado, min = Math.min(0, Math.min.apply(null, vals)), max = Math.max(0, Math.max.apply(null, vals));
     if (max === min) max = min + 1;
     var y = function (v) { return T + (max - v) / (max - min) * (H - T - Bm); };
-    var bw = (W - L - R) / vals.length * 0.6, gap = (W - L - R) / vals.length;
+    var bw = (W - L - R) / vals.length * 0.74, gap = (W - L - R) / vals.length;
     var s = "<svg viewBox='0 0 " + W + " " + H + "' width='100%' role='img' aria-label='" + esc(titulo) + "'>";
     [max, 0, min].forEach(function (v) {
       s += "<line x1='" + L + "' x2='" + (W - R) + "' y1='" + y(v) + "' y2='" + y(v) + "' stroke='" + (v === 0 ? "#5B6B7F" : "#CBD8EA") + "' stroke-width='" + (v === 0 ? 1.5 : 1) + "'/>";
@@ -299,9 +302,9 @@ footer{border-top:1px solid var(--filete);color:var(--cinza);font-size:12px;padd
     });
     vals.forEach(function (v, i) {
       var x = L + gap * i + (gap - bw) / 2, y0 = y(0), y1 = y(v);
-      s += "<rect x='" + x + "' y='" + Math.min(y0, y1) + "' width='" + bw + "' height='" + Math.max(2, Math.abs(y1 - y0)) + "' rx='3' fill='" + (v < 0 ? "#B3261E" : "#0F7A64") + "'/>";
+      s += "<rect x='" + x + "' y='" + Math.min(y0, y1) + "' width='" + bw + "' height='" + Math.max(2, Math.abs(y1 - y0)) + "' rx='3' fill='" + (v < 0 ? "#b91c1c" : "#0f766e") + "'/>";
       s += "<text x='" + (x + bw / 2) + "' y='" + (H - Bm + 16) + "' text-anchor='middle' font-size='11' fill='#0C3A6F'>ano " + (i + 1) + "</text>";
-      s += "<text x='" + (x + bw / 2) + "' y='" + (v < 0 ? y1 - 6 : y1 - 5) + "' text-anchor='middle' font-size='10' fill='" + (v < 0 ? "#FFFFFF" : "#0F7A64") + "'>" + esc(brl(v, true)) + "</text>";
+      s += "<text x='" + (x + bw / 2) + "' y='" + (v < 0 ? y1 - 6 : y1 - 5) + "' text-anchor='middle' font-size='9.5' font-weight='600' fill='" + (v < 0 ? "#FFFFFF" : "#0f766e") + "'>" + esc(brl(v, true)) + "</text>";
     });
     s += "</svg>";
     el.innerHTML = s;
