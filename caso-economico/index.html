@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Caso Econômico · Health Data Brasil</title>
+<meta name="description" content="Quantos pacotes por ano o spin-off Health Data Brasil precisa vender? O caso econômico com controles: equipe, volume, preço, licença e taxa recalculam o resultado em 5 anos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Painel do caso econômico do HDB. Identidade do deck do HDB: papel claro, tinta navy, azul, ouro para dinheiro, vermelho de risco.
+   Diferente do painel do hernia, este recalcula o modelo em JavaScript (aba 02). As fórmulas espelham a aba Cenarios do livro. */
+:root{
+  --papel:#F5F9FE; --papel-2:#EAF1FA; --papel-3:#DFECFB; --tinta:#0C3A6F; --azul:#1C7CF9; --ouro:#A8730E; --ouro-claro:#F6EBCF;
+  --risco:#B3261E; --risco-claro:#F8DEDB; --ok:#0F7A64; --ok-claro:#DEF2EC; --ambar:#E0A526; --ambar-claro:#FBF0D5;
+  --filete:#CBD8EA; --filete-forte:#9CB5D6; --cinza:#5B6B7F; --cinza-escuro:#3B4A5C; --texto:#1A2333; --branco:#FFFFFF;
+  --font:"Inter","Segoe UI",system-ui,sans-serif; --serif:"Source Serif 4",Georgia,serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --papel:#0F1826; --papel-2:#172338; --papel-3:#1F2E48; --tinta:#DCE8F7; --azul:#6FB1FF; --ouro:#E0B04A; --ouro-claro:#3A3018;
+  --risco:#F08A7E; --risco-claro:#3A1F1C; --ok:#7CCFB6; --ok-claro:#1A3330; --ambar:#F0C050; --ambar-claro:#3A3018;
+  --filete:#2A3A52; --filete-forte:#3F5572; --cinza:#9DB0C9; --cinza-escuro:#C6D3E3; --texto:#ECF1F8; --branco:#172338; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --papel:#0F1826; --papel-2:#172338; --papel-3:#1F2E48; --tinta:#DCE8F7; --azul:#6FB1FF; --ouro:#E0B04A; --ouro-claro:#3A3018;
+  --risco:#F08A7E; --risco-claro:#3A1F1C; --ok:#7CCFB6; --ok-claro:#1A3330; --ambar:#F0C050; --ambar-claro:#3A3018;
+  --filete:#2A3A52; --filete-forte:#3F5572; --cinza:#9DB0C9; --cinza-escuro:#C6D3E3; --texto:#ECF1F8; --branco:#172338; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--font);background:var(--papel);color:var(--texto);line-height:1.5;font-size:14px;-webkit-font-smoothing:antialiased}
+a{color:var(--azul)}
+header{background:linear-gradient(120deg,#0C3A6F,#0A2F5C);color:#fff;border-bottom:3px solid #1C7CF9}
+.wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+header .wrap{display:flex;align-items:center;gap:16px;min-height:72px;padding-block:12px}
+.marca{width:40px;height:40px;border-radius:8px;background:#1C7CF9;color:#fff;font-family:var(--serif);font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.kicker{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.7}
+header h1{font-family:var(--serif);font-size:21px;font-weight:600;margin:0;line-height:1.2}
+nav{border-bottom:1px solid var(--filete);background:var(--papel)}
+nav .wrap{display:flex;gap:22px;overflow-x:auto}
+.aba{background:none;border:0;border-bottom:3px solid transparent;color:var(--cinza);padding:12px 0;cursor:pointer;display:flex;gap:8px;align-items:baseline;white-space:nowrap;font:inherit}
+.aba .n{font-family:var(--serif);font-size:13px;color:var(--filete-forte)}
+.aba .t{font-size:13px;font-weight:600}
+.aba.on{color:var(--tinta);border-bottom-color:var(--azul)}
+.aba:focus-visible{outline:2px solid var(--azul);outline-offset:2px}
+main .wrap{padding-block:20px 36px;display:grid;gap:18px}
+.vista{display:grid;gap:14px}
+.vista[hidden]{display:none}
+.pergunta{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--cinza-escuro);margin:0}
+.aviso{display:none;background:var(--risco-claro);color:var(--risco);border:1px solid var(--risco);border-radius:8px;padding:10px 14px;font-weight:600}
+.aviso.on{display:block}
+.resultado{background:var(--tinta);color:#fff;border-radius:12px;padding:18px 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+:root[data-theme="dark"] .resultado,:root:not([data-theme="light"]) .resultado{color:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .resultado{background:#1F2E48}}
+@media (max-width:760px){.resultado{grid-template-columns:1fr}}
+.resultado .k{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;opacity:.75}
+.resultado .v{font-family:var(--serif);font-size:32px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+.resultado .v.neg{color:#FFB4A8}.resultado .v.pos{color:#9FE3C9}.resultado .v.ouro{color:#F2CB6E}
+.resultado .d{font-size:12px;opacity:.85;margin-top:3px}
+.faixa{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px}
+.chip{background:var(--branco);border:1px solid var(--filete);border-radius:8px;padding:9px 11px}
+.chip .l{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--cinza);display:flex;justify-content:space-between;gap:6px}
+.chip .v{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--tinta);margin-top:2px;font-variant-numeric:tabular-nums}
+.chip .s{font-size:11px;color:var(--cinza)}
+.mk{font-size:9.5px;font-weight:700;border-radius:3px;padding:0 5px;letter-spacing:.04em;white-space:nowrap}
+.mk.fonte{background:var(--ok-claro);color:var(--ok)}
+.mk.dito{background:var(--papel-3);color:var(--tinta)}
+.mk.declarado{background:var(--ambar-claro);color:var(--ouro);border:1px dashed var(--ouro)}
+.mk.estimativa{background:var(--ouro-claro);color:var(--ouro)}
+.mk.aberto{background:var(--papel-3);color:var(--cinza);border:1px dashed var(--filete-forte)}
+.bloco{border:1px solid var(--filete);border-radius:12px;background:var(--branco);padding:16px 18px;display:grid;gap:10px;min-width:0}
+.bloco h3{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--cinza);margin:0;font-weight:700}
+.bloco h4{font-family:var(--serif);font-size:17px;margin:0;font-weight:600;color:var(--tinta)}
+.bloco p{margin:0;font-size:13px;max-width:72ch}
+.duo{display:grid;grid-template-columns:1.1fr 1fr;gap:14px}
+@media (max-width:860px){.duo{grid-template-columns:1fr}}
+svg text{font-family:var(--font)}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--filete);vertical-align:top}
+th{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--cinza);font-weight:600}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.forte td{font-weight:600;color:var(--tinta)}
+td.neg{color:var(--risco)}td.pos{color:var(--ok)}
+.tab-wrap{overflow-x:auto}
+/* controles */
+.controles{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.ctl{background:var(--branco);border:1px solid var(--filete);border-radius:10px;padding:10px 12px;display:grid;gap:4px}
+.ctl label{font-size:12px;font-weight:600;color:var(--tinta);display:flex;justify-content:space-between;gap:8px}
+.ctl label output{font-family:var(--serif);font-size:15px;color:var(--ouro);font-variant-numeric:tabular-nums}
+.ctl input[type=range]{width:100%;accent-color:var(--azul)}
+.ctl .s{font-size:11px;color:var(--cinza)}
+.presets{display:flex;gap:8px;flex-wrap:wrap}
+.preset{font:inherit;font-size:12.5px;font-weight:600;border:1px solid var(--filete-forte);background:var(--branco);color:var(--tinta);border-radius:20px;padding:6px 12px;cursor:pointer}
+.preset:hover{border-color:var(--azul);color:var(--azul)}
+.leit{font-size:12px;color:var(--cinza-escuro)}
+details.gaveta{border:1px solid var(--filete);border-radius:12px;background:var(--branco);padding:0 18px}
+details.gaveta summary{cursor:pointer;padding:14px 0;font-weight:600;color:var(--tinta);font-size:14px}
+details.gaveta .tab-wrap{padding-bottom:14px}
+footer{border-top:1px solid var(--filete);color:var(--cinza);font-size:12px;padding:18px 0 30px}
+.tornado-bar{fill:var(--ouro)}.tornado-bar.lo{fill:var(--risco)}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="marca">HDB</div>
+  <div>
+    <div class="kicker">Caso econômico · Health Data Brasil · spin-off</div>
+    <h1>Quantos pacotes por ano o spin-off precisa vender?</h1>
+  </div>
+</div></header>
+
+<nav><div class="wrap" id="abas" role="tablist"></div></nav>
+
+<main><div class="wrap">
+  <p class="pergunta" id="pergunta"></p>
+  <div class="aviso" id="aviso"></div>
+
+  <section class="vista" id="v-base" role="tabpanel">
+    <div class="resultado" id="res-base"></div>
+    <div class="faixa" id="chips-base"></div>
+    <div class="duo">
+      <div class="bloco">
+        <h3>Caixa acumulado, ano a ano</h3>
+        <h4 id="h-caixa"></h4>
+        <div id="g-caixa"></div>
+        <p class="leit">Barras abaixo de zero são caixa que alguém precisa aportar. O ponto mais fundo é a necessidade de capital.</p>
+      </div>
+      <div class="bloco">
+        <h3>Projeção em 5 anos (caso-base)</h3>
+        <div class="tab-wrap" id="t-proj"></div>
+        <p class="leit">Imposto de 34% só sobre lucro operacional positivo, sem compensar prejuízo de anos anteriores: leitura conservadora. Sem investimento no caso-base, não há amortização.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="vista" id="v-mexa" role="tabpanel" hidden>
+    <div class="presets" id="presets"></div>
+    <div class="controles" id="controles"></div>
+    <div class="resultado" id="res-mexa"></div>
+    <div class="duo">
+      <div class="bloco">
+        <h3>Caixa acumulado com as suas premissas</h3>
+        <h4 id="h-caixa2"></h4>
+        <div id="g-caixa2"></div>
+      </div>
+      <div class="bloco">
+        <h3>Volumes e resultado por ano</h3>
+        <div class="tab-wrap" id="t-mexa"></div>
+        <p class="leit" id="leit-mexa"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="vista" id="v-pesa" role="tabpanel" hidden>
+    <div class="duo">
+      <div class="bloco">
+        <h3>O que mais mexe no resultado</h3>
+        <h4>Amplitude do resultado em 5 anos ao variar cada premissa</h4>
+        <div id="g-tornado"></div>
+        <p class="leit">A taxa de desconto mexe pouco e ao contrário do esperado: com o fluxo quase todo negativo, uma taxa maior desconta mais os prejuízos.</p>
+      </div>
+      <div class="bloco">
+        <h3>Os 14 cenários da planilha</h3>
+        <div class="tab-wrap" id="t-cen"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="vista" id="v-compra" role="tabpanel" hidden>
+    <div class="bloco">
+      <h3>Para quem compra: o pacote contra as alternativas</h3>
+      <h4>Semanas poupadas e custo a mais (ou a menos) para o comprador</h4>
+      <div class="tab-wrap" id="t-coorte"></div>
+      <p class="leit">"Dominante" = custa igual ou menos e é mais rápido. O preço-teto é quanto o pacote pode custar deixando 30% ou 50% da economia com o comprador (regra prática de captura de valor). Os custos das alternativas são estimativas; o tempo da plataforma foi dito pelos fundadores e mede a geração da coorte, não a entrega.</p>
+    </div>
+  </section>
+
+  <details class="gaveta">
+    <summary>As premissas, uma a uma: valor, origem e o que ainda falta</summary>
+    <div class="tab-wrap" id="t-prem"></div>
+  </details>
+</div></main>
+
+<footer><div class="wrap" id="rodape"></div></footer>
+
+<script id="caso-json" type="application/json">/*CASO_JSON*/{"rodada": 2, "atualizado": "2026-10-23", "fonte": "09_avaliacao_economica/custo_efetividade_health_data.xlsx", "decisoes": ["D-08 (sem QALY, sem impacto orçamentário)", "D-12 (spin-off)", "D-13 (premissas declaradas)"], "caso_base": {"volumes": [3, 6, 12, 20, 30], "preco": 35000, "custo_variavel": 4500, "equipe": 504000, "infra": 12000, "custo_fixo": 516000, "investimento": 0, "royalty": 0, "taxa": 0.25, "selic": 0.14, "impostos": 0.34, "preco_piso": 20000, "preco_teto": 50000, "pacotes_vendidos": 3, "fte_extra": 168000, "mrr_go": 150000}, "projecao": {"volume": [3, 6, 12, 20, 30], "preco": [35000, 35000, 35000, 35000, 35000], "receita": [105000, 210000, 420000, 700000, 1050000], "royalty": [0, 0, 0, 0, 0], "custo_variavel": [13500, 27000, 54000, 90000, 135000], "margem_bruta": [91500, 183000, 366000, 610000, 915000], "custo_fixo": [516000, 516000, 516000, 516000, 516000], "ebitda": [-424500, -333000, -150000, 94000, 399000], "amortizacao": [0, 0, 0, 0, 0], "ebit": [-424500, -333000, -150000, 94000, 399000], "impostos": [0, 0, 0, 31960, 135660], "lucro_liquido": [-424500, -333000, -150000, 62040, 263340], "fluxo": [-424500, -333000, -150000, 62040, 263340], "acumulado": [-424500, -757500, -907500, -845460, -582120], "investimento": 0, "vpl": -517817.16, "tir": "sem TIR positiva (soma dos fluxos negativa em 5 anos)", "payback": "> 5 anos", "ano_primeiro_lucro": 4, "caixa_minimo": -907500, "veredito": "INVIAVEL"}, "cenarios": [{"nome": "Caso-base (D-13)", "mult_volume": 1, "preco": 35000, "custo_variavel": 4500, "custo_fixo": 516000, "royalty": 0, "taxa": 0.25, "fluxo": [-424500, -333000, -150000, 62040, 263340], "vpl": -517817.16, "delta": 0}, {"nome": "Volume -50%", "mult_volume": 0.5, "preco": 35000, "custo_variavel": 4500, "custo_fixo": 516000, "royalty": 0, "taxa": 0.25, "fluxo": [-470250, -424500, -333000, -211000, -58500], "vpl": -923970.88, "delta": -406153.72}, {"nome": "Volume +50%", "mult_volume": 1.5, "preco": 35000, "custo_variavel": 4500, "custo_fixo": 516000, "royalty": 0, "taxa": 0.25, "fluxo": [-378750, -241500, 21780, 263340, 565290], "vpl": -153310.35, "delta": 364506.82}, {"nome": "Preco piso (P01)", "mult_volume": 1, "preco": 20000, "custo_variavel": 4500, "custo_fixo": 516000, "royalty": 0, "taxa": 0.25, "fluxo": [-469500, -423000, -330000, -206000, -51000], "vpl": -916369.28, "delta": -398552.12}, {"nome": "Preco teto (P02)", "mult_volume": 1, "preco": 50000, "custo_variavel": 4500, "custo_fixo": 516000, "royalty": 0, "taxa": 0.25, "fluxo": [-379500, -243000, 19800, 260040, 560340], "vpl": -158857.8, "delta": 358959.36}, {"nome": "Custo por pacote x2", "mult_volume": 1, "preco": 35000, "custo_variavel": 9000, "custo_fixo": 516000, "royalty": 0, "taxa": 0.25, "fluxo": [-438000, -360000, -204000, 2640, 174240], "vpl": -627071.69, "delta": -109254.53}, {"nome": "+1 FTE comercial (P32)", "mult_volume": 1, "preco": 35000, "custo_variavel": 4500, "custo_fixo": 684000, "royalty": 0, "taxa": 0.25, "fluxo": [-592500, -501000, -318000, -74000, 152460], "vpl": -937808.31, "delta": -419991.14}, {"nome": "Equipe 2 FTE (fundador sai)", "mult_volume": 1, "preco": 35000, "custo_variavel": 4500, "custo_fixo": 348000, "royalty": 0, "taxa": 0.25, "fluxo": [-256500, -165000, 11880, 172920, 374220], "vpl": -111265.0, "delta": 406552.17}, {"nome": "Royalty Einstein 5%", "mult_volume": 1, "preco": 35000, "custo_variavel": 4500, "custo_fixo": 516000, "royalty": 0.05, "taxa": 0.25, "fluxo": [-429750, -343500, -171000, 38940, 228690], "vpl": -560305.04, "delta": -42487.87}, {"nome": "Royalty Einstein 10%", "mult_volume": 1, "preco": 35000, "custo_variavel": 4500, "custo_fixo": 516000, "royalty": 0.1, "taxa": 0.25, "fluxo": [-435000, -354000, -192000, 15840, 194040], "vpl": -602792.91, "delta": -84975.74}, {"nome": "Taxa = Selic (P19)", "mult_volume": 1, "preco": 35000, "custo_variavel": 4500, "custo_fixo": 516000, "royalty": 0, "taxa": 0.1425, "fluxo": [-424500, -333000, -150000, 62040, 263340], "vpl": -555555.82, "delta": -37738.65}, {"nome": "Taxa 35%", "mult_volume": 1, "preco": 35000, "custo_variavel": 4500, "custo_fixo": 516000, "royalty": 0, "taxa": 0.35, "fluxo": [-424500, -333000, -150000, 62040, 263340], "vpl": -480720.16, "delta": 37097.0}, {"nome": "Combinado pessimista", "mult_volume": 0.5, "preco": 20000, "custo_variavel": 4500, "custo_fixo": 684000, "royalty": 0.05, "taxa": 0.25, "fluxo": [-662250, -640500, -597000, -539000, -466500], "vpl": -1619021.12, "delta": -1101203.96}, {"nome": "Combinado otimista", "mult_volume": 1.5, "preco": 50000, "custo_variavel": 4500, "custo_fixo": 516000, "royalty": 0, "taxa": 0.25, "fluxo": [-311250, -106500, 199980, 560340, 1010790], "vpl": 345960.69, "delta": 863777.86}], "tornado": [{"premissa": "Volume (P17, P27-P30)", "variacao": "-50% / +50%", "vpl_baixo": -923970.88, "vpl_alto": -153310.35, "amplitude": 770660.53, "rank": 2}, {"premissa": "Preco do pacote (P26)", "variacao": "R$20 mil / R$50 mil", "vpl_baixo": -916369.28, "vpl_alto": -158857.8, "amplitude": 757511.48, "rank": 3}, {"premissa": "Custo por pacote (P10)", "variacao": "x2 / base", "vpl_baixo": -627071.69, "vpl_alto": -517817.16, "amplitude": 109254.53, "rank": 4}, {"premissa": "Equipe (P13)", "variacao": "+1 FTE / 2 FTE", "vpl_baixo": -937808.31, "vpl_alto": -111265.0, "amplitude": 826543.31, "rank": 1}, {"premissa": "Royalty Einstein (P31)", "variacao": "10% / 0%", "vpl_baixo": -602792.91, "vpl_alto": -517817.16, "amplitude": 84975.74, "rank": 5}, {"premissa": "Taxa de desconto (P20)", "variacao": "35% / Selic", "vpl_baixo": -480720.16, "vpl_alto": -555555.82, "amplitude": 74835.66, "rank": 6}], "limiar": {"precos": [20000, 35000, 50000], "custo_fixo": [{"nivel": 250000, "pacotes": [17, 9, 6]}, {"nivel": 500000, "pacotes": [33, 17, 11]}, {"nivel": 1000000, "pacotes": [65, 33, 22]}, {"nivel": 2000000, "pacotes": [130, 66, 44]}, {"nivel": 516000, "pacotes": [34, 17, 12]}], "mrr_go": [90, 52, 36], "taxas": [0.1425, 0.25, 0.35], "investimento": [{"nivel": 2000000, "pacotes": [20, 25, 30]}, {"nivel": 3000000, "pacotes": [29, 37, 45]}, {"nivel": 4000000, "pacotes": [39, 49, 60]}]}, "custo_por_coorte": [{"comparador": "Equipe interna - piso", "custo": 20000, "semanas": 2, "semanas_poupadas": 1.99, "incr_piso": 0, "rcei_piso": 0, "resultado_piso": "DOMINANTE (custa igual ou menos e e mais rapido)", "incr_teto": 30000, "rcei_teto": 15062.76, "resultado_teto": "TRADE-OFF: 15.063 R$ por semana poupada", "preco_teto_30": 14000, "preco_teto_50": 10000}, {"comparador": "Equipe interna - teto", "custo": 120000, "semanas": 8, "semanas_poupadas": 7.99, "incr_piso": -100000, "rcei_piso": -12513.03, "resultado_piso": "DOMINANTE (custa igual ou menos e e mais rapido)", "incr_teto": -70000, "rcei_teto": -8759.12, "resultado_teto": "DOMINANTE (custa igual ou menos e e mais rapido)", "preco_teto_30": 84000, "preco_teto_50": 60000}, {"comparador": "Consultoria - piso", "custo": 50000, "semanas": 2, "semanas_poupadas": 1.99, "incr_piso": -30000, "rcei_piso": -15062.76, "resultado_piso": "DOMINANTE (custa igual ou menos e e mais rapido)", "incr_teto": 0, "rcei_teto": 0, "resultado_teto": "DOMINANTE (custa igual ou menos e e mais rapido)", "preco_teto_30": 35000, "preco_teto_50": 25000}, {"comparador": "Consultoria - teto", "custo": 500000, "semanas": 8, "semanas_poupadas": 7.99, "incr_piso": -480000, "rcei_piso": -60062.57, "resultado_piso": "DOMINANTE (custa igual ou menos e e mais rapido)", "incr_teto": -450000, "rcei_teto": -56308.65, "resultado_teto": "DOMINANTE (custa igual ou menos e e mais rapido)", "preco_teto_30": 350000, "preco_teto_50": 250000}], "premissas": [{"id": "P01", "premissa": "Preco do pacote de analise HDB - piso", "valor": 20000, "unidade": "R$/pacote", "status_marcador": "🗣️", "status": "hipótese", "camada": "A", "fonte": "06_modelo_negocio/REVENUE STREAMS 💰.md (Berg, 17/09)", "derivacao": "faixa dos 3 contratos pontuais; contratos nao vistos em documento", "lacuna": "L-01"}, {"id": "P02", "premissa": "Preco do pacote de analise HDB - teto", "valor": 50000, "unidade": "R$/pacote", "status_marcador": "🗣️", "status": "hipótese", "camada": "A", "fonte": "idem", "derivacao": "idem", "lacuna": "L-01"}, {"id": "P03", "premissa": "Tempo de geracao da coorte pelo HDB, com linkage", "valor": 20, "unidade": "minutos", "status_marcador": "🗣️", "status": "hipótese", "camada": "B", "fonte": "01_evidencias/ficha_diagnostico_fase1.md l. 64", "derivacao": "maquina local de 32 GB; e a geracao da coorte, nao a entrega do pacote", "lacuna": "L-07"}, {"id": "P04", "premissa": "Tempo de montagem manual da base - piso", "valor": 2, "unidade": "semanas", "status_marcador": "⚠️", "status": "hipótese", "camada": "A", "fonte": "02_analise_biodesign/solucao_existente.md l. 217", "derivacao": "'sem referencia padronizada'; saida de IA", "lacuna": "L-03"}, {"id": "P05", "premissa": "Tempo de montagem manual da base - teto", "valor": 8, "unidade": "semanas", "status_marcador": "⚠️", "status": "hipótese", "camada": "A", "fonte": "idem", "derivacao": "idem", "lacuna": "L-03"}, {"id": "P06", "premissa": "Custo de equipe interna por projeto - piso", "valor": 20000, "unidade": "R$/projeto", "status_marcador": "⚠️", "status": "hipótese", "camada": "A", "fonte": "solucao_existente.md l. 234", "derivacao": "2-8 semanas x 1-3 analistas x R$8-20 mil/mes; saida de IA", "lacuna": "L-03"}, {"id": "P07", "premissa": "Custo de equipe interna por projeto - teto", "valor": 120000, "unidade": "R$/projeto", "status_marcador": "⚠️", "status": "hipótese", "camada": "A", "fonte": "idem", "derivacao": "idem", "lacuna": "L-03"}, {"id": "P08", "premissa": "Custo de consultoria externa por projeto - piso", "valor": 50000, "unidade": "R$/projeto", "status_marcador": "⚠️", "status": "hipótese", "camada": "A", "fonte": "solucao_existente.md l. 235", "derivacao": "saida de IA", "lacuna": "L-03"}, {"id": "P09", "premissa": "Custo de consultoria externa por projeto - teto", "valor": 500000, "unidade": "R$/projeto", "status_marcador": "⚠️", "status": "hipótese", "camada": "A", "fonte": "idem", "derivacao": "'500 mil+'; o teto real e maior", "lacuna": "L-03"}, {"id": "P10", "premissa": "Custo variavel de entrega por pacote (HDB)", "valor": 4500, "unidade": "R$/pacote", "status_marcador": "⚠️ declarado (D-13)", "status": "declarada", "camada": "A", "fonte": "solucao_existente.md l. 234 (faixa salarial de analista)", "derivacao": "40 h de analista a R$87,50/h (meio da faixa R$8-20 mil/mes / 160 h) = R$3.500 + 8 h de revisao clinica a R$125/h (topo da faixa) = R$1.000; infra marginal ~0 (processamento local). Hora medica real provavelmente maior", "lacuna": "L-02: quantas horas de analista e de revisao clinica cada pacote consome?"}, {"id": "P11", "premissa": "Custo variavel usado na analise de limiar", "valor": 4500, "unidade": "R$/pacote", "status_marcador": "⚠️ declarado (D-13)", "status": "declarada", "camada": "A", "fonte": 0, "derivacao": "na rodada 1 era zero declarado (limite inferior); agora usa P10", "lacuna": "L-02"}, {"id": "P12", "premissa": "Custo operacional atual (infra local)", "valor": 12000, "unidade": "R$/ano", "status_marcador": "🗣️", "status": "hipótese", "camada": "B", "fonte": "06_modelo_negocio/COST STRUCTURE 🏷️.md (Joao, 17/09)", "derivacao": "~R$1.000/mes x 12; nuvem bloqueada de proposito", "lacuna": "L-05"}, {"id": "P13", "premissa": "Custo anual de equipe do spin-off", "valor": 504000, "unidade": "R$/ano", "status_marcador": "⚠️ declarado (D-13)", "status": "declarada", "camada": "A", "fonte": "solucao_existente.md l. 234 (faixa salarial)", "derivacao": "3 FTE (os 3 fundadores) x R$14.000/mes (meio da faixa R$8-20 mil) x 12; pro-labore, sem encargos CLT; nao inclui comercial nem juridico (ver P32); se um fundador sair do pais, FTE cai", "lacuna": "L-04: qual a dedicacao e a remuneracao de cada fundador?"}, {"id": "P14", "premissa": "Investimento ja feito no app", "valor": null, "unidade": "R$", "status_marcador": "⚪", "status": "aberta", "camada": "B", "fonte": "-", "derivacao": "custo afundado: nao entra no fluxo de caixa", "lacuna": "L-05"}, {"id": "P15", "premissa": "Investimento para abrir self-service e nuvem", "valor": 0, "unidade": "R$", "status_marcador": "⚠️ zero declarado (D-13)", "status": "declarada", "camada": "A", "fonte": "06_modelo_negocio/COST STRUCTURE 🏷️.md", "derivacao": "no horizonte de 5 anos o spin-off mantem o modelo de pacote e a nuvem bloqueada; abrir self-service vira decisao futura, com caso proprio", "lacuna": "L-05"}, {"id": "P16", "premissa": "Pacotes vendidos ate hoje", "valor": 3, "unidade": "pacotes (total)", "status_marcador": "🗣️", "status": "hipótese", "camada": "B", "fonte": "REVENUE STREAMS 💰.md", "derivacao": "periodo dos 3 contratos nao informado", "lacuna": "L-09"}, {"id": "P17", "premissa": "Volume de pacotes - ano 1", "valor": 3, "unidade": "pacotes/ano", "status_marcador": "⚠️ declarado (D-13)", "status": "declarada", "camada": "A", "fonte": "P16", "derivacao": "mantem o ritmo dos 3 contratos, supondo que ocorreram em ~1 ano (periodo ⚪)", "lacuna": "L-09: quantos pacotes/ano sao realistas nos anos 1 a 3?"}, {"id": "P18", "premissa": "Preco recorrente (assinatura)", "valor": null, "unidade": "R$/ano", "status_marcador": "⚪", "status": "aberta", "camada": "B", "fonte": "-", "derivacao": "fora do caso-base: o spin-off vende por pacote (P26)", "lacuna": "L-01"}, {"id": "P19", "premissa": "Selic meta", "valor": 0.14, "unidade": "a.a.", "status_marcador": "⚠️", "status": "hipótese", "camada": "B", "fonte": "imprensa (Renova Invest, O Povo, 2026); confirmar no BCB", "derivacao": "componente livre de risco da taxa de desconto", "lacuna": "-"}, {"id": "P20", "premissa": "Taxa de desconto, caso-base", "valor": 0.25, "unidade": "a.a.", "status_marcador": "⚠️ declarado (D-13)", "status": "declarada", "camada": "B", "fonte": "P19 + premio de risco", "derivacao": "Selic 14,25% + 10,75 p.p. de premio para empresa sem receita recorrente, arredondado a 25%. Sem fonte para o premio; 14,25% e 35% em Cenarios", "lacuna": "-"}, {"id": "P21", "premissa": "Aliquota de impostos sobre o lucro", "valor": 0.34, "unidade": null, "status_marcador": "✅", "status": "fechada", "camada": "B", "fonte": "custo_efetividade/Method/biodesign_projecao_financeira_methodology.md §3.1", "derivacao": "IRPJ 15% + adicional 10% + CSLL 9%; sem compensacao de prejuizo (conservador); Simples nao avaliado", "lacuna": "-"}, {"id": "P22", "premissa": "Criterio 'Go' de receita recorrente (MRR)", "valor": 150000, "unidade": "R$/mes", "status_marcador": "⚠️", "status": "hipótese", "camada": "B", "fonte": "solucao_existente.md l. 602", "derivacao": "saida de IA; junto com 5+ clientes e NPS > 50", "lacuna": "-"}, {"id": "P23", "premissa": "Investimento de referencia para MVP - piso", "valor": 2000000, "unidade": "R$", "status_marcador": "⚠️", "status": "hipótese", "camada": "B", "fonte": "solucao_existente.md l. 559", "derivacao": "saida de IA; o HDB ja tem app; so nivel de teste", "lacuna": "L-05"}, {"id": "P24", "premissa": "Investimento de referencia para MVP - teto", "valor": 4000000, "unidade": "R$", "status_marcador": "⚠️", "status": "hipótese", "camada": "B", "fonte": "idem", "derivacao": "idem", "lacuna": "L-05"}, {"id": "P25", "premissa": "Tracao minima para 'Go'", "valor": 1, "unidade": "cliente pagante ou LOI", "status_marcador": "🔵", "status": "fechada", "camada": "B", "fonte": "Roteiro Sprint 20 Dias, atividade 3.3", "derivacao": null, "lacuna": "-"}, {"id": "P26", "premissa": "Preco do pacote, caso-base da projecao", "valor": 35000, "unidade": "R$/pacote", "status_marcador": "⚠️ declarado (D-13)", "status": "declarada", "camada": "A", "fonte": "P01-P02 e Custo_Por_Coorte!L8", "derivacao": "meio da faixa dos 3 contratos; coincide com o preco-teto contra a consultoria-piso deixando 30% da economia ao comprador", "lacuna": "L-01"}, {"id": "P27", "premissa": "Volume de pacotes - ano 2", "valor": 6, "unidade": "pacotes/ano", "status_marcador": "⚠️ declarado (D-13)", "status": "declarada", "camada": "A", "fonte": "-", "derivacao": "dobra o ano 1", "lacuna": "L-09"}, {"id": "P28", "premissa": "Volume de pacotes - ano 3", "valor": 12, "unidade": "pacotes/ano", "status_marcador": "⚠️ declarado (D-13)", "status": "declarada", "camada": "A", "fonte": "-", "derivacao": "dobra o ano 2", "lacuna": "L-09"}, {"id": "P29", "premissa": "Volume de pacotes - ano 4", "valor": 20, "unidade": "pacotes/ano", "status_marcador": "⚠️ declarado (D-13)", "status": "declarada", "camada": "A", "fonte": "-", "derivacao": "+67%", "lacuna": "L-09"}, {"id": "P30", "premissa": "Volume de pacotes - ano 5", "valor": 30, "unidade": "pacotes/ano", "status_marcador": "⚠️ declarado (D-13)", "status": "declarada", "camada": "A", "fonte": "need_mercado_20261023 §2.1", "derivacao": "+50%; receita do ano 5 (R$1,05 mi) fica abaixo de ~0,5% do proxy de mercado Brasil (USD 40-80 mi/ano, a R$5/USD ilustrativo)", "lacuna": "L-09, L-16"}, {"id": "P31", "premissa": "Royalty / licenca ao Einstein (% da receita)", "valor": 0, "unidade": "%", "status_marcador": "⚠️ zero declarado (D-13)", "status": "declarada", "camada": "A", "fonte": "-", "derivacao": "licenca do IP ainda nao negociada; 5% e 10% em Cenarios", "lacuna": "L-06, L-10"}, {"id": "P32", "premissa": "Custo de 1 FTE comercial adicional", "valor": 168000, "unidade": "R$/ano", "status_marcador": "⚠️ derivado", "status": "declarada", "camada": "B", "fonte": "solucao_existente.md l. 234", "derivacao": "1 x R$14.000/mes x 12; so entra em Cenarios", "lacuna": "L-04"}]}/*FIM_CASO_JSON*/</script>
+<script>
+(function () {
+  "use strict";
+  var C = JSON.parse(document.getElementById("caso-json").textContent.replace("/*CASO_JSON*/", "").replace("/*FIM_CASO_JSON*/", ""));
+  if (!C.caso_base) { document.getElementById("aviso").textContent = "Painel sem dados: rode exporta_caso_economico.py."; document.getElementById("aviso").classList.add("on"); return; }
+  var B = C.caso_base, PJ = C.projecao;
+  var ANOS = [1, 2, 3, 4, 5];
+
+  /* ---------- formatação ---------- */
+  function brl(x, mil) {
+    if (x === null || x === undefined || isNaN(x)) return "—";
+    if (mil) { var k = Math.round(Math.abs(x) / 1000); return (x < 0 && k > 0 ? "−" : "") + "R$ " + k.toLocaleString("pt-BR") + " mil"; }
+    return (x < 0 ? "−" : "") + "R$ " + Math.abs(Math.round(x)).toLocaleString("pt-BR");
+  }
+  function pct(x) { return (x * 100).toLocaleString("pt-BR", { maximumFractionDigits: 2 }) + "%"; }
+  function num(x) { return x.toLocaleString("pt-BR", { maximumFractionDigits: 1 }); }
+  /* nomes da planilha usam siglas; na tela, por extenso */
+  function semSigla(s) {
+    return String(s).replace(/\+1 FTE comercial/i, "+1 pessoa comercial em tempo integral").replace(/Equipe 2 FTE/i, "Equipe de 2 pessoas").replace(/\b1 FTE\b/g, "1 pessoa em tempo integral").replace(/\b(\d+) FTEs?\b/g, "$1 pessoas em tempo integral").replace(/\bFTEs?\b/g, "equipe em tempo integral")
+      .replace(/Royalty Einstein/gi, "Licença ao Einstein").replace(/\bLOI\b/g, "carta de intenção").replace(/\bMRR\b/g, "receita mensal recorrente").replace(/\bCROs?\b/g, "empresas de pesquisa clínica").replace(/\bHEOR\b/g, "economia da saúde").replace(/\bIP\b/g, "propriedade intelectual").replace(/\blinkage\b/gi, "cruzamento de bases").replace(/\bQALY\b/g, "anos de vida ajustados por qualidade");
+  }
+  function esc(s) { return String(s === null || s === undefined ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  var MK = { fechada: ["fonte", "fonte"], declarada: ["declarado", "valor declarado"], "hipótese": ["estimativa", "estimativa"], aberta: ["aberto", "em aberto"] };
+  function marca(st, dito) {
+    if (dito) return "<span class='mk dito'>dito pelos fundadores</span>";
+    var m = MK[st] || MK["hipótese"];
+    return "<span class='mk " + m[0] + "'>" + m[1] + "</span>";
+  }
+  var PREM = {}; C.premissas.forEach(function (p) { PREM[p.id] = p; });
+  function marcaP(id) { var p = PREM[id]; return marca(p.status, String(p.status_marcador).indexOf("🗣") === 0); }
+
+  /* ---------- o modelo: espelha a aba Cenarios do livro ---------- */
+  function modelo(p) {
+    var inv = p.investimento || 0, fixo = p.equipe + p.infra, saida = { anos: [], acumulado: [] };
+    var acum = -inv, vpl = -inv, primeiroLucro = null, payback = null;
+    ANOS.forEach(function (y, i) {
+      var vol = B.volumes[i] * p.mult_volume; /* sem arredondar, como a aba Cenarios */
+      var receita = vol * p.preco;
+      var lair = vol * (p.preco * (1 - p.royalty) - p.custo_variavel) - fixo - inv / 5;
+      var imposto = lair > 0 ? lair * B.impostos : 0;
+      var ll = lair - imposto;
+      var fluxo = ll + inv / 5;
+      acum += fluxo; vpl += fluxo / Math.pow(1 + p.taxa, y);
+      if (primeiroLucro === null && lair > 0) primeiroLucro = y;
+      if (payback === null && acum >= 0) payback = y;
+      saida.anos.push({ ano: y, vol: vol, receita: receita, lair: lair, imposto: imposto, ll: ll, fluxo: fluxo, acum: acum });
+      saida.acumulado.push(acum);
+    });
+    saida.vpl = vpl; saida.caixa_minimo = Math.min.apply(null, [-inv].concat(saida.acumulado));
+    saida.primeiro_lucro = primeiroLucro; saida.payback = payback;
+    saida.empate = p.preco - p.custo_variavel > 0 ? Math.ceil(fixo / (p.preco - p.custo_variavel)) : null;
+    saida.fixo = fixo;
+    return saida;
+  }
+  var BASE_P = { equipe: B.equipe, infra: B.infra, mult_volume: 1, preco: B.preco, custo_variavel: B.custo_variavel, royalty: B.royalty, taxa: B.taxa, investimento: B.investimento };
+  var baseJS = modelo(BASE_P);
+
+  /* ---------- conferência contra a planilha ---------- */
+  var dif = Math.abs(baseJS.vpl - PJ.vpl);
+  if (dif > 1) {
+    var av = document.getElementById("aviso");
+    av.textContent = "Atenção: o modelo desta página (" + brl(baseJS.vpl) + ") não bate com a planilha (" + brl(PJ.vpl) + "). Diferença de " + brl(dif) + ". Não use os controles até conferir as fórmulas.";
+    av.classList.add("on");
+  }
+
+  /* ---------- abas ---------- */
+  var VISTAS = [
+    { id: "base", n: "01", t: "O caso-base", perg: "Com as premissas declaradas hoje, o spin-off para de pé em 5 anos?" },
+    { id: "mexa", n: "02", t: "Mexa nas premissas", perg: "E se a equipe, o volume, o preço ou a licença forem outros?" },
+    { id: "pesa", n: "03", t: "O que pesa", perg: "Qual premissa mais muda o resultado?" },
+    { id: "compra", n: "04", t: "Para quem compra", perg: "O pacote compensa para a farmacêutica, comparado com fazer à mão ou contratar consultoria?" }
+  ];
+  var abas = document.getElementById("abas");
+  VISTAS.forEach(function (v) {
+    var b = document.createElement("button"); b.type = "button"; b.className = "aba"; b.setAttribute("role", "tab");
+    b.innerHTML = "<span class='n'>" + v.n + "</span><span class='t'>" + v.t + "</span>";
+    b.addEventListener("click", function () { abre(v.id); }); abas.appendChild(b); v.btn = b;
+  });
+  function abre(id) {
+    VISTAS.forEach(function (v) {
+      document.getElementById("v-" + v.id).hidden = v.id !== id;
+      v.btn.classList.toggle("on", v.id === id); v.btn.setAttribute("aria-selected", v.id === id ? "true" : "false");
+      if (v.id === id) document.getElementById("pergunta").textContent = v.perg;
+    });
+    try { history.replaceState(null, "", "?vista=" + id); } catch (e) { }
+  }
+
+  /* ---------- peças reutilizáveis ---------- */
+  function resultado(el, m, p) {
+    var ok = m.vpl > 0;
+    el.innerHTML =
+      "<div><div class='k'>Resultado em 5 anos (valor presente)</div><div class='v " + (ok ? "pos" : "neg") + "'>" + brl(m.vpl, true) + "</div><div class='d'>" + (ok ? "cria valor" : "destrói valor") + " a " + pct(p.taxa) + " ao ano" + (m.payback ? " · retorno no ano " + m.payback : " · sem retorno do capital em 5 anos") + "</div></div>" +
+      "<div><div class='k'>Empate</div><div class='v ouro'>" + (m.empate === null ? "—" : m.empate + " pacotes/ano") + "</div><div class='d'>para cobrir " + brl(m.fixo, true) + " de custo fixo a " + brl(p.preco, true) + " por pacote" + (m.primeiro_lucro ? " · lucro operacional no ano " + m.primeiro_lucro : " · sem lucro operacional em 5 anos") + "</div></div>" +
+      "<div><div class='k'>Necessidade de capital</div><div class='v ouro'>" + brl(-m.caixa_minimo, true) + "</div><div class='d'>o ponto mais fundo do caixa acumulado · quem aporta ainda está em aberto</div></div>";
+  }
+  function grafico(el, m, titulo) {
+    var W = 520, H = 230, L = 70, R = 16, T = 16, Bm = 36;
+    var vals = m.acumulado, min = Math.min(0, Math.min.apply(null, vals)), max = Math.max(0, Math.max.apply(null, vals));
+    if (max === min) max = min + 1;
+    var y = function (v) { return T + (max - v) / (max - min) * (H - T - Bm); };
+    var bw = (W - L - R) / vals.length * 0.6, gap = (W - L - R) / vals.length;
+    var s = "<svg viewBox='0 0 " + W + " " + H + "' width='100%' role='img' aria-label='" + esc(titulo) + "'>";
+    [max, 0, min].forEach(function (v) {
+      s += "<line x1='" + L + "' x2='" + (W - R) + "' y1='" + y(v) + "' y2='" + y(v) + "' stroke='" + (v === 0 ? "#5B6B7F" : "#CBD8EA") + "' stroke-width='" + (v === 0 ? 1.5 : 1) + "'/>";
+      s += "<text x='" + (L - 6) + "' y='" + (y(v) + 4) + "' text-anchor='end' font-size='10' fill='#5B6B7F'>" + esc(brl(v, true)) + "</text>";
+    });
+    vals.forEach(function (v, i) {
+      var x = L + gap * i + (gap - bw) / 2, y0 = y(0), y1 = y(v);
+      s += "<rect x='" + x + "' y='" + Math.min(y0, y1) + "' width='" + bw + "' height='" + Math.max(2, Math.abs(y1 - y0)) + "' rx='3' fill='" + (v < 0 ? "#B3261E" : "#0F7A64") + "'/>";
+      s += "<text x='" + (x + bw / 2) + "' y='" + (H - Bm + 16) + "' text-anchor='middle' font-size='11' fill='#0C3A6F'>ano " + (i + 1) + "</text>";
+      s += "<text x='" + (x + bw / 2) + "' y='" + (v < 0 ? y1 + 14 : y1 - 5) + "' text-anchor='middle' font-size='10' fill='" + (v < 0 ? "#FFFFFF" : "#0F7A64") + "'>" + esc(brl(v, true)) + "</text>";
+    });
+    s += "</svg>";
+    el.innerHTML = s;
+  }
+  function tabelaAnos(el, m, p) {
+    var h = "<table><thead><tr><th>Ano</th><th class='n'>Pacotes</th><th class='n'>Receita</th><th class='n'>Lucro operacional</th><th class='n'>Lucro líquido</th><th class='n'>Caixa acumulado</th></tr></thead><tbody>";
+    m.anos.forEach(function (a) {
+      h += "<tr><td>Ano " + a.ano + "</td><td class='n'>" + num(a.vol) + "</td><td class='n'>" + brl(a.receita) + "</td><td class='n " + (a.lair < 0 ? "neg" : "pos") + "'>" + brl(a.lair) + "</td><td class='n " + (a.ll < 0 ? "neg" : "pos") + "'>" + brl(a.ll) + "</td><td class='n " + (a.acum < 0 ? "neg" : "pos") + "'>" + brl(a.acum) + "</td></tr>";
+    });
+    h += "</tbody></table>";
+    el.innerHTML = h;
+  }
+
+  /* ---------- 01 · caso-base ---------- */
+  resultado(document.getElementById("res-base"), baseJS, BASE_P);
+  document.getElementById("h-caixa").textContent = "O fundo do caixa é no ano " + (PJ.acumulado.indexOf(Math.min.apply(null, PJ.acumulado)) + 1) + ": " + brl(PJ.caixa_minimo, true);
+  grafico(document.getElementById("g-caixa"), baseJS, "caixa acumulado do caso-base");
+  tabelaAnos(document.getElementById("t-proj"), baseJS, BASE_P);
+  var chips = [
+    ["Equipe", brl(B.equipe, true) + "/ano", "3 pessoas em tempo integral", "P13"],
+    ["Volume", B.volumes.join(" → ") + " pacotes", "do ano 1 ao ano 5", "P17"],
+    ["Preço do pacote", brl(B.preco, true), "faixa dos 3 contratos: " + brl(B.preco_piso, true) + " a " + brl(B.preco_teto, true), "P26"],
+    ["Custo por pacote", brl(B.custo_variavel, true), "48 horas de trabalho", "P10"],
+    ["Licença ao Einstein", pct(B.royalty), "sobre a receita", "P31"],
+    ["Taxa de desconto", pct(B.taxa), "Selic " + pct(B.selic) + " + prêmio de risco", "P20"],
+    ["Pacotes vendidos até hoje", B.pacotes_vendidos + " no total", "nenhuma receita recorrente", "P16"]
+  ];
+  document.getElementById("chips-base").innerHTML = chips.map(function (c) {
+    return "<div class='chip'><div class='l'><span>" + esc(c[0]) + "</span>" + marcaP(c[3]) + "</div><div class='v'>" + esc(c[1]) + "</div><div class='s'>" + esc(c[2]) + "</div></div>";
+  }).join("");
+
+  /* ---------- 02 · controles ---------- */
+  var CTL = [
+    { k: "equipe", l: "Equipe (custo anual)", min: 0, max: 900000, step: 12000, f: function (v) { return brl(v, true); }, s: "hoje: 3 pessoas em tempo integral, valor declarado" },
+    { k: "mult_volume", l: "Volume (multiplicador sobre 3 → 30 pacotes)", min: 0.25, max: 2.5, step: 0.05, f: function (v) { return "×" + v.toLocaleString("pt-BR"); }, s: "1,0 = o caso-base; 0,5 = metade; 2,0 = o dobro em todos os anos" },
+    { k: "preco", l: "Preço do pacote", min: 10000, max: 80000, step: 1000, f: function (v) { return brl(v, true); }, s: "os 3 contratos ficaram entre 20 e 50 mil" },
+    { k: "custo_variavel", l: "Custo por pacote", min: 0, max: 20000, step: 500, f: function (v) { return brl(v, true); }, s: "horas de analista e de revisão clínica" },
+    { k: "royalty", l: "Licença ao Einstein (% da receita)", min: 0, max: 0.2, step: 0.01, f: pct, s: "a negociar; 0% no caso-base" },
+    { k: "taxa", l: "Taxa de desconto (ao ano)", min: 0.08, max: 0.4, step: 0.005, f: pct, s: "Selic " + pct(B.selic) + " é o piso" },
+    { k: "investimento", l: "Investimento inicial (amortizado em 5 anos)", min: 0, max: 2000000, step: 50000, f: function (v) { return brl(v, true); }, s: "0 no caso-base: o spin-off mantém o modelo de pacote" }
+  ];
+  var P = {}; for (var k in BASE_P) P[k] = BASE_P[k];
+  var ctlEl = document.getElementById("controles");
+  CTL.forEach(function (c) {
+    var d = document.createElement("div"); d.className = "ctl";
+    d.innerHTML = "<label for='c-" + c.k + "'>" + esc(c.l) + "<output id='o-" + c.k + "'></output></label><input type='range' id='c-" + c.k + "' min='" + c.min + "' max='" + c.max + "' step='" + c.step + "' value='" + P[c.k] + "'><div class='s'>" + esc(c.s) + "</div>";
+    ctlEl.appendChild(d);
+    d.querySelector("input").addEventListener("input", function (ev) { P[c.k] = parseFloat(ev.target.value); recalc(); });
+  });
+  function recalc() {
+    CTL.forEach(function (c) { document.getElementById("o-" + c.k).textContent = c.f(P[c.k]); document.getElementById("c-" + c.k).value = P[c.k]; });
+    var m = modelo(P);
+    resultado(document.getElementById("res-mexa"), m, P);
+    document.getElementById("h-caixa2").textContent = "Fundo do caixa: " + brl(m.caixa_minimo, true) + (m.empate !== null ? " · empate em " + m.empate + " pacotes/ano" : "");
+    grafico(document.getElementById("g-caixa2"), m, "caixa acumulado com as premissas escolhidas");
+    tabelaAnos(document.getElementById("t-mexa"), m, P);
+    var vs = m.anos.map(function (a) { return num(a.vol); });
+    document.getElementById("leit-mexa").textContent = "Volumes: " + vs.join(" → ") + " pacotes. Diferença para o caso-base da planilha: " + brl(m.vpl - PJ.vpl, true) + ".";
+  }
+  var PRESETS = [
+    ["Caso-base", function () { for (var k in BASE_P) P[k] = BASE_P[k]; }],
+    ["Equipe de 2 pessoas", function () { P.equipe = B.equipe * 2 / 3; }],
+    ["Pacote a 50 mil", function () { P.preco = B.preco_teto; }],
+    ["Volume +50%", function () { P.mult_volume = 1.5; }],
+    ["Licença 10%", function () { P.royalty = 0.10; }],
+    ["Pessimista combinado", function () { P.mult_volume = 0.5; P.preco = B.preco_piso; P.equipe = B.equipe + B.fte_extra; P.royalty = 0.05; }],
+    ["Otimista combinado", function () { P.mult_volume = 1.5; P.preco = B.preco_teto; }]
+  ];
+  var pr = document.getElementById("presets");
+  /* cada preset parte do caso-base, como a linha correspondente da aba Cenarios */
+  PRESETS.forEach(function (p) { var b = document.createElement("button"); b.type = "button"; b.className = "preset"; b.textContent = p[0]; b.addEventListener("click", function () { PRESETS[0][1](); p[1](); recalc(); }); pr.appendChild(b); });
+  recalc();
+
+  /* ---------- 03 · o que pesa ---------- */
+  (function () {
+    var T = C.tornado.slice().sort(function (a, b) { return a.rank - b.rank; });
+    var W = 560, H = 36 * T.length + 30, L = 200, R = 20;
+    var vals = []; T.forEach(function (t) { vals.push(t.vpl_baixo, t.vpl_alto); }); vals.push(PJ.vpl);
+    var min = Math.min.apply(null, vals), max = Math.max.apply(null, vals);
+    var x = function (v) { return L + (v - min) / (max - min) * (W - L - R); };
+    var s = "<svg viewBox='0 0 " + W + " " + H + "' width='100%' role='img' aria-label='tornado'>";
+    s += "<line x1='" + x(PJ.vpl) + "' x2='" + x(PJ.vpl) + "' y1='8' y2='" + (H - 18) + "' stroke='#0C3A6F' stroke-dasharray='4 3'/>";
+    s += "<text x='" + x(PJ.vpl) + "' y='" + (H - 4) + "' text-anchor='middle' font-size='10' fill='#0C3A6F'>caso-base " + esc(brl(PJ.vpl, true)) + "</text>";
+    T.forEach(function (t, i) {
+      var yy = 12 + i * 36, lo = Math.min(t.vpl_baixo, t.vpl_alto), hi = Math.max(t.vpl_baixo, t.vpl_alto);
+      s += "<text x='" + (L - 8) + "' y='" + (yy + 16) + "' text-anchor='end' font-size='11' fill='#0C3A6F'>" + esc(semSigla(t.premissa)) + "</text>";
+      s += "<rect x='" + x(lo) + "' y='" + yy + "' width='" + Math.max(2, x(hi) - x(lo)) + "' height='22' rx='4' fill='#A8730E' opacity='.85'/>";
+      s += "<text x='" + (x(hi) + 4) + "' y='" + (yy + 15) + "' font-size='10' fill='#5B6B7F'>" + esc(brl(t.amplitude, true)) + "</text>";
+    });
+    s += "</svg>";
+    document.getElementById("g-tornado").innerHTML = s;
+    var h = "<table><thead><tr><th>Cenário</th><th class='n'>Volume</th><th class='n'>Preço</th><th class='n'>Custo fixo</th><th class='n'>Licença</th><th class='n'>Taxa</th><th class='n'>Resultado 5 anos</th></tr></thead><tbody>";
+    C.cenarios.forEach(function (c, i) {
+      h += "<tr" + (i === 0 ? " class='forte'" : "") + "><td>" + esc(semSigla(c.nome)) + "</td><td class='n'>×" + c.mult_volume + "</td><td class='n'>" + brl(c.preco, true) + "</td><td class='n'>" + brl(c.custo_fixo, true) + "</td><td class='n'>" + pct(c.royalty) + "</td><td class='n'>" + pct(c.taxa) + "</td><td class='n " + (c.vpl < 0 ? "neg" : "pos") + "'>" + brl(c.vpl, true) + "</td></tr>";
+    });
+    document.getElementById("t-cen").innerHTML = h + "</tbody></table>";
+  })();
+
+  /* ---------- 04 · para quem compra ---------- */
+  (function () {
+    var h = "<table><thead><tr><th>Alternativa do comprador</th><th class='n'>Custo</th><th class='n'>Semanas</th><th class='n'>Semanas poupadas</th><th>Pacote a " + esc(brl(B.preco_piso, true)) + "</th><th>Pacote a " + esc(brl(B.preco_teto, true)) + "</th><th class='n'>Preço-teto (30% / 50%)</th></tr></thead><tbody>";
+    C.custo_por_coorte.forEach(function (c) {
+      var r = function (txt) { return txt.indexOf("DOMINANTE") === 0 ? "<span class='mk fonte'>dominante</span>" : "<span class='mk estimativa'>" + esc(txt.replace("TRADE-OFF: ", "")) + "</span>"; };
+      h += "<tr><td>" + esc(semSigla(c.comparador)) + "</td><td class='n'>" + brl(c.custo, true) + "</td><td class='n'>" + c.semanas + "</td><td class='n'>" + c.semanas_poupadas.toLocaleString("pt-BR", { maximumFractionDigits: 1 }) + "</td><td>" + r(c.resultado_piso) + "</td><td>" + r(c.resultado_teto) + "</td><td class='n'>" + brl(c.preco_teto_30, true) + " / " + brl(c.preco_teto_50, true) + "</td></tr>";
+    });
+    document.getElementById("t-coorte").innerHTML = h + "</tbody></table>";
+  })();
+
+  /* ---------- gaveta ---------- */
+  (function () {
+    var h = "<table><thead><tr><th>Id</th><th>Premissa</th><th class='n'>Valor</th><th>Origem</th><th>Fonte e derivação</th><th>O que falta</th></tr></thead><tbody>";
+    C.premissas.forEach(function (p) {
+      var v = p.valor === null ? "em aberto" : (typeof p.valor === "number" ? (p.unidade && p.unidade.indexOf("R$") === 0 ? brl(p.valor) : (p.unidade === "a.a." || p.unidade === "%" || p.unidade === "" ? pct(p.valor) : p.valor.toLocaleString("pt-BR"))) : p.valor);
+      h += "<tr><td>" + esc(p.id) + "</td><td>" + esc(semSigla(p.premissa)) + "</td><td class='n'>" + esc(v) + (p.unidade && p.unidade.indexOf("R$") !== 0 && p.unidade !== "a.a." && p.unidade !== "%" && p.unidade !== "" ? " " + esc(semSigla(p.unidade)) : "") + "</td><td>" + marca(p.status, String(p.status_marcador).indexOf("🗣") === 0) + "</td><td><small>" + esc(semSigla(p.fonte)) + (p.derivacao ? " · " + esc(semSigla(p.derivacao)) : "") + "</small></td><td><small>" + esc(semSigla(p.lacuna)) + "</small></td></tr>";
+    });
+    document.getElementById("t-prem").innerHTML = h + "</tbody></table>";
+  })();
+
+  var dataBR = String(C.atualizado).replace(/^(\d{4})-(\d{2})-(\d{2}).*$/, "$3/$2/$1");
+  document.getElementById("rodape").innerHTML = "Base: " + esc(C.fonte) + " · rodada " + C.rodada + " · " + esc(dataBR) + ". Decisões: " + esc(semSigla(C.decisoes.join(" · "))) + ". Modelo recalculado nesta página, conferido contra a planilha ao carregar" + (dif > 1 ? " (divergência!)" : " (confere)") + ". Valores declarados são premissas provisórias; trocam de lugar quando o dado real chegar.";
+
+  var q = (location.search.match(/vista=([a-z]+)/) || [])[1];
+  abre(VISTAS.some(function (v) { return v.id === q; }) ? q : "base");
+})();
+</script>
+</body>
+</html>
