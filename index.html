@@ -4,34 +4,128 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Health Data Brasil</title>
-<meta name="description" content="Coortes a partir das bases públicas de saúde do Brasil, cruzadas pela mesma pessoa. A síntese navegável do projeto.">
+<meta name="description" content="Coortes a partir das bases públicas de saúde do Brasil, cruzadas pela mesma pessoa. A síntese do projeto em três passos: quem paga, das bases à coorte, a conta do spin-off.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--papel:#F5F9FE;--tinta:#0C3A6F;--azul:#1C7CF9;--cinza:#5B6B7F;--filete:#CBD8EA}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--papel:#0F1826;--tinta:#DCE8F7;--azul:#6FB1FF;--cinza:#9DB0C9;--filete:#2A3A52;color-scheme:dark}}
-:root[data-theme="dark"]{--papel:#0F1826;--tinta:#DCE8F7;--azul:#6FB1FF;--cinza:#9DB0C9;--filete:#2A3A52;color-scheme:dark}
+:root{--papel:#F5F9FE;--branco:#fff;--tinta:#0C3A6F;--azul:#1C7CF9;--azul-claro:#DFECFB;--ouro:#A8730E;--ouro-claro:#F6EBCF;--ok:#0F7A64;--ok-claro:#DEF2EC;--cinza:#5B6B7F;--filete:#CBD8EA;--noite:#061C3A}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--papel:#0F1826;--branco:#172338;--tinta:#DCE8F7;--azul:#6FB1FF;--azul-claro:#1F2E48;--ouro:#E0B04A;--ouro-claro:#3A3018;--ok:#7CCFB6;--ok-claro:#1A3330;--cinza:#9DB0C9;--filete:#2A3A52;color-scheme:dark}}
+:root[data-theme="dark"]{--papel:#0F1826;--branco:#172338;--tinta:#DCE8F7;--azul:#6FB1FF;--azul-claro:#1F2E48;--ouro:#E0B04A;--ouro-claro:#3A3018;--ok:#7CCFB6;--ok-claro:#1A3330;--cinza:#9DB0C9;--filete:#2A3A52;color-scheme:dark}
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;display:grid;place-items:center;background:var(--papel);color:var(--tinta);font-family:"Inter",system-ui,sans-serif;padding:16px}
-main{max-width:560px;width:100%}
-.marca{width:48px;height:48px;border-radius:10px;background:var(--azul);color:#fff;font-family:"Source Serif 4",serif;font-weight:600;display:flex;align-items:center;justify-content:center;margin-bottom:20px}
-h1{font-family:"Source Serif 4",Georgia,serif;font-weight:600;font-size:30px;line-height:1.15;margin:0 0 10px}
-p{color:var(--cinza);font-size:15px;line-height:1.5;margin:0 0 26px}
-a.peca{display:block;text-decoration:none;color:inherit;border:1px solid var(--filete);border-radius:12px;padding:18px 20px}
-a.peca:hover{border-color:var(--azul)}
-a.peca b{display:block;font-family:"Source Serif 4",Georgia,serif;font-size:19px;font-weight:600;margin-bottom:4px}
-a.peca span{color:var(--cinza);font-size:13.5px}
-footer{margin-top:28px;font-size:12px;color:var(--cinza)}
+body{margin:0;background:var(--papel);color:var(--tinta);font-family:"Inter",system-ui,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+/* herói escuro: a mesma barra das outras duas peças, aberta em palco */
+.heroi{background:radial-gradient(1200px 600px at 80% -20%,#1C7CF955,transparent 60%),linear-gradient(160deg,#0C3A6F 0%,var(--noite) 70%);color:#fff;position:relative;overflow:hidden}
+.heroi::after{content:"";position:absolute;inset:0;background-image:radial-gradient(#ffffff14 1px,transparent 1px);background-size:26px 26px;pointer-events:none}
+.heroi .wrap{position:relative;z-index:1}
+.barra{display:flex;align-items:center;gap:14px;min-height:68px;padding-block:12px}
+.marca{width:40px;height:40px;border-radius:8px;background:#1C7CF9;color:#fff;font-family:"Source Serif 4",serif;font-weight:600;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.kicker{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.65}
+.barra h1{font-family:"Source Serif 4",Georgia,serif;font-size:19px;font-weight:600;margin:0;line-height:1.2}
+.trilha{margin-left:auto;display:flex;gap:6px;font-size:12.5px;white-space:nowrap}
+.trilha a,.trilha span{padding:5px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.85);text-decoration:none}
+.trilha a:hover{background:rgba(255,255,255,.1)}
+.trilha span{background:#fff;color:#0C3A6F;border-color:#fff;font-weight:600}
+.trilha a.conta{border-color:#A8730E;color:#F2CB6E}
+.palco{padding:56px 0 48px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:40px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:5px 12px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#BFD6F5;background:rgba(255,255,255,.06)}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:#1C7CF9;box-shadow:0 0 10px #1C7CF9}
+.titulo{font-family:"Source Serif 4",Georgia,serif;font-size:50px;line-height:1.08;font-weight:700;letter-spacing:-.01em;margin:18px 0 16px}
+.titulo em{font-style:normal;color:#7FB8FF}
+.lead{font-size:17px;color:#C9D8EC;max-width:56ch;margin:0 0 26px}
+.acoes{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;font-weight:600;font-size:14px;text-decoration:none;border:1px solid transparent}
+.btn.azul{background:#1C7CF9;color:#fff}
+.btn.azul:hover{background:#3B8EFF}
+.btn.ouro{border-color:#A8730E;color:#F2CB6E}
+.btn.ouro:hover{background:#A8730E22}
+.numeros{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.num{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:18px 16px}
+.num b{display:block;font-family:"Source Serif 4",serif;font-size:36px;font-weight:600;color:#7FB8FF;line-height:1}
+.num span{display:block;margin-top:8px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#BFD6F5}
+.num small{display:block;margin-top:6px;font-size:12px;color:#9DB0C9}
+/* os três passos, à luz */
+.passos-sec{padding:44px 0 56px}
+.rotulo{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--cinza);font-weight:700;margin:0 0 6px}
+h2{font-family:"Source Serif 4",Georgia,serif;font-size:30px;font-weight:600;margin:0 0 6px}
+.sub{color:var(--cinza);font-size:15px;max-width:70ch;margin:0 0 26px}
+.passos{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+a.passo{display:flex;flex-direction:column;gap:10px;text-decoration:none;color:inherit;background:var(--branco);border:1px solid var(--filete);border-radius:14px;padding:22px 22px 20px;transition:border-color .15s,transform .15s}
+a.passo:hover{border-color:var(--azul);transform:translateY(-2px)}
+a.passo.conta:hover{border-color:var(--ouro)}
+.icone{width:44px;height:44px;border-radius:10px;background:var(--azul-claro);color:var(--azul);display:flex;align-items:center;justify-content:center}
+a.passo.conta .icone{background:var(--ouro-claro);color:var(--ouro)}
+.icone svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.cat{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--azul);font-weight:700}
+a.passo.conta .cat{color:var(--ouro)}
+a.passo b{font-family:"Source Serif 4",Georgia,serif;font-size:21px;font-weight:600;line-height:1.2}
+a.passo p{margin:0;color:var(--cinza);font-size:14px;flex:1}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.tag{font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--azul-claro);color:var(--tinta)}
+a.passo.conta .tag{background:var(--ouro-claro)}
+.ir{margin-top:6px;font-weight:600;font-size:13.5px;color:var(--azul)}
+a.passo.conta .ir{color:var(--ouro)}
+footer{border-top:1px solid var(--filete);color:var(--cinza);font-size:12.5px;padding:18px 0 34px}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+@media (max-width:900px){.palco{grid-template-columns:1fr;gap:28px;padding-top:36px}.titulo{font-size:36px}.passos{grid-template-columns:1fr}.trilha{display:none}}
 </style>
 </head>
 <body>
-<main>
-  <div class="marca" aria-hidden="true">HDB</div>
-  <h1>Health Data Brasil</h1>
-  <p>Coortes a partir das bases públicas de saúde do Brasil, cruzadas pela mesma pessoa, com a análise pronta para quem decide. Esta é a síntese navegável do projeto.</p>
-  <a class="peca" href="sistematica/"><b>Sistemática em quatro camadas</b><span>Quem paga e quem ganha · capacidade e demanda · o que se oferece · o que o cliente vive</span></a>
-  <footer>Biodesign Brasil · 2026</footer>
-</main>
+<section class="heroi">
+  <div class="wrap">
+    <div class="barra">
+      <div class="marca" aria-hidden="true">HDB</div>
+      <div><div class="kicker">Health Data Brasil · síntese do projeto</div><h1>Coortes a partir das bases públicas de saúde</h1></div>
+      <nav class="trilha" aria-label="as três peças"><span>Início</span><a href="sistematica/">Sistemática</a><a class="conta" href="caso-economico/">A conta →</a></nav>
+    </div>
+    <div class="palco">
+      <div>
+        <span class="pill">Coortes · cruzamento de bases públicas · spin-off em avaliação</span>
+        <p class="titulo">O dado é de todos. A <em>coorte</em>, alguém paga para ter.</p>
+        <p class="lead">O Health Data Brasil liga a mesma pessoa entre as bases públicas de saúde do Brasil e entrega a coorte com a análise pronta para quem decide: indústria farmacêutica, pesquisadores, gestores. Esta é a síntese do projeto, em três passos, com o que já se sabe e o que ainda falta.</p>
+        <div class="acoes"><a class="btn azul" href="sistematica/">Começar pela Sistemática →</a><a class="btn ouro" href="caso-economico/">Ir direto à conta</a></div>
+      </div>
+      <div class="numeros" aria-label="o projeto em números">
+        <div class="num"><b>10</b><span>bases públicas</span><small>DATASUS, ANS, IBGE, CadÚnico</small></div>
+        <div class="num"><b>13</b><span>atores no ecossistema</span><small>8 relações de dinheiro, 1 confirmada</small></div>
+        <div class="num"><b>6</b><span>etapas, da pergunta ao reuso</span><small>cruzamento em cerca de 20 minutos</small></div>
+        <div class="num"><b>3</b><span>condições para o spin-off</span><small>licença, cartas de intenção, preço</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="passos-sec"><div class="wrap">
+  <p class="rotulo">Leia na ordem</p>
+  <h2>Três passos para entender o projeto</h2>
+  <p class="sub">Primeiro quem paga e quem ganha, depois como o dado vira coorte e o que se vende, e só então a conta. Cada passo diz de onde veio cada afirmação: confirmado, provável ou em aberto.</p>
+  <div class="passos">
+    <a class="passo" href="sistematica/?vista=ecossistema">
+      <div class="icone"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="4" cy="6" r="2"/><circle cx="20" cy="6" r="2"/><circle cx="4" cy="18" r="2"/><circle cx="20" cy="18" r="2"/><path d="M6 7l4 3M18 7l-4 3M6 17l4-3M18 17l-4-3"/></svg></div>
+      <div class="cat">Passo 1 · Ecossistema</div>
+      <b>Quem paga, quem ganha</b>
+      <p>Quem paga o spin-off e quem colhe o ganho da evidência. Quem mais ganha, a CONITEC e o SUS, não paga.</p>
+      <div class="tags"><span class="tag">13 atores</span><span class="tag">8 relações</span><span class="tag">3 concorrentes</span></div>
+      <div class="ir">Abrir a camada 01 →</div>
+    </a>
+    <a class="passo" href="sistematica/?vista=sistema">
+      <div class="icone"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="6" height="4" rx="1"/><rect x="3" y="10" width="6" height="4" rx="1"/><rect x="3" y="16" width="6" height="4" rx="1"/><path d="M9 6h4a3 3 0 0 1 3 3v6a3 3 0 0 0 3 3h2M9 12h12M9 18h4a3 3 0 0 0 3-3V9a3 3 0 0 1 3-3h2"/></svg></div>
+      <div class="cat">Passo 2 · Sistema, serviços, jornada</div>
+      <b>Das bases à coorte, e o que se oferece</b>
+      <p>Dez bases públicas, uma pessoa ligada entre elas; o que se vende em cada etapa; o que o cliente vive e o que roda por trás.</p>
+      <div class="tags"><span class="tag">10 bases</span><span class="tag">6 etapas</span><span class="tag">5 serviços</span></div>
+      <div class="ir">Abrir a camada 02 →</div>
+    </a>
+    <a class="passo conta" href="caso-economico/">
+      <div class="icone"><svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h16"/><rect x="7" y="11" width="3" height="8"/><rect x="12" y="8" width="3" height="11"/><rect x="17" y="13" width="3" height="6"/></svg></div>
+      <div class="cat">Passo 3 · A conta</div>
+      <b>Quantos pacotes por ano o spin-off precisa vender?</b>
+      <p>O caso econômico com controles: equipe, volume, preço e licença recalculam o resultado em cinco anos. Valores em reais; onde faltava dado, um valor provisório, marcado.</p>
+      <div class="tags"><span class="tag">14 cenários</span><span class="tag">controles ao vivo</span><span class="tag">para quem compra</span></div>
+      <div class="ir">Abrir a conta →</div>
+    </a>
+  </div>
+</div></section>
+<footer><div class="wrap"><span>Base: vault do projeto Health Data Brasil, 23/10/2026.</span><span>Biodesign Brasil · 2026</span></div></footer>
 </body>
 </html>

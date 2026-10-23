@@ -304,8 +304,8 @@ window.HDB = {
   },
   {
    "camada": "sistema",
-   "titulo": "O gargalo é demanda, não capacidade",
-   "texto": "a equipe paga tem capacidade muito acima do volume previsto, e os prejuízos dos primeiros anos são capacidade ociosa"
+   "titulo": "O que se vende é o cruzamento, não o dado",
+   "texto": "a matéria-prima é pública e aberta a todos, concorrentes incluídos · o valor está em ligar a mesma pessoa entre as bases e escolher os códigos certos"
   },
   {
    "camada": "servicos",
@@ -346,6 +346,16 @@ window.HDB = {
    "camada": "ecossistema",
    "titulo": "Há concorrente local com a mesma promessa",
    "texto": "a Precision Data anuncia relatórios de duas semanas em dois dias para o mesmo público"
+  },
+  {
+   "camada": "sistema",
+   "titulo": "Tempo dito, não medido",
+   "texto": "os cerca de 20 minutos medem a geração da coorte na máquina, não a entrega do pacote, e vieram dos fundadores"
+  },
+  {
+   "camada": "servicos",
+   "titulo": "O gargalo é demanda, não capacidade",
+   "texto": "a equipe paga tem capacidade muito acima do volume previsto, e os prejuízos dos primeiros anos são capacidade ociosa"
   },
   {
    "camada": "fecho",
@@ -762,6 +772,78 @@ window.HDB = {
    "leitura": "no caso-base, com o volume crescendo de 3 para 30 pacotes por ano",
    "confianca": "provavel",
    "valor": 4
+  }
+ ],
+ "bases": [
+  {
+   "id": "cadunico",
+   "dominio": "Cadastros sociais",
+   "nome": "CadÚnico",
+   "cobre": "114 milhões de pessoas, renda e composição da família · acesso por convênio com o órgão gestor",
+   "confianca": "confirmado"
+  },
+  {
+   "id": "sinasc",
+   "dominio": "Eventos vitais",
+   "nome": "SINASC",
+   "cobre": "nascimentos, 97% de cobertura, desde 1994",
+   "confianca": "confirmado"
+  },
+  {
+   "id": "sim",
+   "dominio": "Eventos vitais",
+   "nome": "SIM",
+   "cobre": "óbitos com a causa (CID), desde 1975",
+   "confianca": "confirmado"
+  },
+  {
+   "id": "sih",
+   "dominio": "Atenção hospitalar",
+   "nome": "SIH (AIH)",
+   "cobre": "internações do SUS, 75% do total, com procedimento e custo · defasagem de 3 a 6 meses",
+   "confianca": "confirmado"
+  },
+  {
+   "id": "sia",
+   "dominio": "Atenção ambulatorial",
+   "nome": "SIA (APAC e BPA)",
+   "cobre": "procedimentos ambulatoriais e de alto custo",
+   "confianca": "confirmado"
+  },
+  {
+   "id": "sinan",
+   "dominio": "Doenças e agravos",
+   "nome": "SINAN",
+   "cobre": "notificações compulsórias: dengue, HIV, tuberculose, COVID-19",
+   "confianca": "confirmado"
+  },
+  {
+   "id": "pni",
+   "dominio": "Medicamentos e vacinas",
+   "nome": "SI-PNI",
+   "cobre": "vacinação, pessoa a pessoa",
+   "confianca": "confirmado"
+  },
+  {
+   "id": "cnes",
+   "dominio": "Rede assistencial",
+   "nome": "CNES",
+   "cobre": "estabelecimentos, leitos, equipes e equipamentos, mês a mês",
+   "confianca": "confirmado"
+  },
+  {
+   "id": "ans",
+   "dominio": "Saúde suplementar",
+   "nome": "ANS (TISS)",
+   "cobre": "procedimentos dos planos de saúde, 49 milhões de beneficiários",
+   "confianca": "confirmado"
+  },
+  {
+   "id": "rnds",
+   "dominio": "Saúde suplementar",
+   "nome": "RNDS",
+   "cobre": "registros do SUS e dos planos no mesmo padrão, desde outubro de 2025",
+   "confianca": "provavel"
   }
  ]
 };

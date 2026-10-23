@@ -1,7 +1,7 @@
-/* Sistemática Health Data Brasil — "o gargalo é demanda, não capacidade" (23/10/2026).
+/* Sistemática Health Data Brasil — "o dado é de todos; a coorte, alguém paga para ter" (23/10/2026).
    Cada camada responde UMA pergunta e aponta para a seguinte, de fora para dentro:
      ecossistema — quem paga o spin-off, e quem ganha com ele (quem mais ganha não paga)
-     sistema     — capacidade, empate e vendas; e o sprint de 20 dias com o status de cada atividade
+     sistema     — das bases públicas à coorte: hoje à mão, e com o HDB (cruzamento pela mesma pessoa)
      serviços    — o que se oferece em cada etapa, e quem paga cada parte
      jornadas    — o que o cliente vive, e o que roda por trás
    Dados: js/data.js, GERADO de 08_sintese/dados/*.csv (não editar à mão).
@@ -89,15 +89,15 @@
   /* ---------- as quatro camadas, como capítulos ---------- */
   var VISTAS = [
     { id: "ecossistema", n: "01", rot: "Quem paga, quem ganha", cam: "ecossistema", perg: "Quem paga o spin-off, e quem colhe o ganho da evidência?" },
-    { id: "sistema", n: "02", rot: "Capacidade e demanda", cam: "sistema", perg: "A equipe dá conta? Sim, e é esse o problema: falta quem compre." },
+    { id: "sistema", n: "02", rot: "Das bases à coorte", cam: "sistema", perg: "Como o dado público, que é de todos, vira uma coorte que alguém paga para ter?" },
     { id: "servicos", n: "03", rot: "O que se oferece", cam: "serviços", perg: "O que o spin-off vende em cada etapa, e quem paga cada parte?" },
     { id: "jornadas", n: "04", rot: "O que se vive", cam: "jornadas", perg: "O que o cliente vive, e o que roda por trás?" }
   ];
   var PROXIMA = {
-    ecossistema: ["sistema", "e a equipe dá conta do que esse ecossistema pede?"],
+    ecossistema: ["sistema", "e como o dado público vira a coorte que a farmacêutica paga?"],
     sistema: ["servicos", "o que, exatamente, se vende?"],
     servicos: ["jornadas", "como o cliente vive isso, etapa por etapa?"],
-    jornadas: ["ecossistema", "de volta a quem paga"]
+    jornadas: ["conta", "a conta: quantos pacotes por ano o spin-off precisa vender?"]
   };
   var botoes = {}, vistaAtual = null;
   var nav = document.getElementById("camadas");
@@ -132,12 +132,14 @@
       (vistaAtual === "sistema" && tempoAtual !== 1 ? "&tempo=" + tempoAtual : "");
     try { history.replaceState(null, "", q); } catch (e) { /* file:// em alguns navegadores */ }
   }
+  var CONTA = "../caso-economico/"; /* o publicador reescreve para ../caso-economico/ */
   function elo(vista) {
     var p = PROXIMA[vista];
+    if (p[0] === "conta") return "<a class='l-elo' href='" + CONTA + "'>→ " + p[1] + "</a>";
     return "<button class='l-elo' data-vista='" + p[0] + "'>→ " + p[1] + "</button>";
   }
   function ligaElos(raiz) {
-    Array.prototype.forEach.call(raiz.querySelectorAll(".l-elo"), function (b) {
+    Array.prototype.forEach.call(raiz.querySelectorAll("button.l-elo"), function (b) {
       b.addEventListener("click", function () { abre(b.dataset.vista); });
     });
   }
@@ -241,10 +243,12 @@
     });
   }
 
-  /* ================= 02 · SISTEMA: capacidade × empate × vendidos, e o sprint =================
-     Dois tempos: (1) as três barras que resumem o gargalo; (2) o sprint de 20 dias com status. */
+  /* ================= 02 · SISTEMA: das bases públicas à coorte =================
+     As dez bases à esquerda são as mesmas nos dois tempos. O que muda é o meio:
+     (1) hoje, à mão: cada base baixada, limpa e conciliada em separado, sem a mesma pessoa entre elas;
+     (2) com o HDB: cruzamento pela mesma pessoa → coorte → análise → dossiê. */
   var sis = document.getElementById("sis"), leituraSis = document.getElementById("leitura-sis");
-  var tempoAtual = 1, TEMPOS = [[1, "Capacidade e demanda"], [2, "O sprint de 20 dias"]];
+  var tempoAtual = 1, TEMPOS = [[1, "Hoje, à mão"], [2, "Com o HDB"]];
   var temposEl = document.getElementById("tempos");
   temposEl.innerHTML = "<span class='tempos-rot'>olhar</span>" + TEMPOS.map(function (t) {
     return "<button type='button' data-tempo='" + t[0] + "' role='tab'><b>" + t[0] + "</b>" + t[1] + "</button>";
@@ -252,87 +256,86 @@
   Array.prototype.forEach.call(temposEl.querySelectorAll("button"), function (b) {
     b.addEventListener("click", function () { tempo(+b.dataset.tempo); selecionaSis(null); estadoNaUrl(); });
   });
+  var BASE = {}; D.bases.forEach(function (b) { BASE[b.id] = b; });
+  var caixas = {};
   function tempo(n) {
     tempoAtual = n;
     Array.prototype.forEach.call(temposEl.querySelectorAll("button"), function (b) { b.classList.toggle("on", +b.dataset.tempo === n); });
     while (sis.firstChild) sis.removeChild(sis.firstChild);
-    if (n === 1) montaBarras(); else montaSprint();
+    montaSistema();
   }
-  function montaBarras() {
-    var cap = CONT.capacidade, emp = CONT.empate, ven = CONT.vendidos;
-    var x0 = 170, x1 = 860, max = Math.ceil(cap.valor / 10) * 10 + 10, esc_ = function (v) { return x0 + (x1 - x0) * v / max; };
-    texto(sis, x0, 36, "PACOTES POR ANO", "col-rot"); texto(sis, x0, 52, "a mesma régua para as três barras", "col-sub");
-    for (var v = 0; v <= max; v += 10) {
-      el("line", { x1: esc_(v), x2: esc_(v), y1: 70, y2: 400, "class": "tick-l" }, sis);
-      texto(sis, esc_(v), 414, String(v), "tick", "middle");
+  function no(cls, x, y, w, h, titulo, sub1, sub2) {
+    var g = el("g", { "class": "no " + cls }, sis);
+    el("rect", { x: x, y: y, width: w, height: h, rx: 6 }, g);
+    var cy = y + (sub2 ? 22 : sub1 ? 26 : h / 2 + 4);
+    texto(g, x + w / 2, cy, titulo, "t", "middle");
+    if (sub1) texto(g, x + w / 2, cy + 18, sub1, "s", "middle");
+    if (sub2) texto(g, x + w / 2, cy + 34, sub2, "s", "middle");
+    return g;
+  }
+  function seta(cls, x1, y1, x2, y2, ponta) {
+    var cx = (x1 + x2) / 2;
+    el("path", { d: "M" + x1 + "," + y1 + " C" + cx + "," + y1 + " " + cx + "," + y2 + " " + x2 + "," + y2, "class": cls }, sis);
+    if (ponta) el("circle", { cx: x2, cy: y2, r: 3.2, "class": ponta }, sis);
+  }
+  function montaSistema() {
+    var BW = 150, BH = 42, X0 = 20, X1 = 182, Y0 = 78, GAP = 10;
+    texto(sis, X0, 36, "AS BASES PÚBLICAS", "col-rot");
+    texto(sis, X0, 52, "abertas a todos · a mesma pessoa aparece em várias, sem um número comum", "col-sub");
+    caixas = {};
+    var ys = [];
+    D.bases.forEach(function (b, i) {
+      var col = i < 5 ? 0 : 1, x = col ? X1 : X0, y = Y0 + (i % 5) * (BH + GAP);
+      var g = el("g", { "class": "base clicavel c-" + b.confianca, tabindex: 0, role: "button" }, sis);
+      el("rect", { x: x, y: y, width: BW, height: BH, rx: 4 }, g);
+      texto(g, x + 9, y + 18, b.nome, "nome");
+      texto(g, x + 9, y + 33, b.dominio.toUpperCase(), "dom");
+      clicavel(g, function () { selecionaSis(selecao.sistema === b.id ? null : b.id); estadoNaUrl(); });
+      caixas[b.id] = g;
+      if (col) ys.push(y + BH / 2);
+    });
+    var xSai = X1 + BW, yMeio = Y0 + 2.5 * (BH + GAP) - GAP / 2;
+    if (tempoAtual === 1) {
+      texto(sis, 880, 52, "hoje, à mão", "tempo-rot risco", "end");
+      ys.forEach(function (y) { seta("fio-hoje", xSai, y, 400, yMeio); });
+      no("no-hoje", 400, yMeio - 60, 250, 120, "Quem precisa da coorte", "baixa cada base, limpa e concilia à mão", "2 a 8 semanas por análise (estimativa)");
+      seta("fio-hoje", 650, yMeio, 700, yMeio);
+      no("no-saida", 700, yMeio - 45, 180, 90, "Tabelas por base", "uma pessoa não se liga", "de uma base à outra");
+      texto(sis, 400, 372, "Os 11 artigos dos fundadores usaram tabelas públicas do TabNet, sem cruzamento:", "nota-svg");
+      texto(sis, 400, 386, "comprovam o método antigo, não a plataforma (dito pelos fundadores, 17/09).", "nota-svg");
+    } else {
+      texto(sis, 880, 52, "com o HDB", "tempo-rot", "end");
+      ys.forEach(function (y) { seta("fio-hdb", xSai, y, 400, yMeio, "ponta-azul"); });
+      no("no-hdb", 400, yMeio - 60, 250, 120, "Cruzamento pela mesma pessoa", "nome · nome da mãe · nascimento · município", "cerca de 20 minutos (dito pelos fundadores)");
+      var xs = 700, ws = 180;
+      no("no-saida ok", xs, 84, ws, 70, "Coorte", "a mesma pessoa ligada", "entre as bases");
+      no("no-saida", xs, yMeio - 38, ws, 76, "Análise", "p-valor, tamanho de efeito", "metodologia auditável");
+      no("no-saida", xs, 300, ws, 70, "Dossiê", "CONITEC · operadora", "· periódico");
+      seta("fio-ouro", 650, yMeio, xs, 119, "ponta");
+      seta("fio-ouro", xs + ws / 2, 154, xs + ws / 2, yMeio - 38, "ponta");
+      seta("fio-ouro", xs + ws / 2, yMeio + 38, xs + ws / 2, 300, "ponta");
+      texto(sis, 400, 372, "Os identificadores pessoais entram só no cruzamento; a coorte sai sem eles (ética e proteção de dados).", "nota-svg");
+      texto(sis, 400, 386, "O cruzamento ainda não foi testado lado a lado com a Techtrials.", "nota-svg");
     }
-    [[cap, "barra-cap", 100], [emp, "barra-emp", 210], [ven, "barra-vend", 320]].forEach(function (b) {
-      var c = b[0], y = b[2];
-      el("rect", { x: x0, y: y, width: Math.max(4, esc_(c.valor) - x0), height: 56, rx: 4, "class": b[1] }, sis);
-      texto(sis, x0 - 12, y + 24, c.rotulo, "barra-rot", "end");
-      texto(sis, x0 - 12, y + 40, c.unidade, "barra-sub c-" + c.confianca, "end");
-      var t = texto(sis, esc_(c.valor) + 10, y + 36, String(c.valor), "num"); t.setAttribute("fill", b[1] === "barra-vend" ? RISCO : b[1] === "barra-emp" ? OURO : TINTA);
-    });
-    el("path", { d: "M" + esc_(emp.valor) + ",190 L" + esc_(emp.valor) + ",180 L" + esc_(cap.valor) + ",180 L" + esc_(cap.valor) + ",190", "class": "ocioso" }, sis);
-    texto(sis, (esc_(emp.valor) + esc_(cap.valor)) / 2, 174, "capacidade ociosa, paga todo mês", "ocioso-rot", "middle");
-    texto(sis, x0, 450, "O empate é quantos pacotes por ano pagam a equipe. A capacidade é quantos ela consegue entregar. O vendido é o total histórico, não por ano.", "nota-svg");
-    texto(sis, x0, 466, "Caso-base: o volume cresce de 3 para 30 pacotes por ano e o primeiro lucro operacional chega no ano " + CONT.primeiro_lucro.valor + ".", "nota-svg");
-  }
-  var FASES = [["diagnostico", "DIAGNÓSTICO", 1, 5, "#1A2C5B"], ["mercado", "MERCADO", 6, 12, "#2D6DB4"], ["modelo", "MODELO", 13, 18, "#4A82C0"], ["fechamento", "FECHO", 19, 20, "#0A7B6A"]];
-  var ORDEM_FASE = { diagnostico: 0, mercado: 1, modelo: 2, fechamento: 3 }, ORDEM_TIPO = { atividade: 0, entregavel: 1, marco: 2 };
-  var itensCr = [];
-  function montaSprint() {
-    var xl = 300, xd = 330, dw = (880 - xd) / 20, y0 = 62, rh = 21;
-    var crono = D.cronograma.slice().sort(function (a, b) {
-      return (ORDEM_FASE[a.fase] - ORDEM_FASE[b.fase]) || (a.dia_ini - b.dia_ini) || (ORDEM_TIPO[a.tipo] - ORDEM_TIPO[b.tipo]) || (a.dia_fim - b.dia_fim);
-    });
-    texto(sis, 20, 30, "O SPRINT DE 20 DIAS, E ONDE A CONSULTORIA ESTÁ", "col-rot");
-    FASES.forEach(function (f) {
-      var g = el("g", { "class": "fase" }, sis);
-      el("rect", { x: xd + (f[2] - 1) * dw, y: 38, width: (f[3] - f[2] + 1) * dw - 2, height: 16, rx: 3, fill: f[4] }, g);
-      texto(g, xd + (f[2] - 1) * dw + 5, 50, f[1]);
-    });
-    for (var d = 1; d <= 20; d++) texto(sis, xd + (d - 0.5) * dw, y0 - 4, String(d), "dia", "middle");
-    itensCr = [];
-    crono.forEach(function (c, i) {
-      var y = y0 + i * rh, g = el("g", { "class": "cr clicavel " + c.tipo, tabindex: 0, role: "button" }, sis);
-      el("rect", { x: 14, y: y, width: 872, height: rh, "class": "fundo" }, g);
-      var rot = (c.tipo === "entregavel" ? "Entregável: " : c.tipo === "marco" ? "Marco: " : "") + c.atividade;
-      texto(g, xl - 6, y + 14.5, rot.length > 52 ? rot.slice(0, 50) + "…" : rot, "rot", "end");
-      if (c.tipo === "atividade") {
-        el("rect", { x: xd + (c.dia_ini - 1) * dw + 1, y: y + 4, width: (c.dia_fim - c.dia_ini + 1) * dw - 2, height: rh - 8, rx: 3, "class": "b-" + c.status }, g);
-      } else {
-        var cx = xd + (c.dia_fim - 0.5) * dw, cy = y + rh / 2, r = 7;
-        el("path", { d: c.tipo === "marco" ? "M" + cx + "," + (cy - r) + " L" + (cx + r) + "," + cy + " L" + cx + "," + (cy + r) + " L" + (cx - r) + "," + cy + " Z"
-          : "M" + (cx - r) + "," + cy + " L" + (cx - r / 2) + "," + (cy - r) + " L" + (cx + r / 2) + "," + (cy - r) + " L" + (cx + r) + "," + cy + " L" + (cx + r / 2) + "," + (cy + r) + " L" + (cx - r / 2) + "," + (cy + r) + " Z", "class": "b-" + c.status }, g);
-      }
-      clicavel(g, function () { selecionaSis(selecao.sistema === c.id ? null : c.id); estadoNaUrl(); });
-      itensCr.push({ c: c, g: g });
-    });
-    texto(sis, 20, y0 + crono.length * rh + 18, "barra = dias planejados · cor = status hoje · hexágono = entregável · losango = marco · clique numa linha para ver a evidência", "nota-svg");
+    texto(sis, 20, 425, "clique numa base para ver o que ela cobre · alterne \"hoje, à mão\" e \"com o HDB\" para ver o que muda", "nota-svg");
   }
   function selecionaSis(id) {
     selecao.sistema = id;
-    itensCr.forEach(function (it) { it.g.classList.toggle("on", it.c.id === id); });
+    Object.keys(caixas).forEach(function (k) { caixas[k].classList.toggle("on", k === id); });
     leituraSistema(id);
   }
   function leituraSistema(id) {
-    var html = "";
-    if (tempoAtual === 1) {
-      html += "<div class='bloco'>" + achadosHtml("sistema", true) + "</div>";
-      html += "<div class='bloco'><div class='rotulo'>Os números, sem reais</div><ul class='lista'>" + D.contagens.map(function (c) {
-        return "<li style='cursor:default'><b>" + (c.unidade === "ano" ? "ano " + c.valor : c.valor + " " + esc(c.unidade)) + "</b> · " + esc(c.rotulo) + " " + conf(c.confianca) + "<br><span class='c-" + c.confianca + "'>" + esc(maiuscula(c.leitura)) + ".</span></li>";
-      }).join("") + "</ul><p class='dica'>Os valores em reais ficam no painel do caso econômico, fora desta peça.</p></div>";
+    var html = "", b = id && BASE[id];
+    if (b) {
+      html += "<div class='bloco ficha'><div class='rotulo'>Base pública " + conf(b.confianca) + "</div><h3>" + esc(b.nome) + "</h3><p>" + esc(maiuscula(b.cobre)) + ".</p>" +
+        "<dl><dt>Domínio</dt><dd>" + esc(b.dominio) + "</dd><dt>Como se liga às outras</dt><dd>pela pessoa: nome, nome da mãe, data de nascimento, município e sexo; não há um número comum entre as bases</dd></dl></div>";
     } else {
-      var c = id && D.cronograma.filter(function (x) { return x.id === id; })[0];
-      if (c) {
-        html += "<div class='bloco ficha'><div class='rotulo'>" + esc(c.tipo === "entregavel" ? "Entregável" : maiuscula(c.tipo)) + " · dias " + c.dia_ini + (c.dia_fim !== c.dia_ini ? " a " + c.dia_fim : "") + " " + st(c.status) + "</div><h3>" + esc(c.atividade) + "</h3><p>" + esc(maiuscula(c.evidencia)) + ".</p></div>";
-      } else {
-        var n = { feito: 0, parcial: 0, aberto: 0 }; D.cronograma.forEach(function (x) { n[x.status]++; });
-        html += "<div class='bloco'><div class='achado tese'><b>Dos " + D.cronograma.length + " itens do sprint, " + n.feito + " feitos, " + n.parcial + " parciais e " + n.aberto + " em aberto</b><span>O que travou é o que depende de terceiros: entrevistas de mercado, auditoria de propriedade intelectual e a apresentação formal aos proponentes.</span></div></div>";
-        html += "<div class='bloco'><div class='rotulo'>Como ler</div><p>" + st("feito") + " há evidência no vault · " + st("parcial") + " feito em parte, ou com valores provisórios no lugar de dados · " + st("aberto") + " não começou.</p><p class='dica'>Clique numa linha para ver a evidência de cada status.</p></div>";
-      }
+      html += "<div class='bloco'>" + achadosHtml("sistema", true) + "</div>";
     }
+    var c20 = CONT.cruzamento;
+    html += "<div class='bloco'><div class='rotulo'>O que muda</div><div class='dois'>" +
+      "<div><h5 class='risco'>Hoje, à mão</h5><p>Cada base é baixada, limpa e conciliada em separado: <b>2 a 8 semanas</b> por análise <span class='c-provavel'>(estimativa)</span>. O resultado são tabelas por base, sem a mesma pessoa ligada entre elas.</p></div>" +
+      "<div><h5 class='ok'>Com o HDB</h5><p>Cruzamento pela mesma pessoa em <b>cerca de " + c20.valor + " " + esc(c20.unidade) + "</b> " + conf(c20.confianca) + ", e a análise pronta: p-valor e tamanho de efeito. <span class='c-provavel'>O tempo mede a geração da coorte, não a entrega do pacote.</span></p></div></div></div>";
     html += elo("sistema");
     escreve(leituraSis, html);
   }

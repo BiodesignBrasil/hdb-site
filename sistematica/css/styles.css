@@ -1,5 +1,5 @@
 /* ============================================================
-   Sistemática Health Data Brasil — "o gargalo é demanda, não capacidade" (23/10/2026)
+   Sistemática Health Data Brasil — "o dado é de todos; a coorte, alguém paga para ter" (23/10/2026)
    Irmã da Sistemática Hernia3D (mesma arquitetura de quatro camadas), com a
    identidade do deck do HDB: papel azulado, tinta navy, azul de ação, ouro para
    dinheiro, vermelho para o que está em aberto ou em risco.
@@ -33,6 +33,13 @@ header h1{font-family:var(--serif);font-size:21px;font-weight:600;letter-spacing
 .nav-irma{display:inline-flex;align-items:center;gap:9px;padding:5px 14px;border:1px solid rgba(255,255,255,.3);border-radius:999px;
   color:rgba(255,255,255,.85);text-decoration:none;font-size:12.5px;white-space:nowrap;transition:background .15s}
 .nav-irma:hover{background:rgba(255,255,255,.1)}
+
+/* ---- a trilha entre as três peças: início · sistemática · a conta ---- */
+nav.trilha{height:auto;border:0;background:none;padding:0;display:flex;align-items:center;gap:6px;font-size:12.5px;white-space:nowrap}
+.trilha a,.trilha .aqui{padding:5px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.85);text-decoration:none}
+.trilha a:hover{background:rgba(255,255,255,.1)}
+.trilha .aqui{background:#fff;color:var(--tinta);border-color:#fff;font-weight:600}
+.trilha .conta{border-color:var(--ouro);color:#F2CB6E}
 
 /* ---- as quatro camadas, como capítulos ---- */
 nav{height:var(--nav);border-bottom:1px solid var(--filete);display:flex;align-items:stretch;padding:0 24px;gap:28px;background:var(--papel)}
@@ -153,31 +160,34 @@ svg text{font-family:var(--font)}
 .faixa{fill:var(--papel-2)}
 .faixa-rot{font-size:10px;font-weight:700;letter-spacing:.18em;fill:var(--cinza-escuro)}
 
-/* ---- 02 · sistema: capacidade × empate × vendidos, e o sprint ---- */
-.eixo{stroke:var(--cinza-escuro);stroke-width:1}
-.tick{font-size:10px;fill:var(--cinza)}
-.tick-l{stroke:var(--filete)}
-.barra-cap{fill:var(--papel-3);stroke:var(--tinta);stroke-width:1.2}
-.barra-emp{fill:var(--ouro);opacity:.9}
-.barra-vend{fill:var(--risco)}
-.barra-rot{font-size:12px;font-weight:700;fill:var(--tinta)}
-.barra-sub{font-size:10.5px;fill:var(--cinza)}
-.num{font-family:var(--serif);font-size:34px;font-weight:600}
-.num-txt{font-size:11.5px;fill:var(--cinza-escuro)}
-.ocioso{fill:none;stroke:var(--cinza);stroke-width:1.2;stroke-dasharray:4 4}
-.ocioso-rot{font-family:var(--serif);font-style:italic;font-size:14px;fill:var(--cinza-escuro)}
-.fase rect{stroke:none}
-.fase text{font-size:9.5px;font-weight:700;letter-spacing:.12em;fill:#fff}
-.dia{font-size:9px;fill:var(--cinza)}
-.cr rect.fundo{fill:transparent}
-.cr:hover rect.fundo,.cr.on rect.fundo{fill:var(--papel-2)}
-.cr text.rot{font-size:10.5px;fill:var(--tinta)}
-.cr.entregavel text.rot{font-weight:700}
-.cr.marco text.rot{font-style:italic;fill:var(--cinza-escuro)}
-.cr .b-feito{fill:#14804A}
-.cr .b-parcial{fill:var(--ambar)}
-.cr .b-aberto{fill:var(--papel);stroke:var(--cinza);stroke-dasharray:3 2}
-.marco-rot{font-size:9px;fill:var(--cinza)}
+/* ---- 02 · sistema: das bases públicas à coorte ---- */
+.base rect{fill:#fff;stroke:var(--tinta);stroke-width:1.1}
+.base.c-provavel rect{stroke-dasharray:5 4}
+.base text.nome{font-size:12px;font-weight:700;fill:var(--tinta)}
+.base text.dom{font-size:9.5px;fill:var(--cinza);letter-spacing:.06em}
+.base.c-provavel text.dom{font-style:italic}
+.base:hover rect,.base.on rect{stroke:var(--primary);stroke-width:2.4}
+.no rect{rx:6}
+.no text.t{font-size:12.5px;font-weight:700}
+.no text.s{font-size:10.5px}
+.no-hoje rect{fill:var(--risco-claro);stroke:var(--risco);stroke-width:1.4}
+.no-hoje text{fill:var(--risco)}
+.no-hdb rect{fill:var(--tinta);stroke:var(--tinta)}
+.no-hdb text{fill:#fff}
+.no-saida rect{fill:#fff;stroke:var(--filete-forte)}
+.no-saida text.t{fill:var(--tinta)}.no-saida text.s{fill:var(--cinza)}
+.no-saida.ok rect{fill:var(--ok-claro);stroke:var(--ok)}
+.fio-hoje{fill:none;stroke:var(--cinza);stroke-width:1.1;stroke-dasharray:4 4;opacity:.7}
+.fio-hdb{fill:none;stroke:var(--primary);stroke-width:1.5;opacity:.7}
+.fio-ouro{fill:none;stroke:var(--ouro);stroke-width:2.2}
+.ponta{fill:var(--ouro)}
+.ponta-azul{fill:var(--primary)}
+.tempo-rot{font-family:var(--serif);font-style:italic;font-size:15px;fill:var(--cinza-escuro)}
+.tempo-rot.risco{fill:var(--risco)}
+.dois{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.dois h5{font-size:10px;letter-spacing:.14em;text-transform:uppercase;margin:0 0 4px;color:var(--cinza)}
+.dois h5.risco{color:var(--risco)}.dois h5.ok{color:var(--ok)}
+.dois p{font-size:12.5px}
 
 /* ---- 03 · serviços: matriz de cobertura ---- */
 .mz{display:grid;grid-template-columns:minmax(220px,1.5fr) repeat(6,minmax(60px,1fr));align-items:stretch;font-size:12.5px}
