@@ -30,6 +30,9 @@ header{background:linear-gradient(120deg,var(--brand-dark) 0%,var(--tinta) 100%)
 .wm-nome span{color:var(--ceu)}
 .wm-sub{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.7;margin-top:3px}
 .title-block{flex:1;min-width:0}
+/* o checkpoint da convergência (os três Cs), acendendo por camada */
+.cv-header{flex-shrink:0}
+.cv-header svg{height:46px;width:auto;display:block}
 header h1{font-family:var(--font);font-size:17px;font-weight:600;letter-spacing:-.01em;line-height:1.25;opacity:.92;border-left:1px solid rgba(255,255,255,.25);padding-left:22px}
 
 /* ---- a trilha entre as três peças: início · sistemática · a conta ---- */

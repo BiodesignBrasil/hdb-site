@@ -300,67 +300,108 @@ window.HDB = {
   {
    "camada": "ecossistema",
    "titulo": "Quem mais ganha não paga",
-   "texto": "a evidência melhor serve à CONITEC e ao SUS, mas quem paga é a farmacêutica, e só se a evidência fortalecer o próprio dossiê"
+   "texto": "a evidência melhor serve à CONITEC e ao SUS, mas quem paga é a farmacêutica, e só se a evidência fortalecer o próprio dossiê",
+   "c": [
+    "C3"
+   ]
   },
   {
    "camada": "sistema",
    "titulo": "O que se vende é o cruzamento, não o dado",
-   "texto": "a matéria-prima é pública e aberta a todos, concorrentes incluídos · o valor está em ligar a mesma pessoa entre as bases e escolher os códigos certos"
+   "texto": "a matéria-prima é pública e aberta a todos, concorrentes incluídos · o valor está em ligar a mesma pessoa entre as bases e escolher os códigos certos",
+   "c": [
+    "C1"
+   ]
   },
   {
    "camada": "servicos",
    "titulo": "Cada pacote paga o próprio custo",
-   "texto": "a contribuição por pacote é alta, o que falta é volume para cobrir a equipe"
+   "texto": "a contribuição por pacote é alta, o que falta é volume para cobrir a equipe",
+   "c": [
+    "C3"
+   ]
   },
   {
    "camada": "jornadas",
    "titulo": "Cada cliente vira projeto novo",
-   "texto": "sem coorte reutilizável a receita não acumula, que é onde plataformas de dados costumam travar"
+   "texto": "sem coorte reutilizável a receita não acumula, que é onde plataformas de dados costumam travar",
+   "c": [
+    "volta"
+   ]
   },
   {
    "camada": "fecho",
    "titulo": "Propriedade intelectual licenciada pelo Einstein",
-   "texto": "antes de constituir a empresa e de captar"
+   "texto": "antes de constituir a empresa e de captar",
+   "c": [
+    "C1"
+   ]
   },
   {
    "camada": "ecossistema",
    "titulo": "A matéria-prima é grátis para todos",
-   "texto": "o dado público está aberto também aos concorrentes, então o que se vende é o método, e o método ainda não tem prova pública própria"
+   "texto": "o dado público está aberto também aos concorrentes, então o que se vende é o método, e o método ainda não tem prova pública própria",
+   "c": [
+    "C1",
+    "C3"
+   ]
   },
   {
    "camada": "sistema",
    "titulo": "Quem autoriza ainda não autorizou",
-   "texto": "o código de coleta original é atribuído ao Departamento de Informática do Einstein, e sem licença o spin-off não capta"
+   "texto": "o código de coleta original é atribuído ao Departamento de Informática do Einstein, e sem licença o spin-off não capta",
+   "c": [
+    "C1"
+   ]
   },
   {
    "camada": "servicos",
    "titulo": "Vender contra consultoria, não contra equipe interna",
-   "texto": "contra consultoria o HDB é dominante em todos os cenários, contra uma equipe interna enxuta só empata"
+   "texto": "contra consultoria o HDB é dominante em todos os cenários, contra uma equipe interna enxuta só empata",
+   "c": [
+    "C3"
+   ]
   },
   {
    "camada": "fecho",
    "titulo": "Cartas de intenção da indústria farmacêutica e de empresas de pesquisa clínica",
-   "texto": "volume acima do empate até o ano 3"
+   "texto": "volume acima do empate até o ano 3",
+   "c": [
+    "volta"
+   ]
   },
   {
    "camada": "ecossistema",
    "titulo": "Há concorrente local com a mesma promessa",
-   "texto": "a Precision Data anuncia relatórios de duas semanas em dois dias para o mesmo público"
+   "texto": "a Precision Data anuncia relatórios de duas semanas em dois dias para o mesmo público",
+   "c": [
+    "C1"
+   ]
   },
   {
    "camada": "sistema",
    "titulo": "Tempo dito, não medido",
-   "texto": "os cerca de 20 minutos medem a geração da coorte na máquina, não a entrega do pacote, e vieram dos fundadores"
+   "texto": "os cerca de 20 minutos medem a geração da coorte na máquina, não a entrega do pacote, e vieram dos fundadores",
+   "c": [
+    "C1",
+    "C2"
+   ]
   },
   {
    "camada": "servicos",
    "titulo": "O gargalo é demanda, não capacidade",
-   "texto": "a equipe paga tem capacidade muito acima do volume previsto, e os prejuízos dos primeiros anos são capacidade ociosa"
+   "texto": "a equipe paga tem capacidade muito acima do volume previsto, e os prejuízos dos primeiros anos são capacidade ociosa",
+   "c": [
+    "volta"
+   ]
   },
   {
    "camada": "fecho",
    "titulo": "Preço ancorado na consultoria",
-   "texto": "validado em entrevista com decisores de acesso e economia da saúde"
+   "texto": "validado em entrevista com decisores de acesso e economia da saúde",
+   "c": [
+    "C3"
+   ]
   }
  ],
  "servicos": [
@@ -870,6 +911,12 @@ window.HDB = {
    "titulo": "O percurso",
    "o_que_mudou": "A entrada virou um percurso em seis movimentos: de onde partimos, o que olhamos, o que encontramos, o que fecha e em que condições, o que falta e quem resolve, o que mudou. Carimbo de versão em toda página e publicação em um comando",
    "versao": 4
+  },
+  {
+   "data": "2026-10-24",
+   "titulo": "A convergência",
+   "o_que_mudou": "Os três Cs entram como símbolo e checkpoint: C¹ Cruzamento, C² Coorte, C³ Comprovação, e a volta do reuso, ainda aberta. A entrada deixou de rolar e virou uma roda: os seis movimentos num aro que gira, o anel dos três Cs no centro acendendo o que cada movimento toca, e depois do sexto o primeiro. As etiquetas dos Cs marcam achados, condições e glossário · o anel aparece também no cabeçalho da Sistemática e da conta",
+   "versao": 5
   }
  ],
  "sintese": {
@@ -900,28 +947,92 @@ window.HDB = {
   "olhar_do_cliente": {
    "texto": "Para a gerente de acesso de uma farmacêutica, o pacote é uma pergunta de evidência respondida em semanas, não meses: ela define a pergunta, espera o cruzamento, recebe o rascunho, leva ao dossiê. O que ela ainda não tem é garantia de qualidade publicada nem a certeza de que o fornecedor existirá no ano que vem",
    "confianca": "provavel"
+  },
+  "convergencia": {
+   "texto": "Três Cs, uma convergência: as bases convergem na mesma pessoa, as pessoas numa coorte, a coorte numa comprovação que vai ao dossiê. O ciclo só fecha quando a mesma coorte responde à próxima pergunta, e isso ainda está por construir",
+   "confianca": "provavel"
   }
  },
  "glossario": [
   {
-   "termo": "Coorte",
-   "explicacao": "Um grupo de pessoas acompanhado ao longo do tempo nos registros de saúde: quem fez tal procedimento, o que aconteceu depois, com que frequência. É a matéria-prima da evidência de mundo real"
+   "termo": "Cruzamento pela mesma pessoa",
+   "explicacao": "Ligar os registros de uma mesma pessoa que aparecem em bases diferentes (internação, óbito, nascimento, vacina) sem um número comum entre elas: pelo nome, nome da mãe, data de nascimento e município. É o que o HDB faz em cerca de 20 minutos e que, à mão, leva semanas",
+   "c": [
+    "C1"
+   ]
   },
   {
-   "termo": "Cruzamento pela mesma pessoa",
-   "explicacao": "Ligar os registros de uma mesma pessoa que aparecem em bases diferentes (internação, óbito, nascimento, vacina) sem um número comum entre elas: pelo nome, nome da mãe, data de nascimento e município. É o que o HDB faz em cerca de 20 minutos e que, à mão, leva semanas"
+   "termo": "Coorte",
+   "explicacao": "Um grupo de pessoas acompanhado ao longo do tempo nos registros de saúde: quem fez tal procedimento, o que aconteceu depois, com que frequência. É a matéria-prima da evidência de mundo real",
+   "c": [
+    "C2"
+   ]
+  },
+  {
+   "termo": "Comprovação",
+   "explicacao": "O que o pacote entrega: p-valor e tamanho de efeito, com metodologia auditável, que a farmacêutica leva ao dossiê apresentado à CONITEC ou a uma operadora para que um medicamento seja incorporado. É onde a coorte vira decisão",
+   "c": [
+    "C3"
+   ]
   },
   {
    "termo": "Pacote",
-   "explicacao": "O que o HDB vende hoje: uma pergunta, uma coorte cruzada e a análise pronta (p-valor e tamanho de efeito), entregue à farmacêutica para o dossiê que vai à CONITEC ou à operadora"
+   "explicacao": "O que o HDB vende hoje: uma pergunta, uma coorte cruzada e a análise pronta (p-valor e tamanho de efeito), entregue à farmacêutica para o dossiê que vai à CONITEC ou à operadora",
+   "c": []
   },
   {
    "termo": "Spin-off",
-   "explicacao": "Uma empresa nova, fora do Einstein, que licencia a propriedade intelectual e opera o produto. Foi o modelo escolhido · a pergunta aberta é em que condições ela se sustenta"
+   "explicacao": "Uma empresa nova, fora do Einstein, que licencia a propriedade intelectual e opera o produto. Foi o modelo escolhido · a pergunta aberta é em que condições ela se sustenta",
+   "c": []
+  }
+ ],
+ "convergencia": [
+  {
+   "sigla": "C1",
+   "nome": "Cruzamento",
+   "verbo": "cruzar",
+   "oque": "ligar a mesma pessoa entre as bases públicas, com os códigos certos para a pergunta",
+   "estado": "feito",
+   "confianca": "confirmado",
+   "etapas": [
+    "E1",
+    "E2",
+    "E3"
+   ]
   },
   {
-   "termo": "Dossiê",
-   "explicacao": "O conjunto de evidências que a indústria farmacêutica apresenta à CONITEC ou a uma operadora para que um medicamento seja incorporado. É onde a coorte do HDB é usada"
+   "sigla": "C2",
+   "nome": "Coorte",
+   "verbo": "construir",
+   "oque": "a população recortada pela pergunta, pronta para a análise e guardada para a próxima",
+   "estado": "feito",
+   "confianca": "confirmado",
+   "etapas": [
+    "E3"
+   ]
+  },
+  {
+   "sigla": "C3",
+   "nome": "Comprovação",
+   "verbo": "comprovar",
+   "oque": "p-valor e tamanho de efeito com metodologia auditável, no dossiê de quem decide",
+   "estado": "feito",
+   "confianca": "provavel",
+   "etapas": [
+    "E4",
+    "E5"
+   ]
+  },
+  {
+   "sigla": "volta",
+   "nome": "Reuso",
+   "verbo": "voltar",
+   "oque": "a mesma coorte responde à próxima pergunta sem pagar a montagem de novo",
+   "estado": "aberto",
+   "confianca": "aberto",
+   "etapas": [
+    "E6"
+   ]
   }
  ],
  "lacunas_publicas": [
@@ -1017,8 +1128,8 @@ window.HDB = {
   }
  ],
  "versao": {
-  "numero": 4,
-  "data": "2026-10-23",
-  "titulo": "O percurso"
+  "numero": 5,
+  "data": "2026-10-24",
+  "titulo": "A convergência"
  }
 };

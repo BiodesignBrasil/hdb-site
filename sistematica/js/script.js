@@ -93,6 +93,8 @@
     { id: "servicos", n: "03", rot: "O que se oferece", cam: "serviços", perg: "O que o spin-off vende em cada etapa, e quem paga cada parte?" },
     { id: "jornadas", n: "04", rot: "O que se vive", cam: "jornadas", perg: "O que o cliente vive, e o que roda por trás?" }
   ];
+  /* o checkpoint da convergência no cabeçalho: que Cs cada camada acende (C1 cruzamento · C2 coorte · C3 comprovação · volta = reuso) */
+  var LIT_VISTA = { ecossistema: ["C3", "volta"], sistema: ["C1", "C2"], servicos: ["C3", "volta"], jornadas: ["C1", "C2", "C3", "volta"] };
   var PROXIMA = {
     ecossistema: ["sistema", "e como o dado público vira a coorte que a farmacêutica paga?"],
     sistema: ["servicos", "o que, exatamente, se vende?"],
@@ -117,6 +119,10 @@
       botoes[x.id].setAttribute("aria-selected", x.id === v.id ? "true" : "false");
     });
     document.getElementById("pergunta").textContent = v.perg;
+    if (window.HDBC) {
+      var cvh = document.getElementById("cv-header");
+      if (cvh) { HDBC.desenha(cvh, { lit: LIT_VISTA[v.id], escuro: true }); cvh.setAttribute("title", "Nesta camada: " + HDBC.nomes(LIT_VISTA[v.id])); }
+    }
     if (item !== undefined) seleciona(v.id, item);
     estadoNaUrl();
     reencaixa();
