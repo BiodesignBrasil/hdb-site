@@ -772,7 +772,8 @@ window.HDB = {
    "unidade": "pacotes por ano",
    "leitura": "o que três pessoas em tempo integral conseguem entregar, com duas analisando e uma em ciência e revisão",
    "confianca": "provavel",
-   "valor": 65
+   "valor": 65,
+   "c": []
   },
   {
    "id": "empate",
@@ -780,7 +781,10 @@ window.HDB = {
    "unidade": "pacotes por ano",
    "leitura": "o volume que cobre o custo fixo da equipe ao preço de referência",
    "confianca": "provavel",
-   "valor": 17
+   "valor": 17,
+   "c": [
+    "volta"
+   ]
   },
   {
    "id": "vendidos",
@@ -788,7 +792,10 @@ window.HDB = {
    "unidade": "pacotes, no total",
    "leitura": "três contratos pontuais, sem receita recorrente",
    "confianca": "confirmado",
-   "valor": 3
+   "valor": 3,
+   "c": [
+    "C3"
+   ]
   },
   {
    "id": "equipe",
@@ -796,7 +803,8 @@ window.HDB = {
    "unidade": "pessoas em tempo integral",
    "leitura": "os três fundadores, dedicação ainda não acordada",
    "confianca": "provavel",
-   "valor": 3
+   "valor": 3,
+   "c": []
   },
   {
    "id": "cruzamento",
@@ -804,7 +812,10 @@ window.HDB = {
    "unidade": "minutos",
    "leitura": "geração da coorte cruzada entre bases, dito pelos fundadores · a entrega do pacote leva semanas",
    "confianca": "confirmado",
-   "valor": 20
+   "valor": 20,
+   "c": [
+    "C1"
+   ]
   },
   {
    "id": "primeiro_lucro",
@@ -812,7 +823,10 @@ window.HDB = {
    "unidade": "ano",
    "leitura": "no caso-base, com o volume crescendo de 3 para 30 pacotes por ano",
    "confianca": "provavel",
-   "valor": 4
+   "valor": 4,
+   "c": [
+    "volta"
+   ]
   }
  ],
  "bases": [
@@ -917,6 +931,12 @@ window.HDB = {
    "titulo": "A convergência",
    "o_que_mudou": "Os três Cs entram como símbolo e checkpoint: C¹ Cruzamento, C² Coorte, C³ Comprovação, e a volta do reuso, ainda aberta. A entrada deixou de rolar e virou uma roda: os seis movimentos num aro que gira, o anel dos três Cs no centro acendendo o que cada movimento toca, e depois do sexto o primeiro. As etiquetas dos Cs marcam achados, condições e glossário · o anel aparece também no cabeçalho da Sistemática e da conta",
    "versao": 5
+  },
+  {
+   "data": "2026-10-25",
+   "titulo": "A convergência como roda",
+   "o_que_mudou": "Os três Cs viraram a própria roda: C¹ Cruzamento, C² Coorte e C³ Comprovação são as paradas, com um painel curto cada, e a volta do reuso é o arco de retorno, tracejado enquanto estiver por construir. No centro da roda, o mantra dos três verbos (cruzar, construir, comprovar) e um número por passo. Os seis movimentos viraram coadjuvantes: uma folha, aberta pelos botões de aprofundar e por um link sob a roda. Na Sistemática, a cena das bases à coorte virou o sistema dos três Cs: três bandas clicáveis, cruzar, construir, comprovar, com a volta do reuso tracejada. As três peças trocaram a pele de landing pela de relatório: papel, serifa, filetes, sem gradiente nem cartão",
+   "versao": 6
   }
  ],
  "sintese": {
@@ -1040,96 +1060,135 @@ window.HDB = {
    "titulo": "Preço recorrente e faixas de preço",
    "gate": "G2",
    "papel": "fundadores, com entrevistas de mercado",
+   "c": [
+    "volta"
+   ],
    "prazo": "a definir"
   },
   {
    "titulo": "Custo por coorte entregue",
    "gate": "G3",
    "papel": "fundadores",
+   "c": [
+    "C2"
+   ],
    "prazo": "a definir"
   },
   {
    "titulo": "Disposição a pagar e ciclo de venda por segmento",
    "gate": "G2",
    "papel": "mesa de decisão",
+   "c": [
+    "C3"
+   ],
    "prazo": "a definir"
   },
   {
    "titulo": "Dedicação e participação dos 3 fundadores",
    "gate": "G1",
    "papel": "fundadores",
+   "c": [],
    "prazo": "a definir"
   },
   {
    "titulo": "Custo de nuvem em escala",
    "gate": "G3",
    "papel": "fundadores",
+   "c": [
+    "C2"
+   ],
    "prazo": "a definir"
   },
   {
    "titulo": "Propriedade intelectual em 5 camadas",
    "gate": "G1",
    "papel": "jurídico do Einstein e fundadores",
+   "c": [
+    "C1"
+   ],
    "prazo": "a definir"
   },
   {
    "titulo": "Tempo medido: geração da coorte e entrega do pacote",
    "gate": "G3",
    "papel": "fundadores",
+   "c": [
+    "C1"
+   ],
    "prazo": "a definir"
   },
   {
    "titulo": "Teste do cruzamento de bases contra a Techtrials",
    "gate": "G2",
    "papel": "mesa de decisão",
+   "c": [
+    "C1"
+   ],
    "prazo": "a definir"
   },
   {
    "titulo": "Curva de adoção (clientes por ano)",
    "gate": "G2",
    "papel": "a definir",
+   "c": [
+    "volta"
+   ],
    "prazo": "a definir"
   },
   {
    "titulo": "Apetite do Einstein por participação e por operar um produto",
    "gate": "G1",
    "papel": "direção do Einstein",
+   "c": [],
    "prazo": "a definir"
   },
   {
    "titulo": "Mapear a Precision Data",
    "gate": "G2",
    "papel": "equipe do projeto",
+   "c": [
+    "C1"
+   ],
    "prazo": "antes de qualquer pitch"
   },
   {
    "titulo": "Dimensionar o segmento farmacêutico de baixo para cima",
    "gate": "G2",
    "papel": "equipe do projeto",
+   "c": [
+    "C3"
+   ],
    "prazo": "a definir"
   },
   {
    "titulo": "Quem financia o capital até o primeiro lucro",
    "gate": "G2",
    "papel": "mesa de decisão e fundadores",
+   "c": [
+    "volta"
+   ],
    "prazo": "a definir"
   },
   {
    "titulo": "Posição da Precision Data no mapa, inferida e não medida",
    "gate": "G2",
    "papel": "equipe do projeto",
+   "c": [
+    "C1"
+   ],
    "prazo": "junto com o mapa da Precision Data"
   },
   {
    "titulo": "Certificado do site oficial vencido",
    "gate": "G2",
    "papel": "fundadores",
+   "c": [],
    "prazo": "imediato"
   }
  ],
  "versao": {
-  "numero": 5,
-  "data": "2026-10-24",
-  "titulo": "A convergência"
+  "numero": 6,
+  "data": "2026-10-25",
+  "titulo": "A convergência como roda"
  }
 };

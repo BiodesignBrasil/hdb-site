@@ -6,7 +6,9 @@
      jornadas    — o que o cliente vive, e o que roda por trás
    Dados: js/data.js, GERADO de 08_sintese/dados/*.csv (não editar à mão).
    Sem valores em reais nesta peça: eles ficam no vault e no painel do caso econômico.
-   Arquitetura herdada da Sistemática Hernia3D (encaixa/dimensiona, estado na URL). */
+   Arquitetura herdada da Sistemática Hernia3D (encaixa/dimensiona, estado na URL).
+   25/10/2026: a cena "com o HDB" da camada 02 virou o sistema dos três Cs (três bandas clicáveis, ficha por C na leitura);
+   os achados ganharam as etiquetas dos Cs. As abas continuam abas (um dial foi testado e retirado a pedido do usuário). */
 
 (function () {
   "use strict";
@@ -50,7 +52,7 @@
   }
   function achadosHtml(camada, tese) {
     return D.achados.filter(function (a) { return a.camada === camada; }).map(function (a, i) {
-      return "<div class='achado" + (tese && i === 0 ? " tese" : "") + "'><b>" + esc(a.titulo) + "</b><span>" + esc(maiuscula(a.texto)) + ".</span></div>";
+      return "<div class='achado" + (tese && i === 0 ? " tese" : "") + "'><b>" + esc(a.titulo) + "</b>" + (window.HDBC ? HDBC.etiquetas(a.c) : "") + "<span>" + esc(maiuscula(a.texto)) + ".</span></div>";
     }).join("");
   }
 
@@ -77,7 +79,7 @@
   function dimensiona() {
     var palco = document.querySelector(".palco");
     if (window.innerWidth <= EMPILHA) { palco.style.height = ""; return; }
-    var topo = document.querySelector("header").offsetHeight + document.querySelector("nav").offsetHeight;
+    var topo = document.querySelector("header").offsetHeight + document.getElementById("camadas").offsetHeight;
     palco.style.height = Math.max(420, document.documentElement.clientHeight - topo) + "px";
   }
   function reencaixa() { dimensiona(); ajustaveis.forEach(encaixa); }
@@ -94,7 +96,7 @@
     { id: "jornadas", n: "04", rot: "O que se vive", cam: "jornadas", perg: "O que o cliente vive, e o que roda por trás?" }
   ];
   /* o checkpoint da convergência no cabeçalho: que Cs cada camada acende (C1 cruzamento · C2 coorte · C3 comprovação · volta = reuso) */
-  var LIT_VISTA = { ecossistema: ["C3", "volta"], sistema: ["C1", "C2"], servicos: ["C3", "volta"], jornadas: ["C1", "C2", "C3", "volta"] };
+  var LIT_VISTA = { ecossistema: ["C3", "volta"], sistema: ["C1", "C2", "C3"], servicos: ["C3", "volta"], jornadas: ["C1", "C2", "C3", "volta"] };
   var PROXIMA = {
     ecossistema: ["sistema", "e como o dado público vira a coorte que a farmacêutica paga?"],
     sistema: ["servicos", "o que, exatamente, se vende?"],
@@ -121,7 +123,7 @@
     document.getElementById("pergunta").textContent = v.perg;
     if (window.HDBC) {
       var cvh = document.getElementById("cv-header");
-      if (cvh) { HDBC.desenha(cvh, { lit: LIT_VISTA[v.id], escuro: true }); cvh.setAttribute("title", "Nesta camada: " + HDBC.nomes(LIT_VISTA[v.id])); }
+      if (cvh) { HDBC.desenha(cvh, { lit: LIT_VISTA[v.id], escuro: false }); cvh.setAttribute("title", "Nesta camada: " + HDBC.nomes(LIT_VISTA[v.id])); }
     }
     if (item !== undefined) seleciona(v.id, item);
     estadoNaUrl();
@@ -135,7 +137,7 @@
   }
   function estadoNaUrl() {
     var q = "?vista=" + vistaAtual + (selecao[vistaAtual] ? "&item=" + encodeURIComponent(selecao[vistaAtual]) : "") +
-      (vistaAtual === "sistema" && tempoAtual !== 1 ? "&tempo=" + tempoAtual : "");
+      (vistaAtual === "sistema" && tempoAtual !== 2 ? "&tempo=" + tempoAtual : "");
     try { history.replaceState(null, "", q); } catch (e) { /* file:// em alguns navegadores */ }
   }
   var CONTA = "../caso-economico/"; /* o publicador reescreve para ../caso-economico/ */
@@ -254,7 +256,9 @@
      (1) hoje, à mão: cada base baixada, limpa e conciliada em separado, sem a mesma pessoa entre elas;
      (2) com o HDB: cruzamento pela mesma pessoa → coorte → análise → dossiê. */
   var sis = document.getElementById("sis"), leituraSis = document.getElementById("leitura-sis");
-  var tempoAtual = 1, TEMPOS = [[1, "Hoje, à mão"], [2, "Com o HDB"]];
+  var tempoAtual = 2, TEMPOS = [[1, "Hoje, à mão"], [2, "Com o HDB · os três Cs"]];
+  var SUPC = { C1: "C¹", C2: "C²", C3: "C³" }, CS3 = (D.convergencia || []).filter(function (c) { return c.sigla !== "volta"; }), CONVS = {};
+  CS3.forEach(function (c) { CONVS[c.sigla] = c; });
   var temposEl = document.getElementById("tempos");
   temposEl.innerHTML = "<span class='tempos-rot'>olhar</span>" + TEMPOS.map(function (t) {
     return "<button type='button' data-tempo='" + t[0] + "' role='tab'><b>" + t[0] + "</b>" + t[1] + "</button>";
@@ -310,18 +314,43 @@
       texto(sis, 400, 372, "Os 11 artigos dos fundadores usaram tabelas públicas do TabNet, sem cruzamento:", "nota-svg");
       texto(sis, 400, 386, "comprovam o método antigo, não a plataforma (dito pelos fundadores, 17/09).", "nota-svg");
     } else {
-      texto(sis, 880, 52, "com o HDB", "tempo-rot", "end");
-      ys.forEach(function (y) { seta("fio-hdb", xSai, y, 400, yMeio, "ponta-azul"); });
-      no("no-hdb", 400, yMeio - 60, 250, 120, "Cruzamento pela mesma pessoa", "nome · nome da mãe · nascimento · município", "cerca de 20 minutos (dito pelos fundadores)");
-      var xs = 700, ws = 180;
-      no("no-saida ok", xs, 84, ws, 70, "Coorte", "a mesma pessoa ligada", "entre as bases");
-      no("no-saida", xs, yMeio - 38, ws, 76, "Análise", "p-valor, tamanho de efeito", "metodologia auditável");
-      no("no-saida", xs, 300, ws, 70, "Dossiê", "CONITEC · operadora", "· periódico");
-      seta("fio-ouro", 650, yMeio, xs, 119, "ponta");
-      seta("fio-ouro", xs + ws / 2, 154, xs + ws / 2, yMeio - 38, "ponta");
-      seta("fio-ouro", xs + ws / 2, yMeio + 38, xs + ws / 2, 300, "ponta");
-      texto(sis, 400, 372, "Identificadores pessoais só no cruzamento; a coorte sai sem eles (ética e proteção de dados).", "nota-svg");
-      texto(sis, 400, 386, "O cruzamento ainda não foi testado lado a lado com a Techtrials.", "nota-svg");
+      texto(sis, 880, 52, "com o HDB · o sistema dos três Cs", "tempo-rot", "end");
+      /* três bandas, uma por C: cruzar → construir → comprovar. A volta tracejada é o reuso, ainda por construir.
+         Cada banda é clicável e abre a ficha do C na leitura (como os grupos do funil na Longevidade abrem o M). */
+      var BY = 64, BH2 = 300, BANDA = { C1: [362, 186], C2: [564, 154], C3: [736, 144] };
+      CS3.forEach(function (c) {
+        var x = BANDA[c.sigla][0], w = BANDA[c.sigla][1];
+        var g = el("g", { "class": "banda clicavel banda-" + c.sigla, tabindex: 0, role: "button", "aria-label": SUPC[c.sigla] + " " + c.nome }, sis);
+        el("rect", { x: x, y: BY, width: w, height: BH2, rx: 10 }, g);
+        texto(g, x + 12, BY + 22, SUPC[c.sigla] + " " + c.nome.toUpperCase(), "banda-rot");
+        texto(g, x + 12, BY + 36, c.verbo, "banda-verbo");
+        var cx = x + 12;
+        (c.etapas || []).forEach(function (e) {
+          var ch = el("g", { "class": "chip-e" }, g);
+          el("rect", { x: cx, y: BY + BH2 - 28, width: 40, height: 16, rx: 8 }, ch);
+          texto(ch, cx + 20, BY + BH2 - 17, e, "", "middle");
+          cx += 44;
+        });
+        clicavel(g, function () { selecionaSis(selecao.sistema === c.sigla ? null : c.sigla); estadoNaUrl(); });
+        caixas[c.sigla] = g;
+      });
+      ys.forEach(function (y) { seta("fio-hdb", xSai, y, 362, yMeio, "ponta-azul"); });
+      no("no-hdb", 374, 112, 162, 100, "Cruzamento", "pela mesma pessoa", "nome, mãe, nascimento");
+      texto(sis, 374, 232, "cerca de 20 minutos (dito)", "nota-svg");
+      texto(sis, 374, 246, "identificadores só aqui", "nota-svg");
+      no("no-saida ok", 576, 112, 130, 70, "Coorte", "a mesma pessoa", "ligada entre as bases");
+      no("no-saida a-construir", 576, 206, 130, 60, "Coorte versionada", "guardada para a", "próxima pergunta");
+      texto(sis, 576, 284, "a construir", "volta-rot");
+      no("no-saida", 748, 112, 120, 66, "Análise", "p-valor, tamanho", "de efeito");
+      no("no-saida", 748, 206, 120, 66, "Dossiê", "CONITEC · operadora", "· periódico");
+      seta("fio-c", 536, 162, 576, 147, "ponta-c");
+      seta("fio-c", 706, 147, 748, 145, "ponta-c");
+      seta("fio-ouro", 808, 178, 808, 206, "ponta");
+      el("path", { d: "M808,272 L808,300 L641,300 L641,270", "class": "fio-volta" }, sis);
+      el("circle", { cx: 641, cy: 268, r: 3.2, "class": "ponta-volta" }, sis);
+      texto(sis, 724, 313, "↻ reuso · a construir", "volta-rot", "middle");
+      texto(sis, 362, 384, "Identificadores pessoais só no cruzamento; a coorte sai sem eles (ética e proteção de dados).", "nota-svg");
+      texto(sis, 362, 398, "O cruzamento ainda não foi testado lado a lado com a Techtrials. Clique numa banda para ler o C.", "nota-svg");
     }
     texto(sis, 20, 425, "clique numa base para ver o que ela cobre · alterne \"hoje, à mão\" e \"com o HDB\" para ver o que muda", "nota-svg");
   }
@@ -331,8 +360,16 @@
     leituraSistema(id);
   }
   function leituraSistema(id) {
-    var html = "", b = id && BASE[id];
-    if (b) {
+    var html = "", b = id && BASE[id], c = id && CONVS[id];
+    if (c) {
+      var gl = (D.glossario || []).filter(function (g) { return (g.c || []).indexOf(id) >= 0; })[0];
+      html += "<div class='bloco ficha'><div class='rotulo'>" + SUPC[id] + " · " + esc(c.nome) + " · " + esc(c.verbo) + " " + conf(c.confianca) + "</div><h3>" + esc(maiuscula(c.oque)) + ".</h3>" +
+        (gl ? "<p>" + esc(gl.explicacao) + ".</p>" : "") +
+        "<dl>" + (c.etapas || []).map(function (e) { var et = ETAPA[e]; return et ? "<dt>" + e + " · " + esc(et.curto) + "</dt><dd>" + esc(et.oque) + "</dd>" : ""; }).join("") + "</dl></div>";
+      html += "<div class='bloco'>" + D.achados.filter(function (a) { return a.camada !== "fecho" && (a.c || []).indexOf(id) >= 0; }).map(function (a) {
+        return "<div class='achado'><b>" + esc(a.titulo) + "</b><span>" + esc(maiuscula(a.texto)) + ".</span></div>";
+      }).join("") + "</div>";
+    } else if (b) {
       html += "<div class='bloco ficha'><div class='rotulo'>Base pública " + conf(b.confianca) + "</div><h3>" + esc(b.nome) + "</h3><p>" + esc(maiuscula(b.cobre)) + ".</p>" +
         "<dl><dt>Domínio</dt><dd>" + esc(b.dominio) + "</dd><dt>Como se liga às outras</dt><dd>pela pessoa: nome, nome da mãe, data de nascimento, município e sexo; não há um número comum entre as bases</dd></dl></div>";
     } else {
@@ -425,7 +462,7 @@
 
   /* ---------- início: estado vindo da URL ---------- */
   var q = new URLSearchParams(location.search);
-  tempo(+q.get("tempo") || 1);
+  tempo(+q.get("tempo") || 2);
   leituraSistema(null);
   leituraEcossistema(null, null);
   selecionaServico(null);

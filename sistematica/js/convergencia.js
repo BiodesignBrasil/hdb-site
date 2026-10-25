@@ -134,6 +134,7 @@ window.HDBC = (function () {
     if (!el.getAttribute("title")) el.setAttribute("title", resumo());
   }
   function etiquetas(lista) {
+    garanteCss();
     if (!lista || !lista.length) return "";
     return "<span class='cv-tags'>" + lista.map(function (s) {
       var c = porSigla(s);
@@ -141,6 +142,7 @@ window.HDBC = (function () {
     }).join("") + "</span>";
   }
   function sigla(s) {
+    garanteCss();
     var c = porSigla(s);
     return c ? "<span class='cv-sigla cv-t-" + s + "' title='" + esc(c.nome + ": " + c.oque) + "'>" + SUP[s] + "</span>" : "";
   }

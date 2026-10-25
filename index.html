@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Health Data Brasil · síntese do projeto</title>
-<meta name="description" content="A síntese do projeto Health Data Brasil numa roda de seis movimentos, com os três Cs da convergência no centro (cruzamento, coorte, comprovação): de onde partimos, o que olhamos, o que encontramos, o que fecha e em que condições, o que falta e quem resolve, o que mudou.">
+<meta name="description" content="A síntese do projeto Health Data Brasil como uma roda: a convergência em três Cs (cruzamento, coorte, comprovação), com um painel curto por passo e a volta do reuso como arco de retorno; os seis movimentos do percurso, para aprofundar.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Health Data Brasil · síntese do projeto">
 <meta property="og:description" content="O dado é de todos. A coorte, alguém paga para ter. A síntese navegável do projeto, para quem decide dentro da instituição.">
 <meta property="og:url" content="https://biodesignbrasil.github.io/hdb-site/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -24,43 +24,45 @@
 
 <main class="palco" id="palco">
 
-  <!-- ============ A RODA · os seis movimentos num aro que gira; os três Cs no centro ============ -->
-  <section class="roda-caixa" aria-label="a roda dos seis movimentos">
-    <div class="roda" id="roda">
-      <svg id="roda-svg" viewBox="0 0 800 800" role="group" aria-label="Os seis movimentos do percurso, numa roda. Gire com a rolagem, as setas ou o arrasto."></svg>
-      <div class="roda-centro" aria-live="polite">
-        <div class="cv-centro-anel" id="cv-centro"></div>
-      </div>
-    </div>
-    <p class="roda-dica" id="roda-dica"><span class="cv-centro-leg" id="cv-centro-leg"></span><span class="como">gire: rolagem, setas ← →, arrasto ou clique</span></p>
+  <!-- ============ A RODA · a convergência: três Cs e a volta; no centro, o percurso ============ -->
+  <section class="roda-caixa" aria-label="a convergência: cruzamento, coorte, comprovação; a volta do reuso é o arco de retorno">
+    <div class="roda" id="roda"></div>
+    <p class="roda-dica"><button type="button" class="percurso-link" data-folha="0">o percurso completo, em seis movimentos →</button></p>
   </section>
 
-  <!-- ============ O PAINEL · o movimento ativo, um de cada vez ============ -->
+  <!-- ============ O PAINEL · um passo da convergência de cada vez, curto ============ -->
   <section class="painel" id="painel" aria-live="polite">
+    <article id="p-inicio" class="pc on"></article>
+    <article id="p-c1" class="pc" data-c="C1"></article>
+    <article id="p-c2" class="pc" data-c="C2"></article>
+    <article id="p-c3" class="pc" data-c="C3"></article>
+  </section>
+</main>
+
+<!-- ============ A FOLHA · o percurso em seis movimentos, para aprofundar ============ -->
+<aside class="folha" id="folha" hidden aria-label="o percurso, em seis movimentos">
+  <div class="folha-barra">
+    <p class="rotulo"><b id="folha-num">01</b><span id="folha-nome"></span><span class="folha-sub">· o percurso, para aprofundar</span></p>
+    <button type="button" class="fechar" id="folha-fechar" aria-label="fechar o percurso">×</button>
+  </div>
+  <div class="folha-corpo" id="folha-corpo">
 
     <article id="partida" class="mov" data-n="1">
-      <p class="rotulo"><b>01</b>De onde partimos</p>
       <h2>Uma pergunta, e as palavras para ler o resto</h2>
       <p class="lead" id="lead"></p>
       <div class="numeros" id="numeros" aria-label="o projeto em números"></div>
-      <div class="duas">
-        <div>
-          <p class="pergunta-mov" id="pergunta"></p>
-          <p class="texto" id="por-que-agora"></p>
-        </div>
-        <div class="glossario" id="glossario"></div>
-      </div>
+      <p class="pergunta-mov" id="pergunta"></p>
+      <p class="texto" id="por-que-agora"></p>
+      <div class="glossario" id="glossario"></div>
     </article>
 
     <article id="camadas" class="mov" data-n="2">
-      <p class="rotulo"><b>02</b>O que olhamos</p>
       <h2>Quatro camadas, da mais larga à mais íntima</h2>
       <p class="sub">A Sistemática lê a mesma base em quatro escalas, uma clicando na outra. Cada camada responde a uma pergunta e aponta para a seguinte.</p>
       <div class="cartoes" id="cartoes-camadas"></div>
     </article>
 
     <article id="achados" class="mov" data-n="3">
-      <p class="rotulo"><b>03</b>O que encontramos</p>
       <h2>Os achados, camada a camada</h2>
       <p class="sub">Cada frase diz de onde veio e que C da convergência toca. Clique na etiqueta da camada para abrir a Sistemática onde o achado aparece.</p>
       <div class="achados" id="lista-achados"></div>
@@ -68,41 +70,36 @@
     </article>
 
     <article id="fecha" class="mov" data-n="4">
-      <p class="rotulo"><b>04</b>O que fecha, e em que condições</p>
       <h2 id="resposta-titulo"></h2>
-      <div class="duas">
-        <div>
-          <p class="texto grande" id="resposta"></p>
-          <p class="texto" id="porque"></p>
-          <div class="contagem-dupla" id="contagem-dupla"></div>
-          <a class="btn navy" href="caso-economico/">Ver a conta, em reais →</a>
-        </div>
-        <div class="condicoes" id="condicoes"></div>
-      </div>
+      <p class="texto grande" id="resposta"></p>
+      <p class="texto" id="porque"></p>
+      <div class="contagem-dupla" id="contagem-dupla"></div>
+      <a class="btn navy" href="caso-economico/">Ver a conta, em reais →</a>
+      <div class="condicoes" id="condicoes"></div>
       <p class="teste" id="teste-de-valor"></p>
     </article>
 
     <article id="falta" class="mov" data-n="5">
-      <p class="rotulo"><b>05</b>O que falta, e quem resolve</p>
       <h2>Três portões antes do spin-off</h2>
       <p class="sub">O que ainda não se sabe, agrupado pela decisão que trava. Cada item tem quem resolve e até quando; onde não há prazo, está dito.</p>
       <div class="portoes" id="portoes"></div>
     </article>
 
     <article id="mudou" class="mov" data-n="6">
-      <p class="rotulo"><b>06</b>O que mudou</p>
       <h2>Esta síntese é viva; isto é o que já mudou nela</h2>
       <ol class="publicacoes" id="publicacoes"></ol>
-      <p class="sub">Para citar: use o número da publicação e a data do carimbo. Cada publicação tem uma marca própria no repositório, e a anterior continua consultável. Depois daqui, a roda volta ao início: a leitura é um ciclo, como o que ela descreve.</p>
+      <p class="sub">Para citar: use o número da publicação e a data do carimbo. Cada publicação tem uma marca própria no repositório, e a anterior continua consultável.</p>
     </article>
 
-  </section>
-</main>
+  </div>
+</aside>
+<div class="veu" id="veu" hidden></div>
 
 <footer><span id="carimbo"></span><span>Biodesign Brasil · 2026</span></footer>
 
 <script src="sistematica/js/data.js"></script>
 <script src="sistematica/js/convergencia.js"></script>
+<script src="sistematica/js/roda.js"></script>
 <script src="js/script.js"></script>
 </body>
 </html>

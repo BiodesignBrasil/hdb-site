@@ -14,7 +14,7 @@
   --risco:#b91c1c; --risco-claro:#f8dedb; --ok:#0f766e; --ok-claro:#d9efec; --ambar:#e0a526; --ambar-claro:#fbf0d5;
   --filete:#d9dee6; --filete-forte:#b4bfcd; --cinza:#5b6b7f; --cinza-escuro:#3b4a5c; --texto:#16233a;
   --font:"Montserrat","Segoe UI",system-ui,sans-serif;
-  --serif:"Montserrat","Segoe UI",system-ui,sans-serif;
+  --serif:"Fraunces",Georgia,"Times New Roman",serif;
   --header:68px; --nav:44px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -23,9 +23,9 @@ body{font-family:var(--font);background:var(--papel);color:var(--texto);line-hei
 button{font:inherit;color:inherit}
 
 /* ---- cabeçalho ---- */
-header{background:linear-gradient(120deg,var(--brand-dark) 0%,var(--tinta) 100%);color:#fff;padding:0 24px;display:flex;align-items:center;
-  height:var(--header);gap:22px;border-bottom:3px solid var(--ceu);position:relative;z-index:10}
-.wordmark{display:flex;flex-direction:column;text-decoration:none;color:#fff;flex-shrink:0;line-height:1.1}
+header{background:var(--papel);color:var(--tinta);padding:0 24px;display:flex;align-items:center;
+  height:var(--header);gap:22px;border-bottom:1px solid var(--filete-forte);position:relative;z-index:10}
+.wordmark{display:flex;flex-direction:column;text-decoration:none;color:var(--tinta);flex-shrink:0;line-height:1.1}
 .wm-nome{font-weight:800;font-size:17px;letter-spacing:-.01em}
 .wm-nome span{color:var(--ceu)}
 .wm-sub{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.7;margin-top:3px}
@@ -33,14 +33,14 @@ header{background:linear-gradient(120deg,var(--brand-dark) 0%,var(--tinta) 100%)
 /* o checkpoint da convergência (os três Cs), acendendo por camada */
 .cv-header{flex-shrink:0}
 .cv-header svg{height:46px;width:auto;display:block}
-header h1{font-family:var(--font);font-size:17px;font-weight:600;letter-spacing:-.01em;line-height:1.25;opacity:.92;border-left:1px solid rgba(255,255,255,.25);padding-left:22px}
+header h1{font-family:var(--serif);font-size:19px;font-weight:500;letter-spacing:-.005em;line-height:1.25;border-left:1px solid var(--filete-forte);padding-left:22px}
 
 /* ---- a trilha entre as três peças: início · sistemática · a conta ---- */
 nav.trilha{height:auto;border:0;background:none;padding:0;display:flex;align-items:center;gap:6px;font-size:12.5px;white-space:nowrap}
-.trilha a,.trilha .aqui{padding:5px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.85);text-decoration:none}
-.trilha a:hover{background:rgba(255,255,255,.1)}
-.trilha .aqui{background:#fff;color:var(--tinta);border-color:#fff;font-weight:600}
-.trilha .conta{border-color:var(--ouro);color:#F2CB6E}
+.trilha a,.trilha .aqui{padding:4px 0;margin-left:16px;border-bottom:1px solid transparent;color:var(--cinza-escuro);text-decoration:none}
+.trilha a:hover{color:var(--tinta);border-bottom-color:var(--filete-forte)}
+.trilha .aqui{color:var(--tinta);font-weight:600;border-bottom-color:var(--tinta)}
+.trilha .conta{color:var(--ouro)}
 
 /* ---- as quatro camadas, como capítulos ---- */
 nav{height:var(--nav);border-bottom:1px solid var(--filete);display:flex;align-items:stretch;padding:0 24px;gap:28px;background:var(--papel)}
@@ -165,6 +165,24 @@ svg text{font-family:var(--font)}
 .faixa-rot{font-size:10px;font-weight:700;letter-spacing:.18em;fill:var(--cinza-escuro)}
 
 /* ---- 02 · sistema: das bases públicas à coorte ---- */
+/* as três bandas do sistema dos Cs (clicáveis); as caixas dentro deixam o clique passar */
+.banda rect{fill:#fff;stroke:var(--filete-forte);stroke-width:1.2;transition:stroke-width .15s,fill .15s}
+.banda-C1 rect{stroke:var(--ceu)}.banda-C2 rect{stroke:var(--ok)}.banda-C3 rect{stroke:var(--ouro)}
+.banda:hover rect,.banda.on rect{stroke-width:2.4}
+.banda.on rect{fill:#f3f6fa}
+.banda-rot{font-size:11px;font-weight:800;letter-spacing:.14em}
+.banda-C1 .banda-rot{fill:var(--ceu-ink,#0369a1)}.banda-C2 .banda-rot{fill:var(--ok)}.banda-C3 .banda-rot{fill:var(--ouro)}
+.banda-verbo{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;fill:var(--cinza)}
+.chip-e rect{fill:var(--papel);stroke:var(--filete)}
+.chip-e text{font-size:8.5px;font-weight:700;fill:var(--cinza-escuro)}
+#sis .no{pointer-events:none}
+.no-saida.a-construir rect{stroke:var(--risco);stroke-dasharray:5 4}
+.no-saida.a-construir text{fill:var(--risco)}
+.fio-c{fill:none;stroke:var(--tinta);stroke-width:2}
+.ponta-c{fill:var(--tinta)}
+.fio-volta{fill:none;stroke:var(--risco);stroke-width:1.8;stroke-dasharray:5 4}
+.ponta-volta{fill:var(--risco)}
+.volta-rot{font-size:10px;font-weight:700;fill:var(--risco);letter-spacing:.08em}
 .base rect{fill:#fff;stroke:var(--tinta);stroke-width:1.1}
 .base.c-provavel rect{stroke-dasharray:5 4}
 .base text.nome{font-size:12px;font-weight:700;fill:var(--tinta)}
@@ -240,15 +258,17 @@ svg text{font-family:var(--font)}
 /* ---- telas estreitas: empilha e rola ---- */
 @media (max-width:1020px){
   body{overflow:auto}
-  header{height:auto;padding:12px 16px;flex-wrap:wrap}
-  header h1{font-size:18px}
+  header{height:auto;padding:12px 16px;flex-wrap:wrap;gap:10px 16px}
+  .title-block{flex:1 1 100%;order:3}
+  header h1{font-size:16px;border-left:0;padding-left:0}
+  .cv-header{margin-left:auto}
   nav{padding:0 16px;gap:18px;overflow-x:auto;height:auto}
   .f-camada{padding:10px 0 8px}
   .f-camada .c{display:none}
   .palco{padding:12px 16px}
   .vista.on{display:block;height:auto}
-  .cena{height:auto}
-  .cena svg{height:auto}
+  .cena{height:auto;overflow-x:auto}
+  .cena svg{height:auto;min-width:760px}
   .tempos{padding-left:0;flex-wrap:wrap}
   .leitura{border-left:none;padding-left:0;border-top:1px solid var(--filete);padding-top:14px;margin-top:14px}
   .leitura,.painel{height:auto;overflow:visible}
