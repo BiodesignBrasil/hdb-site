@@ -937,6 +937,12 @@ window.HDB = {
    "titulo": "A convergência como roda",
    "o_que_mudou": "Os três Cs viraram a própria roda: C¹ Cruzamento, C² Coorte e C³ Comprovação são as paradas, com um painel curto cada, e a volta do reuso é o arco de retorno, tracejado enquanto estiver por construir. No centro da roda, o mantra dos três verbos (cruzar, construir, comprovar) e um número por passo. Os seis movimentos viraram coadjuvantes: uma folha, aberta pelos botões de aprofundar e por um link sob a roda. Na Sistemática, a cena das bases à coorte virou o sistema dos três Cs: três bandas clicáveis, cruzar, construir, comprovar, com a volta do reuso tracejada. As três peças trocaram a pele de landing pela de relatório: papel, serifa, filetes, sem gradiente nem cartão",
    "versao": 6
+  },
+  {
+   "data": "2026-10-25",
+   "titulo": "A leitura e o recorte",
+   "o_que_mudou": "A conta abre por uma capa de leitura, a conta em uma página, antes dos controles. As camadas 01, 03 e 04 da Sistemática ganharam a faixa dos três Cs sobre as etapas, e cada relação de dinheiro diz em que C passa. O relatório orgânico passou a emitir o recorte: o estado público, datado, em HTML e PDF, a partir dos mesmos dados",
+   "versao": 7
   }
  ],
  "sintese": {
@@ -1187,8 +1193,8 @@ window.HDB = {
   }
  ],
  "versao": {
-  "numero": 6,
+  "numero": 7,
   "data": "2026-10-25",
-  "titulo": "A convergência como roda"
+  "titulo": "A leitura e o recorte"
  }
 };

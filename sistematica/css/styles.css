@@ -214,7 +214,10 @@ svg text{font-family:var(--font)}
 /* ---- 03 · serviços: matriz de cobertura ---- */
 .mz{display:grid;grid-template-columns:minmax(220px,1.5fr) repeat(6,minmax(60px,1fr));align-items:stretch;font-size:12.5px}
 .mz-zona{font-size:10px;font-weight:700;letter-spacing:.18em;color:var(--cinza);padding:0 0 4px;border-bottom:2px solid var(--primary);text-align:center}
-.mz-zona.depois{border-bottom-color:var(--ouro);color:var(--ouro)}
+.mz-zona.depois{border-bottom:2px dashed var(--risco);color:var(--risco)}
+.mz-zona.z-C1,.bp .bp-zona.z-C1{color:var(--ceu-ink,#0369a1);border-bottom-color:var(--ceu)}
+.mz-zona.z-C2,.bp .bp-zona.z-C2{color:var(--ok);border-bottom-color:var(--ok)}
+.mz-zona.z-C3,.bp .bp-zona.z-C3{color:var(--ouro);border-bottom-color:var(--ouro)}
 .mz-cab{padding:6px 4px 8px;text-align:center;border-bottom:1px solid var(--filete-forte)}
 .mz-cab small{display:block;font-size:9.5px;font-weight:700;letter-spacing:.1em;color:var(--cinza)}
 .mz-cab b{font-size:12px;color:var(--tinta);font-weight:600}
@@ -239,7 +242,7 @@ svg text{font-family:var(--font)}
 .bp{display:grid;grid-template-columns:100px repeat(6,minmax(0,1fr));font-size:11.5px;color:var(--cinza-escuro)}
 .bp>div{padding:6px 7px;border-bottom:1px solid var(--filete);line-height:1.35}
 .bp .bp-zona{font-size:10px;font-weight:700;letter-spacing:.18em;color:var(--cinza);text-align:center;border-bottom:2px solid var(--primary);padding:0 0 4px}
-.bp .bp-zona.depois{color:var(--ouro);border-bottom-color:var(--ouro)}
+.bp .bp-zona.depois{color:var(--risco);border-bottom:2px dashed var(--risco)}
 .bp .bp-zona.vazio{border-bottom:none}
 .bp-lin{font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cinza)}
 .bp-cab{text-align:center}

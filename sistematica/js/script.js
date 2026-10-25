@@ -19,6 +19,13 @@
   var ETAPA = {}; D.etapas.forEach(function (e) { ETAPA[e.id] = e; });
   var CONT = {}; D.contagens.forEach(function (c) { CONT[c.id] = c; });
   var COLS = D.etapas.map(function (e) { return e.id; });
+  /* os três Cs por etapa (de convergencia.csv): a mesma gramática da entrada, lida nas quatro camadas */
+  var CSUP = { C1: "C¹", C2: "C²", C3: "C³", volta: "↻" }, C_DE_ETAPA = {};
+  (D.convergencia || []).forEach(function (c) { (c.etapas || []).forEach(function (x) { (C_DE_ETAPA[x] = C_DE_ETAPA[x] || []).push(c.sigla); }); });
+  function csDeEtapas(etapas) { var v = {}; (etapas || []).forEach(function (x) { (C_DE_ETAPA[x] || []).forEach(function (s) { v[s] = true; }); }); return Object.keys(v); }
+  function faixaCs(cls) { /* a faixa dos Cs sobre as colunas E1–E6: C¹ cruzar (E1 E2) · C¹→C² construir (E3) · C³ comprovar (E4 E5) · ↻ reuso (E6) */
+    return "<div class='" + cls + " z-C1' style='grid-column:span 2'>C¹ CRUZAR</div><div class='" + cls + " z-C2'>C¹→C² CONSTRUIR</div><div class='" + cls + " z-C3' style='grid-column:span 2'>C³ COMPROVAR</div><div class='" + cls + " depois'>↻ REUSO</div>";
+  }
   var TINTA = "#0C3A6F", OURO = "#A8730E", RISCO = "#B3261E", CINZA = "#5B6B7F";
 
   /* ---------- utilidades ---------- */
@@ -191,7 +198,7 @@
       var cor = ENQ[f.enquadramento].cor;
       var p = el("path", { d: "M" + d.join(",") + " C" + c1.join(",") + " " + c2.join(",") + " " + m.join(","), "class": "seta t-" + f.tipo, stroke: cor }, camadaSetas);
       el("circle", { cx: m[0], cy: m[1], r: 3.2, fill: cor, "class": "seta-ponta" }, camadaSetas);
-      var r = texto(camadaSetas, (d[0] + m[0]) / 2, (d[1] + m[1]) / 2 - 6, f.oque, "rot-seta", "middle"); r.setAttribute("fill", cor);
+      var r = texto(camadaSetas, (d[0] + m[0]) / 2, (d[1] + m[1]) / 2 - 6, f.oque + " · " + csDeEtapas(f.etapas).map(function (s) { return CSUP[s]; }).join(" "), "rot-seta", "middle"); r.setAttribute("fill", cor);
       setas.push({ f: f, p: p, r: r });
     });
     Object.keys(POS).forEach(function (id) {
@@ -225,7 +232,7 @@
   }
   function itemFluxo(f, ativo) {
     return "<li class='clicavel t-" + f.tipo + (ativo ? " on" : "") + "' tabindex='0' data-fluxo='" + f.id + "' style='border-left-color:" + ENQ[f.enquadramento].cor + "'>" +
-      "<b>" + esc(ATOR[f.de].curto) + " → " + esc(ATOR[f.para].curto) + "</b>: " + esc(f.oque) + "</li>";
+      "<b>" + esc(ATOR[f.de].curto) + " → " + esc(ATOR[f.para].curto) + "</b>: " + esc(f.oque) + (window.HDBC ? HDBC.etiquetas(csDeEtapas(f.etapas)) : "") + "</li>";
   }
   function leituraEcossistema(ator, fluxo) {
     var html = "";
@@ -238,7 +245,7 @@
     } else {
       html += "<div class='bloco'>" + achadosHtml("ecossistema", true) + "</div>";
     }
-    html += "<div class='bloco'><div class='rotulo'>Como ler as setas</div><p style='margin-bottom:8px'>A cor diz <b>quem paga</b>. Linha cheia: pagamento · tracejada: <i>a confirmar</i> · pontilhada: ganho sem pagamento.</p>" +
+    html += "<div class='bloco'><div class='rotulo'>Como ler as setas</div><p style='margin-bottom:8px'>A cor diz <b>quem paga</b>. Linha cheia: pagamento · tracejada: <i>a confirmar</i> · pontilhada: ganho sem pagamento. A etiqueta diz <b>em que C</b> o dinheiro passa.</p>" +
       Object.keys(ENQ).map(function (k) { return tagEnq(k); }).join(" ") + "</div>";
     if (!ator) {
       html += "<div class='bloco'><div class='rotulo'>Todas as relações (clique para ver)</div><ul class='lista'>" +
@@ -387,7 +394,7 @@
      Linhas: o que se vende. Colunas: as etapas. A cor diz quem paga. Reuso é "depois": lá está o que não existe. */
   var matriz = document.getElementById("matriz"), leituraServ = document.getElementById("leitura-serv");
   (function montaMatriz() {
-    var h = "<div class='mz'><div></div><div class='mz-zona' style='grid-column:span 5'>O PACOTE, HOJE</div><div class='mz-zona depois'>DEPOIS</div>";
+    var h = "<div class='mz'><div></div>" + faixaCs("mz-zona");
     h += "<div class='mz-cab'></div>" + COLS.map(function (c) { return "<div class='mz-cab'><small>" + c + "</small><b>" + esc(ETAPA[c].curto) + "</b></div>"; }).join("");
     D.servicos.forEach(function (s) {
       var e = ENQ[s.enquadramento];
@@ -430,7 +437,7 @@
     function linha(rotulo, cel) {
       return "<div class='bp-lin'>" + rotulo + "</div>" + COLS.map(function (c) { return cel(J[c], ETAPA[c]).replace("<div", c === "E6" ? "<div class='depois'" : "<div").replace("class='depois' class='", "class='depois "); }).join("");
     }
-    var h = "<div class='bp'><div class='bp-zona vazio'></div><div class='bp-zona' style='grid-column:span 5'>O PACOTE, HOJE</div><div class='bp-zona depois'>DEPOIS</div>";
+    var h = "<div class='bp'><div class='bp-zona vazio'></div>" + faixaCs("bp-zona");
     h += "<div class='bp-lin'></div>" + COLS.map(function (c) { return "<div class='bp-cab" + (c === "E6" ? " depois" : "") + "'><small>" + c + "</small><b>" + esc(ETAPA[c].curto) + "</b><small>" + esc(J[c].quando) + "</small></div>"; }).join("");
     h += linha("O cliente vive", function (j) { return "<div class='bp-palco" + (j.fonte === "inferencia" ? " inf" : "") + "'>" + esc(maiuscula(j.vive)) + "</div>"; });
     h += "<div class='bp-vis'><span>LINHA DE VISIBILIDADE</span></div>";
