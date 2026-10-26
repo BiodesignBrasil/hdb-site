@@ -4,11 +4,15 @@
      sistema     — das bases públicas à coorte: hoje à mão, e com o HDB (cruzamento pela mesma pessoa)
      serviços    — o que se oferece em cada etapa, e quem paga cada parte
      jornadas    — o que o cliente vive, e o que roda por trás
+     direção     — o que a instituição precisa decidir, bloco a bloco do modelo de negócio (molde: a Direção da Longevidade)
    Dados: js/data.js, GERADO de 08_sintese/dados/*.csv (não editar à mão).
    Sem valores em reais nesta peça: eles ficam no vault e no painel do caso econômico.
    Arquitetura herdada da Sistemática Hernia3D (encaixa/dimensiona, estado na URL).
    25/10/2026: a cena "com o HDB" da camada 02 virou o sistema dos três Cs (três bandas clicáveis, ficha por C na leitura);
-   os achados ganharam as etiquetas dos Cs. As abas continuam abas (um dial foi testado e retirado a pedido do usuário). */
+   os achados ganharam as etiquetas dos Cs. As abas continuam abas (um dial foi testado e retirado a pedido do usuário).
+   26/10/2026 (método Goh): a quinta camada, Direção, fecha o fio; a conta virou anexo, aberta só por Custos e Receitas.
+   Cada camada abre com uma manchete (sintese.csv, manchete_*); quem não ouvimos, as passagens com dono, o laço do reuso
+   e as esperas vêm de nao_ouvidos · passagens · laco · jornada.espera. */
 
 (function () {
   "use strict";
@@ -71,8 +75,8 @@
     if (window.innerWidth <= EMPILHA) { w.style.zoom = "1"; return; }
     if (!cont.clientHeight) return;
     w.style.zoom = "1";
-    var alvo = cont.clientHeight - 6;
-    for (var z = 1; z > 0.6 && w.getBoundingClientRect().height > alvo;) {
+    var alvo = cont.clientHeight - 6, piso = +(cont.getAttribute("data-piso") || 0.6); /* a Direção desce mais (data-piso) */
+    for (var z = 1; z > piso && w.getBoundingClientRect().height > alvo;) {
       z -= 0.03;
       w.style.zoom = String(z);
     }
@@ -94,22 +98,26 @@
   window.addEventListener("resize", function () { clearTimeout(espera); espera = setTimeout(reencaixa, 150); });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(reencaixa);
   window.addEventListener("load", reencaixa);
+  document.addEventListener("toggle", reencaixa, true); /* um <details> aberto muda a altura */
 
   /* ---------- as quatro camadas, como capítulos ---------- */
   var VISTAS = [
     { id: "ecossistema", n: "01", rot: "Quem paga, quem ganha", cam: "ecossistema", perg: "Quem paga o spin-off, e quem colhe o ganho da evidência?" },
     { id: "sistema", n: "02", rot: "Das bases à coorte", cam: "sistema", perg: "Como o dado público, que é de todos, vira uma coorte que alguém paga para ter?" },
     { id: "servicos", n: "03", rot: "O que se oferece", cam: "serviços", perg: "O que o spin-off vende em cada etapa, e quem paga cada parte?" },
-    { id: "jornadas", n: "04", rot: "O que se vive", cam: "jornadas", perg: "O que o cliente vive, e o que roda por trás?" }
+    { id: "jornadas", n: "04", rot: "O que se vive", cam: "jornadas", perg: "O que o cliente vive, e o que roda por trás?" },
+    { id: "direcao", n: "05", rot: "O que decidir", cam: "direção", perg: "O que a instituição precisa decidir para o spin-off ficar de pé?" }
   ];
   /* o checkpoint da convergência no cabeçalho: que Cs cada camada acende (C1 cruzamento · C2 coorte · C3 comprovação · volta = reuso) */
-  var LIT_VISTA = { ecossistema: ["C3", "volta"], sistema: ["C1", "C2", "C3"], servicos: ["C3", "volta"], jornadas: ["C1", "C2", "C3", "volta"] };
+  var LIT_VISTA = { ecossistema: ["C3", "volta"], sistema: ["C1", "C2", "C3"], servicos: ["C3", "volta"], jornadas: ["C1", "C2", "C3", "volta"], direcao: ["C1", "C2", "C3", "volta"] };
   var PROXIMA = {
     ecossistema: ["sistema", "e como o dado público vira a coorte que a farmacêutica paga?"],
     sistema: ["servicos", "o que, exatamente, se vende?"],
     servicos: ["jornadas", "como o cliente vive isso, etapa por etapa?"],
-    jornadas: ["conta", "a conta: quantos pacotes por ano o spin-off precisa vender?"]
+    jornadas: ["direcao", "o que a instituição precisa decidir?"],
+    direcao: ["roda", "de volta à convergência: cruzar, construir, comprovar"]
   };
+  function manchete(id) { var m = (D.sintese || {})["manchete_" + id]; return m ? m.texto : ""; }
   var botoes = {}, vistaAtual = null;
   var nav = document.getElementById("camadas");
   VISTAS.forEach(function (v) {
@@ -128,6 +136,7 @@
       botoes[x.id].setAttribute("aria-selected", x.id === v.id ? "true" : "false");
     });
     document.getElementById("pergunta").textContent = v.perg;
+    var mEl = document.getElementById("manchete"); if (mEl) mEl.textContent = manchete(v.id) ? manchete(v.id) + "." : "";
     if (window.HDBC) {
       var cvh = document.getElementById("cv-header");
       if (cvh) { HDBC.desenha(cvh, { lit: LIT_VISTA[v.id], escuro: false }); cvh.setAttribute("title", "Nesta camada: " + HDBC.nomes(LIT_VISTA[v.id])); }
@@ -136,21 +145,23 @@
     estadoNaUrl();
     reencaixa();
   }
-  var selecao = { ecossistema: null, sistema: null, servicos: null, jornadas: null };
+  var selecao = { ecossistema: null, sistema: null, servicos: null, jornadas: null, direcao: null };
   function seleciona(vista, item) {
     if (vista === "ecossistema") selecionaEco(item);
     else if (vista === "sistema") selecionaSis(item);
     else if (vista === "servicos") selecionaServico(item);
+    else if (vista === "direcao") mostraBloco(item);
   }
   function estadoNaUrl() {
     var q = "?vista=" + vistaAtual + (selecao[vistaAtual] ? "&item=" + encodeURIComponent(selecao[vistaAtual]) : "") +
       (vistaAtual === "sistema" && tempoAtual !== 2 ? "&tempo=" + tempoAtual : "");
     try { history.replaceState(null, "", q); } catch (e) { /* file:// em alguns navegadores */ }
   }
-  var CONTA = "../caso-economico/"; /* o publicador reescreve para ../caso-economico/ */
+  /* a conta é anexo : só os blocos Custos e Receitas da Direção levam a ela. O publicador reescreve para ../caso-economico/ */
+  var CONTA = "../caso-economico/", RODA = "../#c1";
   function elo(vista) {
     var p = PROXIMA[vista];
-    if (p[0] === "conta") return "<a class='l-elo' href='" + CONTA + "'>→ " + p[1] + "</a>";
+    if (p[0] === "roda") return "<a class='l-elo' href='" + RODA + "'>↻ " + p[1] + "</a>";
     return "<button class='l-elo' data-vista='" + p[0] + "'>→ " + p[1] + "</button>";
   }
   function ligaElos(raiz) {
@@ -248,8 +259,9 @@
     html += "<div class='bloco'><div class='rotulo'>Como ler as setas</div><p style='margin-bottom:8px'>A cor diz <b>quem paga</b>. Linha cheia: pagamento · tracejada: <i>a confirmar</i> · pontilhada: ganho sem pagamento. A etiqueta diz <b>em que C</b> o dinheiro passa.</p>" +
       Object.keys(ENQ).map(function (k) { return tagEnq(k); }).join(" ") + "</div>";
     if (!ator) {
-      html += "<div class='bloco'><div class='rotulo'>Todas as relações (clique para ver)</div><ul class='lista'>" +
-        D.fluxos.map(function (f) { return itemFluxo(f, f.id === fluxo); }).join("") + "</ul></div>";
+      /* recolhida : aberta, a lista passava da altura da tela já em HEAD; abre no clique, como os achados do percurso */
+      html += "<details class='bloco relacoes'" + (fluxo ? " open" : "") + "><summary class='rotulo'>Todas as relações de dinheiro · " + D.fluxos.length + "</summary><ul class='lista'>" +
+        D.fluxos.map(function (f) { return itemFluxo(f, f.id === fluxo); }).join("") + "</ul></details>";
     }
     html += elo("ecossistema");
     escreve(leituraEco, html);
@@ -356,10 +368,20 @@
       el("path", { d: "M808,272 L808,300 L641,300 L641,270", "class": "fio-volta" }, sis);
       el("circle", { cx: 641, cy: 268, r: 3.2, "class": "ponta-volta" }, sis);
       texto(sis, 724, 313, "↻ reuso · a construir", "volta-rot", "middle");
+      /* a passagem da volta (passagens.csv): quem leva o cliente da entrega à próxima pergunta; as outras duas estão na ficha do C */
+      var pv = (D.passagens || []).filter(function (p) { return p.id === "c3-c1"; })[0];
+      if (pv) texto(sis, 724, 326, "quem leva: " + pv.quem, "pas-quem c-" + pv.confianca, "middle");
       texto(sis, 362, 384, "Identificadores pessoais só no cruzamento; a coorte sai sem eles (ética e proteção de dados).", "nota-svg");
       texto(sis, 362, 398, "O cruzamento ainda não foi testado lado a lado com a Techtrials. Clique numa banda para ler o C.", "nota-svg");
     }
     texto(sis, 20, 425, "clique numa base para ver o que ela cobre · alterne \"hoje, à mão\" e \"com o HDB\" para ver o que muda", "nota-svg");
+  }
+  /* a passagem que sai deste C (passagens.csv · Goh, "as passagens têm dono") */
+  function passagemHtml(sig) {
+    var p = (D.passagens || []).filter(function (x) { return x.de === sig; })[0];
+    if (!p) return "";
+    return "<p class='passagem c-" + p.confianca + "'><b>" + SUPC[sig] + " → " + (p.para === "C1" && sig === "C3" ? "↻ " : "") + (SUPC[p.para] || p.para) + "</b> " + esc(p.rotulo) +
+      " · <span>quem leva: " + esc(p.quem) + "</span></p>";
   }
   function selecionaSis(id) {
     selecao.sistema = id;
@@ -372,7 +394,8 @@
       var gl = (D.glossario || []).filter(function (g) { return (g.c || []).indexOf(id) >= 0; })[0];
       html += "<div class='bloco ficha'><div class='rotulo'>" + SUPC[id] + " · " + esc(c.nome) + " · " + esc(c.verbo) + " " + conf(c.confianca) + "</div><h3>" + esc(maiuscula(c.oque)) + ".</h3>" +
         (gl ? "<p>" + esc(gl.explicacao) + ".</p>" : "") +
-        "<dl>" + (c.etapas || []).map(function (e) { var et = ETAPA[e]; return et ? "<dt>" + e + " · " + esc(et.curto) + "</dt><dd>" + esc(et.oque) + "</dd>" : ""; }).join("") + "</dl></div>";
+        "<dl>" + (c.etapas || []).map(function (e) { var et = ETAPA[e]; return et ? "<dt>" + e + " · " + esc(et.curto) + "</dt><dd>" + esc(et.oque) + "</dd>" : ""; }).join("") + "</dl>" +
+        passagemHtml(id) + "</div>";
       html += "<div class='bloco'>" + D.achados.filter(function (a) { return a.camada !== "fecho" && (a.c || []).indexOf(id) >= 0; }).map(function (a) {
         return "<div class='achado'><b>" + esc(a.titulo) + "</b><span>" + esc(maiuscula(a.texto)) + ".</span></div>";
       }).join("") + "</div>";
@@ -438,7 +461,9 @@
       return "<div class='bp-lin'>" + rotulo + "</div>" + COLS.map(function (c) { return cel(J[c], ETAPA[c]).replace("<div", c === "E6" ? "<div class='depois'" : "<div").replace("class='depois' class='", "class='depois "); }).join("");
     }
     var h = "<div class='bp'><div class='bp-zona vazio'></div>" + faixaCs("bp-zona");
-    h += "<div class='bp-lin'></div>" + COLS.map(function (c) { return "<div class='bp-cab" + (c === "E6" ? " depois" : "") + "'><small>" + c + "</small><b>" + esc(ETAPA[c].curto) + "</b><small>" + esc(J[c].quando) + "</small></div>"; }).join("");
+    /* a espera antes da etapa (jornada.espera · Goh, "a rota real"): um círculo vazado e a duração, em itálico */
+    h += "<div class='bp-lin'></div>" + COLS.map(function (c) { return "<div class='bp-cab" + (c === "E6" ? " depois" : "") + "'><small>" + c + "</small><b>" + esc(ETAPA[c].curto) + "</b><small>" + esc(J[c].quando) + "</small>" +
+      (J[c].espera ? "<span class='bp-espera'><i></i>" + esc(J[c].espera) + "</span>" : "") + "</div>"; }).join("");
     h += linha("O cliente vive", function (j) { return "<div class='bp-palco" + (j.fonte === "inferencia" ? " inf" : "") + "'>" + esc(maiuscula(j.vive)) + "</div>"; });
     h += "<div class='bp-vis'><span>LINHA DE VISIBILIDADE</span></div>";
     h += linha("Quem atua", function (j) { return "<div>" + esc(maiuscula(j.atua)) + "</div>"; });
@@ -447,16 +472,92 @@
     h += linha("Quem decide", function (j) { return "<div>" + esc(maiuscula(j.decide)) + "</div>"; });
     h += linha("Quem paga", function (j) { return "<div class='chips'>" + (j.paga.length ? j.paga.map(function (k) { return tagEnq(k, "", true); }).join("") : "—") + "</div>"; });
     h += linha("Quem ganha", function (j) { return "<div>" + (j.ganha.length ? j.ganha.map(function (a) { return esc(ATOR[a].curto); }).join(", ") : "—") + "</div>"; });
-    h += linha("Gate e risco", function (j, e) { return "<div class='bp-risco" + (e.gate ? "" : " vazio") + "'>" + (e.gate ? esc(maiuscula(e.gate)) : "—") + "</div>"; });
+    h += linha("O que pode travar", function (j, e) { return "<div class='bp-risco" + (e.gate ? "" : " vazio") + "'>" + (e.gate ? esc(maiuscula(e.gate)) : "—") + "</div>"; });
     h += "</div>";
     escreve(document.getElementById("blueprint"), h);
     var fecho = D.achados.filter(function (a) { return a.camada === "fecho"; });
     escreve(document.getElementById("leitura-jor"),
       "<div class='bloco'>" + achadosHtml("jornadas", true) + "</div>" +
-      "<div class='bloco'><div class='rotulo'>Como ler</div><p>Acima da linha: o que o cliente vê. Abaixo: quem atua, o que roda por trás, quem decide e quem paga. <i>Itálico</i>: leitura nossa, ainda não observada num cliente real.</p></div>" +
+      (window.HDBC && HDBC.laco ? "<div class='bloco'>" + HDBC.laco() + "</div>" : "") +
+      "<p class='dica'>Acima da linha, o que o cliente vê; abaixo, o que roda por trás. Círculo vazado: a espera antes da etapa. Itálico: leitura nossa, ainda não observada num cliente real.</p>" +
       "<div class='bloco fecho'><div class='rotulo'>O que falta para o spin-off ficar de pé</div><ol>" + fecho.map(function (a) {
         return "<li><b>" + esc(a.titulo) + "</b><span>" + esc(maiuscula(a.texto)) + ".</span></li>";
       }).join("") + "</ol></div>" + elo("jornadas"));
+  })();
+
+  /* ================= 05 · DIREÇÃO: o modelo de negócio, bloco a bloco  =================
+     Molde: a Direção da Longevidade. À esquerda, a conclusão e o BMC nas posições de Osterwalder (só títulos; os seis elos
+     da cadeia, do cliente à receita, levam número). À direita, um cartão por bloco, todos na mesma célula da grade, para a
+     escala não mudar entre blocos: o que precisamos da instituição · o que já temos · o que precisamos definir · o que já
+     sabemos (achados, com "ver na camada") · o que falta definir (lacunas públicas, com quem resolve e prazo). Listas inteiras,
+     nada escondido atrás do mouse. Segmentos leva os compradores como pontos e quem ainda não ouvimos; Custos e Receitas
+     são as únicas portas para a conta, que é anexo. Dados: proposta · achados · lacunas_publicas · nao_ouvidos · compradores. */
+  var direcao = document.getElementById("direcao"), mostraBloco = function () {};
+  (function montaDirecao() {
+    if (!direcao || !(D.proposta || []).length) return;
+    var GRADE = { parcerias: "1/1/3/3", atividades: "1/3/2/5", recursos: "2/3/3/5", proposta: "1/5/3/7",
+                  relacionamento: "1/7/2/9", canais: "2/7/3/9", segmentos: "1/9/3/11", custos: "3/1/4/6", receita: "3/6/4/11" };
+    var CADEIA = ["segmentos", "proposta", "atividades", "recursos", "custos", "receita"];
+    var GATE = { G1: "constituição", G2: "captação", G3: "operação" };
+    var NOME_CAM = {}; VISTAS.forEach(function (v) { NOME_CAM[v.id] = v.n + " · " + v.rot.toLowerCase(); });
+    function doBloco(lista, id) { return (lista || []).filter(function (x) { return x.componente === id; }); }
+    function rot(t, qt) { return "<p class='pc-rot'>" + t + (qt !== undefined ? "<span>" + qt + "</span>" : "") + "</p>"; }
+    var vazio = "<li class='pc-vazio'>nada registrado ainda</li>";
+    function blocoBmc(c) {
+      var n = CADEIA.indexOf(c.id) + 1;
+      return "<button type='button' class='bmc-b' data-pv='" + c.id + "' style='grid-area:" + GRADE[c.id] + ";--pv:" + c.cor + "'>" +
+        "<span class='bmc-tit'>" + (n ? "<i>" + n + "</i>" : "") + esc(c.bloco).replace("Relacionamento", "Relaciona&shy;mento") + "</span></button>";
+    }
+    function card(c) {
+      var n = CADEIA.indexOf(c.id) + 1;
+      var achs = doBloco(D.achados, c.id), sabe = achs.filter(function (a) { return a.camada !== "fecho"; }), cond = achs.filter(function (a) { return a.camada === "fecho"; });
+      var falta = doBloco(D.lacunas_publicas, c.id).map(function (l) {
+        return "<li><b>" + esc(l.titulo) + "</b><small>portão de " + GATE[l.gate] + " · quem resolve: " + esc(l.papel) + " · " +
+          (l.prazo === "a definir" ? "<em>prazo a definir</em>" : "até: " + esc(l.prazo)) + "</small></li>";
+      });
+      if (c.id === "segmentos") falta = falta.concat((D.nao_ouvidos || []).map(function (x) {
+        return "<li class='pc-ouvir'><b>Ouvir: " + esc(x.grupo.charAt(0).toLowerCase() + x.grupo.slice(1)) + "</b><small>" + esc(maiuscula(x.como_ouvir)) + ".</small></li>";
+      }));
+      /* os compradores como pontos numa linha (o circulado é o primeiro); a motivação de cada um está na Abertura do percurso */
+      var pontos = c.id === "segmentos" && (D.compradores || []).length ?
+        "<div class='pc-pontos'>" + rot("Quem pode comprar · o circulado é o primeiro") + "<ol>" + D.compradores.map(function (p) {
+          return "<li class='" + (p.foco === "sim" ? "foco" : "") + "'><i></i><b>" + esc(p.nome) + "</b></li>";
+        }).join("") + "</ol></div>" : "";
+      var conta = (c.id === "custos" || c.id === "receita") ?
+        "<p class='pc-conta'><a href='" + CONTA + "'>Para quem quer o número: a conta, em anexo →</a></p>" : "";
+      return "<header class='pc-cab'><p class='pc-eyebrow'>" + (n ? "elo " + n + " da cadeia · " : "") + esc(c.componente) + " " + conf(c.confianca) + "</p>" +
+        "<h3 class='pc-tit'>" + esc(c.bloco) + "</h3></header>" +
+        "<div class='pc-pede'>" + rot("O que precisamos da instituição") + "<p>" + esc(ponto(maiuscula(c.pedido))) + "</p></div>" +
+        "<div class='pc-dupla'><div>" + rot("O que já temos") + "<p class='pc-txt'>" + esc(ponto(maiuscula(c.temos))) + "</p></div>" +
+        "<div>" + rot("O que precisamos definir") + "<p class='pc-txt'>" + esc(ponto(maiuscula(c.preciso))) + "</p></div></div>" +
+        pontos +
+        cond.map(function (a) { return "<p class='pc-cond'><b>Condição para abrir a empresa:</b> " + esc(a.titulo) + ", " + esc(ponto(a.texto)) + "</p>"; }).join("") +
+        "<div class='pc-listas'><section>" + rot("O que já sabemos", sabe.length) + "<ul class='pc-ul'>" + (sabe.map(function (a) {
+          return "<li><b>" + esc(a.titulo) + "</b><button type='button' class='l-elo pc-ver' data-vista='" + a.camada + "'>ver na camada " + esc(NOME_CAM[a.camada] || a.camada) + " →</button></li>";
+        }).join("") || vazio) + "</ul></section>" +
+        "<section>" + rot("O que falta definir", falta.length) + "<ul class='pc-ul'>" + (falta.join("") || vazio) + "</ul></section></div>" + conta;
+    }
+    function ponto(s) { s = String(s || "").trim(); return /[.!?]$/.test(s) ? s : s + "."; }
+    var conc = (D.sintese || {}).direcao;
+    escreve(direcao,
+      "<div class='bmc-dir'><div class='bmc-col'>" +
+      "<div class='dc-conc'><div class='rotulo'>O que a síntese conclui</div><p class='dc-frase'>" + esc(conc ? ponto(conc.texto) : "") + "</p></div>" +
+      "<div class='rotulo'>O modelo de negócio · clique num bloco</div>" +
+      "<div class='bmc'>" + D.proposta.map(blocoBmc).join("") + "</div>" +
+      "<p class='dica'>Os números seguem a cadeia, do cliente à receita. Cor: verde, o cliente · azul, a proposta · tinta, a operação · ouro, o dinheiro.</p>" +
+      elo("direcao") + "</div>" +
+      "<div class='pv-cards'>" + D.proposta.map(function (c) {
+        return "<div class='pv-card' data-pv='" + c.id + "' style='--pv:" + c.cor + "'>" + card(c) + "</div>";
+      }).join("") + "</div></div>");
+    mostraBloco = function (id) {
+      if (!id || !direcao.querySelector(".pv-card[data-pv='" + id + "']")) id = "proposta";
+      selecao.direcao = id === "proposta" ? null : id;
+      Array.prototype.forEach.call(direcao.querySelectorAll(".bmc-b, .pv-card"), function (x) { x.classList.toggle("on", x.dataset.pv === id); });
+    };
+    Array.prototype.forEach.call(direcao.querySelectorAll(".bmc-b"), function (b) {
+      b.addEventListener("click", function () { mostraBloco(b.dataset.pv); estadoNaUrl(); });
+    });
+    mostraBloco("proposta");
   })();
 
   /* ---------- carimbo de versão (publicacoes.csv → data.js) ---------- */

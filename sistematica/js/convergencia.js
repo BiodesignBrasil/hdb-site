@@ -6,6 +6,7 @@
    tracejado e em vermelho enquanto o estado for "aberto". Checkpoint, não travessia: nada bloqueia a página.
    Compartilhado pela entrada (../site/), pela Sistemática e pelo painel do caso econômico.
    API: HDBC.desenha(el, opts) · HDBC.svg(opts) · HDBC.etiquetas(["C1","volta"]) · HDBC.sigla("C1") · HDBC.resumo() · HDBC.nomes(lista)
+        · HDBC.laco() (o laço do reuso, de laco.csv)
      opts.lit     siglas acesas (["C1","C3"]); ausente = todas
      opts.escuro  true sobre fundo navy (paleta clara); ausente = segue o tema da página
      opts.nomes   true escreve nome e verbo fora dos nós e o rótulo da volta (o anel grande do herói)
@@ -57,6 +58,16 @@ window.HDBC = (function () {
       "@keyframes cvTraca{to{stroke-dashoffset:0}}",
       "@keyframes cvNasce{to{opacity:1}}",
       "@media (prefers-reduced-motion:reduce){.cv-anima *{animation:none!important;opacity:1!important;stroke-dashoffset:0!important}}",
+      ".cv-laco{margin:0}",
+      ".cv-laco figcaption{font-family:\"Fraunces\",Georgia,serif;font-size:15px;color:var(--tinta,#16233a);margin:0 0 2px}",
+      ".cv-laco-svg{display:block;width:100%;max-width:300px;height:auto;overflow:visible}",
+      ".cv-laco-seta{fill:none;stroke:var(--ok,#0f766e);stroke-width:1.6}",
+      ".cv-laco-seta.cv-laco-aberta{stroke:var(--risco,#b91c1c);stroke-dasharray:5 4}",
+      ".cv-laco-no{fill:var(--papel,#fff);stroke:var(--tinta,#16233a);stroke-width:1.6}",
+      ".cv-laco-rot{font-size:11px;font-weight:600;fill:var(--tinta,#16233a)}",
+      ".cv-laco-rot.cv-laco-inf{font-style:italic;font-weight:500}",
+      ".cv-laco-centro{font-size:9.5px;font-style:italic;fill:var(--risco,#b91c1c);letter-spacing:.04em}",
+      ".cv-laco p{font-size:12px;font-style:italic;color:var(--cinza,#5b6b7f);margin:2px 0 0;line-height:1.4}",
       ".cv-tags{display:flex;flex-wrap:wrap;gap:4px;margin:3px 0 5px}",
       ".cv-tags span.cv-tag,span.cv-sigla{display:inline-block;font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:1px 7px;border-radius:999px;border:1px solid;line-height:1.7;white-space:nowrap}",
       "span.cv-sigla{margin-right:7px;padding:0 6px;vertical-align:middle;text-transform:none;letter-spacing:0;font-size:10.5px;line-height:1.6}",
@@ -146,5 +157,27 @@ window.HDBC = (function () {
     var c = porSigla(s);
     return c ? "<span class='cv-sigla cv-t-" + s + "' title='" + esc(c.nome + ": " + c.oque) + "'>" + SUP[s] + "</span>" : "";
   }
-  return { svg: svg, desenha: desenha, etiquetas: etiquetas, sigla: sigla, resumo: resumo, nomes: nomes, lista: dados, escuroAuto: escuroAuto };
+  /* o laço que faria o reuso valer (laco.csv, 26/10 · Goh, "ache o laço antes que ele te ache"): quatro nós num ciclo,
+     sem número. O trecho que fecha o ciclo sai tracejado em vermelho enquanto a volta estiver aberta; nó inferido em itálico. */
+  function laco() {
+    garanteCss();
+    var D = window.HDB || {}, L = D.laco || [], S = D.sintese || {}, v = volta(), aberta = !v || v.estado === "aberto";
+    if (L.length !== 4) return "";
+    var P = [[170, 24], [280, 76], [170, 128], [60, 76]];
+    var seg = [["A110,52 0 0 1 ", 1], ["A110,52 0 0 1 ", 2], ["A110,52 0 0 1 ", 3], ["A110,52 0 0 1 ", 0]];
+    var h = "<svg class='cv-laco-svg' viewBox='0 0 340 156' role='img' aria-label='" + esc(L.map(function (n) { return n.rotulo; }).join(" → ") + " → de volta") + "'>";
+    seg.forEach(function (s, i) {
+      var a = P[i], b = P[s[1]], fecha = i === 3;
+      h += "<path class='cv-laco-seta" + (fecha && aberta ? " cv-laco-aberta" : "") + "' d='M" + a.join(",") + " " + s[0] + b.join(",") + "'/>";
+    });
+    L.forEach(function (n, i) {
+      var p = P[i], dy = i === 0 ? -9 : 17;
+      h += "<circle class='cv-laco-no' cx='" + p[0] + "' cy='" + p[1] + "' r='5'/>" +
+        "<text class='cv-laco-rot" + (n.fonte === "inferencia" ? " cv-laco-inf" : "") + "' x='" + p[0] + "' y='" + (p[1] + dy) + "' text-anchor='middle'>" + esc(n.rotulo) + "</text>";
+    });
+    h += "<text class='cv-laco-centro' x='170' y='70' text-anchor='middle'>" + (aberta ? "a construir" : "em uso") + "</text></svg>";
+    return "<figure class='cv-laco'>" + (S.laco_titulo ? "<figcaption>" + esc(S.laco_titulo.texto) + "</figcaption>" : "") + h +
+      (S.laco_nota ? "<p>" + esc(S.laco_nota.texto) + ".</p>" : "") + "</figure>";
+  }
+  return { svg: svg, desenha: desenha, etiquetas: etiquetas, sigla: sigla, resumo: resumo, nomes: nomes, lista: dados, escuroAuto: escuroAuto, laco: laco };
 })();

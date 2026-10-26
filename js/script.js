@@ -10,12 +10,16 @@
    dos movimentos mudou; mudou a hierarquia.
    O que cada painel lê (tudo pela coluna c dos CSVs): glossario · etapas · contagens · achados · lacunas_publicas.
    Estado na URL: #inicio · #c1 #c2 #c3 (a roda; #volta abre C³) · #partida … #mudou (a folha, os ids antigos continuam valendo).
-   Sem reais nesta peça. Os caminhos ../sistematica/ e ../../09_avaliacao_economica/ valem no vault; o publicador reescreve. */
+   Sem reais nesta peça. Os caminhos ../sistematica/ e ../../09_avaliacao_economica/ valem no vault; o publicador reescreve.
+   26/10/2026 (método Goh): o painel de repouso é a capa em sete perguntas (sintese.csv, w_*), com os compradores
+   como pontos; cada arco da roda leva quem faz a passagem (passagens.csv); a volta mostra o laço do reuso (laco.csv).
+   O fio termina na Direção (05 na Sistemática); a conta é anexo e não aparece aqui. */
 (function () {
   "use strict";
   var D = window.HDB, HC = window.HDBC, HR = window.HDBR;
   if (!D || !HR) return;
-  var SIS = "sistematica/", CONTA = "caso-economico/";
+  var SIS = "sistematica/", DIRECAO = SIS + "?vista=direcao";
+  var PASSA = {}; (D.passagens || []).forEach(function (p) { PASSA[p.de] = p; });
   function esc(s) { return String(s === null || s === undefined ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   function conf(c) { var t = { confirmado: "confirmado", provavel: "provável", aberto: "em aberto" }[c]; return t ? "<span class='conf conf-" + c + "'>" + t + "</span>" : ""; }
   function ponto(s) { s = String(s || "").trim(); return /[.!?]$/.test(s) ? s : s + "."; }
@@ -32,8 +36,8 @@
   var CONV = D.convergencia || [];
   var VOLTA = CONV.filter(function (c) { return c.sigla === "volta"; })[0] || null;
   var CS3 = CONV.filter(function (c) { return c.sigla !== "volta"; }); /* as três paradas; a volta é o arco de retorno */
-  var NOME = { ecossistema: "Quem paga", sistema: "Das bases à coorte", servicos: "O que se oferece", jornadas: "O que se vive" };
-  var CAM = { ecossistema: ["01", "Quem paga, quem ganha"], sistema: ["02", "Das bases à coorte"], servicos: ["03", "O que se oferece"], jornadas: ["04", "O que se vive"] };
+  var NOME = { ecossistema: "Quem paga", sistema: "Das bases à coorte", servicos: "O que se oferece", jornadas: "O que se vive", direcao: "O que decidir" };
+  var CAM = { ecossistema: ["01", "Quem paga, quem ganha"], sistema: ["02", "Das bases à coorte"], servicos: ["03", "O que se oferece"], jornadas: ["04", "O que se vive"], direcao: ["05", "O que decidir"] };
   var ORDEM = { ecossistema: 1, sistema: 2, servicos: 3, jornadas: 4 };
   var CAMADA_DE = { C1: "sistema", C2: "sistema", C3: "servicos", volta: "jornadas" }; /* a camada da Sistemática que melhor explica cada C */
   var APROFUNDA = { C1: 2, C2: 1, C3: 3, volta: 4 };                                   /* o movimento do percurso que aprofunda cada C */
@@ -66,7 +70,8 @@
     { id: "ecossistema", t: "Quem paga, quem ganha", p: "Quem paga o spin-off, e quem colhe o ganho da evidência? Treze atores e oito relações de dinheiro; três concorrentes.", ico: "<svg viewBox='0 0 24 24'><circle cx='12' cy='12' r='3'/><circle cx='4' cy='6' r='2'/><circle cx='20' cy='6' r='2'/><circle cx='4' cy='18' r='2'/><circle cx='20' cy='18' r='2'/><path d='M6 7l4 3M18 7l-4 3M6 17l4-3M18 17l-4-3'/></svg>" },
     { id: "sistema", t: "Das bases à coorte", p: "Como o dado público, que é de todos, vira uma coorte que alguém paga para ter: hoje à mão, e com o HDB.", ico: "<svg viewBox='0 0 24 24'><rect x='3' y='4' width='6' height='4' rx='1'/><rect x='3' y='10' width='6' height='4' rx='1'/><rect x='3' y='16' width='6' height='4' rx='1'/><path d='M9 6h4a3 3 0 0 1 3 3v6a3 3 0 0 0 3 3h2M9 12h12M9 18h4a3 3 0 0 0 3-3V9a3 3 0 0 1 3-3h2'/></svg>" },
     { id: "servicos", t: "O que se oferece", p: "O que o spin-off vende em cada etapa, e quem paga cada parte. Só um serviço é vendido hoje.", ico: "<svg viewBox='0 0 24 24'><rect x='3' y='5' width='18' height='4' rx='1'/><rect x='3' y='11' width='12' height='4' rx='1'/><rect x='3' y='17' width='8' height='4' rx='1'/></svg>" },
-    { id: "jornadas", t: "O que se vive", p: "O que o cliente vive, etapa por etapa, e o que roda por trás da linha de visibilidade.", ico: "<svg viewBox='0 0 24 24'><path d='M3 12h4l2-5 4 10 2-5h6'/></svg>" }
+    { id: "jornadas", t: "O que se vive", p: "O que o cliente vive, etapa por etapa, e o que roda por trás da linha de visibilidade.", ico: "<svg viewBox='0 0 24 24'><path d='M3 12h4l2-5 4 10 2-5h6'/></svg>" },
+    { id: "direcao", t: "O que decidir", p: "O modelo de negócio, bloco a bloco: o que precisamos da instituição, o que já sabemos e o que falta definir.", ico: "<svg viewBox='0 0 24 24'><rect x='3' y='4' width='18' height='16' rx='1'/><path d='M9 4v11M15 4v11M3 15h18M12 15v5'/></svg>" }
   ];
   document.getElementById("cartoes-camadas").innerHTML = CAMADAS.map(function (c) {
     var n = D.achados.filter(function (a) { return a.camada === c.id; }).length;
@@ -91,6 +96,10 @@
   document.getElementById("teste-de-valor").textContent = ponto(sint("teste_de_valor").texto);
 
   var GATES = [["G1", "Constituição", "Decide se a empresa pode nascer"], ["G2", "Captação", "Decide se ela consegue capital e clientes"], ["G3", "Operação", "Só importa depois de nascer"]];
+  /* quem ainda não ouvimos (nao_ouvidos.csv · Goh, as caixas vazias): o que falta saber começa por quem não falou */
+  document.getElementById("nao-ouvidos").innerHTML = (D.nao_ouvidos || []).length ? "<p class='rotulo-mini'>Quem ainda não ouvimos</p><ul>" + D.nao_ouvidos.map(function (x) {
+    return "<li><b>" + esc(x.grupo) + "</b>" + (HC ? HC.etiquetas(x.c) : "") + "<span>" + esc(ponto(maiuscula(x.por_que))) + " <i>Como ouvir: " + esc(ponto(x.como_ouvir)) + "</i></span></li>";
+  }).join("") + "</ul>" : "";
   document.getElementById("portoes").innerHTML = GATES.map(function (g) {
     var itens = (D.lacunas_publicas || []).filter(function (l) { return l.gate === g[0]; });
     return "<div class='portao " + g[0].toLowerCase() + "'><h3>" + esc(g[1]) + "</h3><p class='decide'>" + esc(g[2]) + " · " + itens.length + " item" + (itens.length === 1 ? "" : "s") + "</p><ul>" + itens.map(function (l) {
@@ -145,10 +154,12 @@
         return "<li><b>" + esc(l.titulo) + "</b><span>quem resolve: " + esc(l.papel) + " · " + (l.prazo === "a definir" ? "<em>prazo a definir</em>" : "até: " + esc(l.prazo)) + "</span></li>";
       }).join("") + "</ul></details>";
     }
+    var pas = PASSA[sig];
+    if (pas) h += "<p class='passagem c-" + pas.confianca + "'><b>" + SUP[sig] + " → " + (pas.para === "C1" ? "↻ " : "") + SUP[pas.para] + "</b> " + esc(pas.rotulo) + " · <span>quem leva: " + esc(pas.quem) + "</span></p>";
     if (sig === "C3" && VOLTA) h += blocoVolta();
     h += "<!--links-->";
     h += "<div class='links'><a class='btn navy' href='" + SIS + "?vista=sistema&item=" + sig + "'>Na Sistemática: 02 · o sistema dos três Cs · " + SUP[sig] + " →</a>" +
-      (sig === "C3" ? "<a class='btn ouro' href='" + CONTA + "'>A conta, em reais →</a>" : "") +
+      (sig === "C3" ? "<a class='btn linha' href='" + DIRECAO + "'>O que a instituição precisa decidir →</a>" : "") +
       "<button type='button' class='btn linha' data-folha='" + APROFUNDA[sig] + "'>Aprofundar: " + (APROFUNDA[sig] + 1) + " · " + esc(mov.nome) + "</button></div>";
     var N = CS3.length, ant = (i - 1 + N) % N, prox = (i + 1) % N, ultimo = i === N - 1;
     h += "<!--passos-->";
@@ -170,20 +181,34 @@
       achs.map(function (a) { return "<p class='texto'><b>" + esc(a.titulo) + ".</b> " + esc(ponto(maiuscula(a.texto))) + "</p>"; }).join("") +
       cond.map(function (a) { return "<p class='texto'><b>O que precisa estar de pé:</b> " + esc(a.titulo) + ", " + esc(ponto(a.texto)) + "</p>"; }).join("") +
       (lacs.length ? "<p class='texto'><b>O que falta aqui:</b> " + lacs.map(function (l) { return esc(l.titulo); }).join(" · ") + ".</p>" : "") +
+      (HC && HC.laco ? HC.laco() : "") +
       "<div class='links'><button type='button' class='btn linha' data-folha='" + APROFUNDA.volta + "'>Aprofundar: " + (APROFUNDA.volta + 1) + " · " + esc(MOV[APROFUNDA.volta].nome) + "</button></div></details>";
   }
   function painelInicio() {
     var p = painelInicioHtml().split("<!--b-->");
     return "<div class='pc-grid'><div class='pc-a'>" + p[0] + "</div><div class='pc-b'>" + p[1] + "</div></div>";
   }
+  /* a capa em sete perguntas (molde: a abertura da Longevidade): o quê · por quê · para quem · onde · quando · como · quanto.
+     "Para quem" leva os compradores como pontos (o circulado é o primeiro); "como" são os três Cs, que giram a roda;
+     "quanto" sai em escala, sem reais, e aponta para a Direção, não para a conta. */
   function painelInicioHtml() {
+    function linha(rot, k, extra) {
+      var s = sint(k);
+      return "<dt>" + rot + "</dt><dd" + (s.confianca !== "confirmado" ? " class='inf'" : "") + ">" + esc(ponto(s.texto)) + (extra || "") + "</dd>";
+    }
+    var pontos = (D.compradores || []).length ? "<span class='w5-pontos'>" + D.compradores.map(function (p) {
+      return "<span class='" + (p.foco === "sim" ? "foco" : "") + "'><i></i>" + esc(p.nome) + "</span>";
+    }).join("") + "</span>" : "";
+    var passos = "<span class='w5-passos'>" + CS3.map(function (c, i) {
+      return "<button type='button' class='pconv' data-vai='" + i + "'>" + (HC ? HC.sigla(c.sigla) : SUP[c.sigla]) + "<strong>" + esc(c.verbo) + "</strong></button>";
+    }).join("") + (VOLTA ? "<span class='w5-volta'>" + (HC ? HC.sigla("volta") : SUP.volta) + esc(VOLTA.verbo) + (VOLTA.estado === "aberto" ? " · <em>a construir</em>" : "") + "</span>" : "") + "</span>";
     return "<p class='rotulo'><b>C¹ C² C³</b>A convergência<span class='pill-mini'>spin-off em avaliação</span></p><h2>" + esc(sint("pergunta").texto) + "</h2>" +
       "<p class='texto grande'>" + esc(ponto(sint("resposta").texto)) + conf(sint("resposta").confianca) + "</p>" +
-      "<p class='texto moldura'>" + esc(ponto(sint("convergencia").texto)) + conf(sint("convergencia").confianca) + "</p>" +
-      "<!--b--><ol class='passos-conv'>" + CS3.map(function (c, i) {
-        return "<li><button type='button' class='pconv' data-vai='" + i + "'>" + (HC ? HC.sigla(c.sigla) : SUP[c.sigla]) + "<span><strong>" + esc(c.nome) + "</strong> · " + esc(ponto(c.oque)) + "</span></button></li>";
-      }).join("") + (VOLTA ? "<li class='volta-linha'>" + (HC ? HC.sigla("volta") : SUP.volta) + "<span><strong>" + esc(VOLTA.nome) + "</strong> · " + esc(ponto(VOLTA.oque)) + (VOLTA.estado === "aberto" ? " <em>a construir</em>" : "") + "</span></li>" : "") + "</ol>" +
-      "<p class='como-ler'>Gire a roda (rolagem, setas, arrasto) ou clique num C para começar. Depois da comprovação vem o cruzamento de novo: a leitura é um ciclo, como o que ela descreve. O percurso completo, em seis movimentos, fica no link sob a roda e nos botões \"aprofundar\".</p>";
+      "<!--b--><dl class='w5h'>" +
+      linha("O quê", "w_oque") + linha("Por quê", "w_porque") + linha("Para quem", "w_paraquem", pontos) +
+      linha("Onde", "w_onde") + linha("Quando", "w_quando") + linha("Como", "w_como", passos) +
+      linha("Quanto", "w_quanto", " <a href='" + DIRECAO + "'>o que a instituição precisa decidir →</a>") + "</dl>" +
+      "<p class='como-ler'>Gire a roda ou clique num C. Depois da comprovação vem o cruzamento de novo: a leitura é um ciclo, como o negócio. Em <i>itálico</i>, leitura nossa.</p>";
   }
   CS3.forEach(function (c, i) { document.getElementById("p-" + idDe(c.sigla)).innerHTML = painelC(c, i); });
   document.getElementById("p-inicio").innerHTML = painelInicio();
@@ -211,8 +236,10 @@
 
   /* ====================== a roda: os três passos; no centro, o mantra ====================== */
   var PARADAS = CS3.map(function (c, i) {
-    var p = { id: idDe(c.sigla), num: SUP[c.sigla], linhas: [c.nome, c.verbo], cor: CORC[c.sigla], aberto: false };
-    if (i === CS3.length - 1 && VOLTA) p.arco = { cor: CORC.volta, aberto: VOLTA.estado === "aberto", rotulo: "↻ " + VOLTA.nome.toLowerCase() + "\n" + (VOLTA.estado === "aberto" ? "a construir" : "em uso") };
+    var p = { id: idDe(c.sigla), num: SUP[c.sigla], linhas: [c.nome, c.verbo], cor: CORC[c.sigla], aberto: false }, pas = PASSA[c.sigla];
+    /* cada arco leva quem faz a passagem ao C seguinte (passagens.csv); a volta, o reuso e quem o leva */
+    if (pas && !(i === CS3.length - 1 && VOLTA)) p.arco = { rotulo: "quem leva\n" + pas.quem };
+    if (i === CS3.length - 1 && VOLTA) p.arco = { cor: CORC.volta, aberto: VOLTA.estado === "aberto", rotulo: "↻ " + VOLTA.nome.toLowerCase() + " · " + (VOLTA.estado === "aberto" ? "a construir" : "em uso") + (pas ? "\nquem leva: " + pas.quem : "") };
     return p;
   });
   /* o centro: o mantra dos três verbos, e um gancho por passo (o número que fica na cabeça) */
