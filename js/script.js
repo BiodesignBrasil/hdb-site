@@ -809,11 +809,13 @@
       var corpo = (p.base ? "<p class='pf-base'>Tudo do " + esc(p.base.nome) + "</p><p class='pf-mais'>O que só este pacote acrescenta</p>" : "") +
         ORDEM_C.filter(function (c) { return p.grupos[c]; }).map(function (c) {
           return "<p class='pf-c' style='--cor:" + CORW[c] + "'>" + esc(NOME_C[c] || c) + "</p><ul class='pf-lista'>" + p.grupos[c].map(function (e) {
-            return "<li class='" + (e.estado === "feito" ? "pf-feito" : "pf-abrir") + "' style='--cor:" + CORW[c] + "'>" + esc(e.nome) + "</li>";
+            /* a descrição só aparece empilhado (celular), no cartão aberto: ali a leitura da direita fica escondida, senão o pacote repetia no fim */
+            return "<li class='" + (e.estado === "feito" ? "pf-feito" : "pf-abrir") + "' style='--cor:" + CORW[c] + "'>" + esc(e.nome) + "<small>" + esc(ponto(e.descricao)) + "</small></li>";
           }).join("") + "</ul>";
         }).join("");
       return "<article class='pf-cartao c-" + s.confianca + "' data-serv='" + s.id + "' tabindex='0'><h3>" + esc(s.nome) + "</h3>" +
-        "<p class='pf-quem'><span class='pf-sub'>Para quem</span>" + esc(s.para_quem || "") + "</p>" + corpo +
+        "<p class='pf-quem'><span class='pf-sub'>Para quem</span>" + esc(s.para_quem || "") + "</p><p class='pf-desc pf-so-empilha'>" + esc(maiuscula(s.descricao)) + ".</p>" + corpo +
+        "<p class='pf-destrava pf-so-empilha'><span class='pf-sub'>Destrava adiante</span>" + p.destrava + "</p>" +
         "<p class='pf-pe'>" + tagEnq(s.enquadramento, "", true) + conf(s.confianca) + "</p></article>";
     }).join("");
     h += "<div class='pf-grade'>" + cartoes + "</div>";

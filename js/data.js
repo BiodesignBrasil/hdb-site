@@ -991,6 +991,12 @@ window.HDB = {
    "titulo": "Ajustes de celular",
    "o_que_mudou": "Conferência de responsividade depois da publicação 11: em celular, os dois olhares da 02 voltam a rolar de lado em vez de encolher, e a legenda do laço da 00 passa a uma coluna. Nada muda no desktop",
    "versao": 12
+  },
+  {
+   "data": "2026-10-28",
+   "titulo": "O pacote no celular",
+   "o_que_mudou": "Empilhada (celular e tablet), a aba 03 escondia a leitura da direita embaixo dos cartões e o pacote aberto aparecia duas vezes. Agora, empilhado, o pacote aberto se lê no próprio cartão (descrição, entregas com a descrição, o que destrava) e a leitura da direita some. No desktop nada muda",
+   "versao": 13
   }
  ],
  "sintese": {
@@ -1783,8 +1789,8 @@ window.HDB = {
   }
  ],
  "versao": {
-  "numero": 12,
+  "numero": 13,
   "data": "2026-10-28",
-  "titulo": "Ajustes de celular"
+  "titulo": "O pacote no celular"
  }
 };
