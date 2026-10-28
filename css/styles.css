@@ -213,31 +213,46 @@ svg text{font-family:var(--font)}
 .dois p{font-size:12.5px}
 
 /* ---- 03 · serviços: matriz de cobertura ---- */
-.mz{display:grid;grid-template-columns:minmax(220px,1.5fr) repeat(6,minmax(60px,1fr));align-items:stretch;font-size:12.5px}
-.mz-zona{font-size:10px;font-weight:700;letter-spacing:.18em;color:var(--cinza);padding:0 0 4px;border-bottom:2px solid var(--primary);text-align:center}
-.mz-zona.depois{border-bottom:2px dashed var(--risco);color:var(--risco)}
-.mz-zona.z-C1,.bp .bp-zona.z-C1{color:var(--ceu-ink,#0369a1);border-bottom-color:var(--ceu)}
-.mz-zona.z-C2,.bp .bp-zona.z-C2{color:var(--ok);border-bottom-color:var(--ok)}
-.mz-zona.z-C3,.bp .bp-zona.z-C3{color:var(--ouro);border-bottom-color:var(--ouro)}
-.mz-cab{padding:6px 4px 8px;text-align:center;border-bottom:1px solid var(--filete-forte)}
-.mz-cab small{display:block;font-size:9.5px;font-weight:700;letter-spacing:.1em;color:var(--cinza)}
-.mz-cab b{font-size:12px;color:var(--tinta);font-weight:600}
-.mz-lin{padding:10px 10px 10px 0;border-bottom:1px solid var(--filete);cursor:pointer}
-.mz-lin b{display:block;font-family:var(--font);font-size:14px;font-weight:700;color:var(--tinta);line-height:1.2}
-.mz-lin .meta{display:flex;gap:6px;align-items:center;margin-top:4px;flex-wrap:wrap}
-.mz-cel{border-bottom:1px solid var(--filete);display:flex;align-items:center;padding:0;cursor:pointer}
-.mz-cel i{display:block;height:22px;width:100%}
-.mz-cel.ini i{border-radius:11px 0 0 11px;margin-left:6px}
-.mz-cel.fim i{border-radius:0 11px 11px 0;margin-right:6px}
-.mz-cel.ini.fim i{border-radius:11px}
-.mz-cel.depois{background:repeating-linear-gradient(135deg,transparent 0 6px,#A8730E10 6px 12px)}
-.mz-l.c-aberto .mz-cel i{background-image:repeating-linear-gradient(90deg,transparent 0 6px,rgba(255,255,255,.6) 6px 10px)}
-.mz-l{display:contents}
-.mz-l:hover .mz-lin,.mz-l:hover .mz-cel{background-color:var(--papel-2)}
-.mz-l.on .mz-lin b{color:var(--primary)}
-.mz-l.on .mz-lin,.mz-l.on .mz-cel{background-color:var(--ouro-claro)}
-.mz-rodape{grid-column:1/-1;display:flex;justify-content:space-between;gap:16px;padding-top:10px;font-size:12px;color:var(--cinza)}
-.mz-rodape .depois{color:var(--ouro);font-weight:600;font-size:13px}
+/* ---- 03 · serviços (28/10/2026): o portfólio no molde da Longevidade: as linhas clínicas em cima, um cartão por pacote ---- */
+.v-cheia.on{display:block}
+.pf-rot{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--cinza);margin-right:10px}
+.pf-linhas{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;padding:0 0 8px;border-bottom:1px solid var(--filete);margin-bottom:10px}
+.pf-chips{display:flex;flex-wrap:wrap;gap:6px}
+.pf-linha{display:inline-flex;align-items:baseline;gap:6px;padding:2px 9px;border-radius:999px;border:1px solid;font-size:12px;line-height:1.6;background:#fff;cursor:help}
+.pf-linha b{font-weight:700;color:var(--tinta)}
+.pf-linha i{font-style:italic;font-size:10.5px;color:var(--cinza-escuro)}
+.pf-ok{border-color:var(--ok);background:var(--ok-claro)}
+.pf-ceu{border-color:var(--ceu)}
+.pf-ouro{border-color:var(--ouro);background:var(--ouro-claro)}
+.pf-cinza{border-color:var(--filete-forte)}
+.pf-cinza b{color:var(--cinza)}
+.pf-trac{border-style:dashed}
+.pf-grade{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;align-items:stretch}
+.pf-cartao{background:#fff;border:1px solid var(--filete);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:5px;cursor:pointer;outline:none;transition:box-shadow .2s,border-color .2s}
+.pf-cartao:hover,.pf-cartao:focus-visible,.pf-cartao.on{border-color:var(--tinta);box-shadow:0 2px 10px rgba(22,35,58,.08)}
+.pf-cartao.c-aberto{border-style:dashed}
+.pf-cartao h3{font-family:var(--serif);font-size:17px;font-weight:500;margin:0;line-height:1.2;color:var(--tinta)}
+.pf-sub{display:block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cinza);margin-bottom:1px}
+.pf-quem{margin:0;font-size:12px;color:var(--tinta);font-weight:600;line-height:1.3}
+.pf-desc{margin:0;font-size:12px;color:var(--cinza-escuro);line-height:1.35}
+.pf-conta{margin:3px 0 0;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--cinza)}
+.pf-conta b{color:var(--ok)}
+.pf-conta i{font-style:normal;color:var(--ouro)}
+.pf-base{margin:2px 0 0;padding:4px 8px;border:1px dashed var(--primary);border-radius:6px;font-size:12px;font-weight:600;color:var(--primary)}
+.pf-mais{margin:2px 0 0;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--primary)}
+.pf-c{margin:4px 0 0;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cor)}
+.pf-lista{list-style:none;margin:0;padding:0}
+.pf-lista li{font-size:12.5px;line-height:1.3;padding:1px 0 1px 9px;border-left:3px solid var(--cor);margin:2px 0;color:var(--tinta);cursor:help}
+.pf-lista li.pf-abrir{font-style:italic;color:var(--cinza-escuro);border-left-style:dashed}
+.pf-destrava{margin:auto 0 0;padding-top:6px;border-top:1px solid var(--filete);font-size:12px}
+.pf-mod{display:inline-block;font-size:10.5px;font-weight:600;padding:0 7px;border-radius:999px;background:var(--papel-2);color:var(--tinta);margin:2px 3px 0 0}
+.pf-pe{margin:0;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.pf-leg{margin:8px 0 0;font-size:11.5px;color:var(--cinza-escuro);display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}
+.pf-leg-c{font-weight:700;color:var(--cor);padding-left:8px;border-left:3px solid var(--cor)}
+.pf-leg .l-elo{margin-left:auto}
+.pf-achados{margin:4px 0 0;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;font-size:12px}
+.pf-ach{color:var(--tinta);font-weight:600;cursor:help;border-bottom:1px dotted var(--cinza)}
+.pf-revela{margin:8px 0 0;padding:8px 0 0;border-top:1px solid var(--filete);font-size:13px;color:var(--cinza-escuro);line-height:1.45}
 
 /* ---- 04 · jornadas: o blueprint ---- */
 .bp{display:grid;grid-template-columns:100px repeat(6,minmax(0,1fr));font-size:11.5px;color:var(--cinza-escuro)}
@@ -338,30 +353,51 @@ svg text{font-family:var(--font)}
 .pc-conta a{color:var(--ouro);text-decoration:none;border-bottom:1px solid var(--ouro-claro)}
 .pc-conta a:hover{border-bottom-color:var(--ouro)}
 
-/* ---- 00 · contexto (27/10/2026): a roda dos três Cs à esquerda, a história à direita, em uma tela ---- */
-.v-contexto.on{grid-template-columns:minmax(340px,40%) minmax(0,1fr);gap:30px}
-.cena-ctx{align-items:center;justify-content:center;gap:12px;padding:4px 0}
-.roda{position:relative;z-index:1;width:min(100%,calc(100vh - var(--header) - var(--nav) - 232px));max-width:720px;container-type:inline-size;font-family:var(--serif);
-  --rd-no:var(--papel);--rd-num:var(--tinta);--rd-num-on:#fff;--rd-aro:var(--filete-forte);--rd-orbita:transparent;--rd-on-borda:var(--papel);
-  --rd-nome:var(--cinza);--rd-nome-on:var(--tinta);--rd-nome-lido:var(--cinza-escuro)}
-.cena-ctx .roda svg{height:auto}
-.roda .rd-no .rd-num{font-size:30px;font-weight:600}
-.roda .rd-no .rd-nome{font-weight:500}
-.roda .rd-no.rd-on .rd-nome{font-weight:600}
-.roda .rd-arco{stroke-width:2.6;opacity:.85}
-.roda .rd-arco-rot{font-weight:600}
-.roda .rd-no circle{stroke-width:1.6}
-.mantra{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;width:50%;gap:1.8cqw}
-.mantra-rot{margin:0;font-family:var(--serif);font-style:italic;font-size:2.6cqw;color:var(--cinza);font-weight:400}
-.mantra-lista{list-style:none;margin:0;padding:0;display:grid;gap:.6cqw}
-.mantra-lista li{display:flex;align-items:baseline;justify-content:center;gap:1.4cqw;cursor:pointer;color:var(--cinza-escuro);transition:color .3s,opacity .3s;font-size:5.6cqw;font-weight:500;letter-spacing:-.01em;line-height:1.15}
-.mantra-lista li b{font-family:var(--font);font-size:2.6cqw;font-weight:700;color:var(--cor);letter-spacing:.02em}
-.mantra-lista li:hover{color:var(--tinta)}
-.mantra-lista li.on{color:var(--cor);font-weight:600}
-.mantra-lista li.dim{opacity:.4}
-.mantra-gancho{margin:.6cqw 0 0;font-family:var(--serif);font-style:italic;font-size:2.7cqw;color:var(--cinza-escuro);max-width:92%;line-height:1.35;min-height:2.7em}
-.roda-rot{flex:0 0 auto;font-family:var(--serif);font-style:italic;font-size:13px;color:var(--cinza-escuro);text-align:center;max-width:60ch;line-height:1.4}
-.roda-rot b{font-family:var(--font);font-style:normal;font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--tinta);margin-right:6px}
+/* ---- 00 · contexto (28/10/2026): o laço dos três momentos à esquerda (figura + legenda), a história à direita, em uma tela ---- */
+.v-contexto.on{grid-template-columns:minmax(380px,52%) minmax(0,1fr);gap:24px}
+.cena-ctx{align-items:center;justify-content:center;gap:10px;padding:4px 0}
+.laco-linha{display:flex;align-items:center;gap:16px;width:100%}
+/* o oito compacto tem 300 × 170; a largura manda, e a altura da tela é o teto */
+.laco{flex:1 1 0;min-width:0;max-width:min(640px,calc((100vh - var(--header) - var(--nav) - 150px) * 1.76));container-type:inline-size}
+.laco .lc-svg{display:block;width:100%;height:auto;overflow:visible;font-family:var(--font)}
+/* halo de papel atrás de toda letra: onde um contorno passa perto, a letra ganha */
+.laco .lc-svg text{paint-order:stroke;stroke:var(--papel);stroke-width:2.4px;stroke-linejoin:round}
+.lc-reg{fill:color-mix(in srgb,var(--tinta) 6%,#fff);stroke:none;cursor:pointer;transition:fill .3s,opacity .3s;outline:none}
+.lc-reg-coorte{fill:color-mix(in srgb,#0f766e 10%,#fff)}
+.lc-reg-prova{fill:color-mix(in srgb,#a8730e 11%,#fff)}
+.lc-reg:hover,.lc-reg:focus-visible,.lc-reg.on{fill:color-mix(in srgb,var(--tinta) 13%,#fff)}
+.lc-reg-coorte:hover,.lc-reg-coorte:focus-visible,.lc-reg-coorte.on{fill:color-mix(in srgb,#0f766e 20%,#fff)}
+.lc-reg-prova:hover,.lc-reg-prova:focus-visible,.lc-reg-prova.on{fill:color-mix(in srgb,#a8730e 22%,#fff)}
+.lc-reg.dim{opacity:.55}
+.lc-arco{fill:none;stroke-width:1.8;pointer-events:none}
+.lc-arco.lc-aberta{stroke-dasharray:3.6 3}
+.lc-seta{pointer-events:none}
+.lc-num{font-family:var(--serif);font-size:30px;font-weight:500;opacity:.22;pointer-events:none;stroke:none!important}
+.lc-sg{font-size:9.5px;font-weight:800;letter-spacing:.02em;pointer-events:none}
+.lc-no{cursor:pointer;outline:none}
+.lc-no circle{fill:var(--papel);stroke:var(--cor);stroke-width:1.9;transition:fill .2s,stroke-width .2s}
+.lc-no:hover circle,.lc-no:focus-visible circle,.lc-no.on circle{fill:#fff;stroke-width:3}
+.lc-nt{font-size:9.5px;font-weight:800;fill:var(--cor);pointer-events:none}
+.lc-etapa{cursor:pointer;outline:none}
+.lc-etapa .lc-ponto{stroke-width:1.3;transition:r .15s}
+.lc-etapa:hover .lc-ponto,.lc-etapa:focus-visible .lc-ponto,.lc-etapa.on .lc-ponto{r:5.5}
+.lc-guia{fill:none;stroke:var(--filete-forte);stroke-width:.9;stroke-dasharray:1.6 2.2}
+@container (max-width:300px){.lc-sg{display:none}}
+/* a legenda ao lado: três grupos, um por momento; cada linha é um botão que acende a sua parte na figura */
+.laco-leg{flex:0 0 auto;width:min(44%,270px);display:grid;gap:8px;align-content:center}
+.lg-grupo{display:grid;gap:1px}
+.lg-titulo,.lg-item{all:unset;display:grid;grid-template-columns:30px 1fr;align-items:baseline;column-gap:4px;font-family:var(--font);font-size:11.5px;line-height:1.3;color:var(--tinta);cursor:pointer;padding:2px 5px;border-radius:5px;transition:background .2s}
+.lg-titulo{font-family:var(--serif);font-size:13.5px;border-bottom:1px solid var(--filete);border-radius:5px 5px 0 0;padding-bottom:3px;margin-bottom:2px}
+.lg-titulo b{font-family:var(--font);font-size:11px;font-weight:800;color:var(--cor)}
+.lg-item b{font-size:10px;font-weight:800;color:var(--cor);letter-spacing:.03em}
+.lg-item i,.lg-titulo i{font-style:italic;color:var(--cinza);font-size:10.5px;font-weight:400}
+.lg-item:hover,.lg-item.on,.lg-titulo:hover,.lg-titulo.on{background:color-mix(in srgb,var(--cor) 11%,#fff)}
+.lg-item:focus-visible,.lg-titulo:focus-visible{outline:2px solid var(--cor);outline-offset:1px}
+.laco-rot{flex:0 0 auto;font-family:var(--serif);font-style:italic;font-size:12px;color:var(--cinza-escuro);text-align:center;max-width:84ch;line-height:1.4;min-height:2.8em}
+.laco-rot b{font-family:var(--font);font-style:normal;font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--tinta);margin-right:6px}
+/* o cartão da história: com a coluna da esquerda mais larga, a virada desce para baixo da história quando o cartão aperta */
+.leitura-ctx{container-type:inline-size}
+@container (max-width:600px){.ctx-grid{grid-template-columns:1fr}}
 .ctx-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:0 28px;align-items:start}
 /* a virada numa caixa, como a tese das outras camadas */
 .ctx-box{padding:10px 14px 8px;border-radius:9px;background:color-mix(in srgb,var(--tinta) 7%,#fff);border-left:4px solid var(--tinta);border-bottom:0}
@@ -427,8 +463,12 @@ svg text{font-family:var(--font)}
   .pv-card{padding:14px 16px 16px}
   .lp-fonte{margin-left:0}
   .v-contexto.on{display:block}
+  .pf-grade{grid-template-columns:1fr}
+  .pf-leg .l-elo{margin-left:0}
   .cena.cena-ctx{padding:0 0 10px;overflow:visible;align-items:center}
-  .cena.cena-ctx svg{min-width:0;height:100%}
-  .roda{width:min(80vw,360px)}
+  .cena.cena-ctx svg{min-width:0;height:auto}
+  .laco-linha{flex-direction:column;align-items:stretch}
+  .laco{width:min(92vw,560px);margin:0 auto}
+  .laco-leg{width:100%;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
   .ctx-grid{grid-template-columns:1fr}
 }

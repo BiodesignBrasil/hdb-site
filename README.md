@@ -6,7 +6,7 @@ Publicado pelo GitHub Pages em **https://biodesignbrasil.github.io/hdb-site/**.
 
 | Caminho | O que é |
 |---|---|
-| `/` | a síntese, uma peça só, em seis abas que cabem numa tela: 00 De onde partimos (a roda dos três Cs e o contexto) · 01 a 04, as camadas da empresa nova · 05 O que decidir, a direção. O estado fica na URL (`?vista=…&item=…`) |
+| `/` | a síntese, uma peça só, em seis abas que cabem numa tela: 00 De onde partimos (o laço dos três momentos e o contexto) · 01 a 04, as camadas da empresa nova · 05 O que decidir, a direção. O estado fica na URL (`?vista=…&item=…`) |
 | `/sistematica/` | o endereço antigo da Sistemática: redireciona para a raiz, preservando a busca |
 | `/caso-economico/` | a conta: o painel do caso econômico, com valores em reais; anexo aberto só pelos blocos Custos e Receitas da aba 05, fora dos buscadores |
 

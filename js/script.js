@@ -26,13 +26,16 @@
   var ENQ = D.enquadramentos;
   var ATOR = {}; D.atores.forEach(function (a) { ATOR[a.id] = a; });
   var ETAPA = {}; D.etapas.forEach(function (e) { ETAPA[e.id] = e; });
+  /* as etapas que o cliente vive são E1 a E4; M é o trabalho do método (cruzamento e coorte: C¹ C²) e V é a volta (28/10/2026) */
+  var SIGLA_DE = { M: "C¹ C²", V: "↻" };
+  function siglaEtapa(id) { return SIGLA_DE[id] || id; }
   var CONT = {}; D.contagens.forEach(function (c) { CONT[c.id] = c; });
   var COLS = D.etapas.map(function (e) { return e.id; });
   /* os três Cs por etapa (de convergencia.csv): a mesma gramática da entrada, lida nas cinco camadas */
   var CSUP = { C1: "C¹", C2: "C²", C3: "C³", volta: "↻" }, C_DE_ETAPA = {};
   (D.convergencia || []).forEach(function (c) { (c.etapas || []).forEach(function (x) { (C_DE_ETAPA[x] = C_DE_ETAPA[x] || []).push(c.sigla); }); });
   function csDeEtapas(etapas) { var v = {}; (etapas || []).forEach(function (x) { (C_DE_ETAPA[x] || []).forEach(function (s) { v[s] = true; }); }); return Object.keys(v); }
-  function faixaCs(cls) { /* a faixa dos Cs sobre as colunas E1–E6: C¹ cruzar (E1 E2) · C¹→C² construir (E3) · C³ comprovar (E4 E5) · ↻ a volta (E6) */
+  function faixaCs(cls) { /* a faixa dos Cs sobre as seis colunas das etapas: C¹ cruzar (E1 E2) · C¹→C² construir (M) · C³ comprovar (E3 E4) · ↻ a volta (V) */
     return "<div class='" + cls + " z-C1' style='grid-column:span 2'>C¹ CRUZAR</div><div class='" + cls + " z-C2'>C¹→C² CONSTRUIR</div><div class='" + cls + " z-C3' style='grid-column:span 2'>C³ COMPROVAR</div><div class='" + cls + " depois'>↻ A VOLTA</div>";
   }
   /* as três respostas da instituição (a mesma estrutura da entrada): texto em sintese.csv, o bloco do modelo de negócio que abre cada uma */
@@ -117,9 +120,9 @@
     { id: "contexto", n: "00", rot: "De onde partimos", cam: "contexto", perg: "O dado é de todos. A coorte, alguém paga para ter." },
     { id: "ecossistema", n: "01", rot: "Quem paga, quem ganha", cam: "ecossistema", perg: "Quem paga, e quem ganha?" },
     { id: "sistema", n: "02", rot: "Das bases à coorte", cam: "sistema", perg: "Como um dado público vira algo que alguém paga para ter?" },
-    { id: "servicos", n: "03", rot: "O que se vende", cam: "serviços", perg: "O que se vende, e quem paga cada parte?" },
+    { id: "servicos", n: "03", rot: "O que se vende", cam: "serviços", perg: "O que entra em cada pacote, e para quem?" },
     { id: "jornadas", n: "04", rot: "O que o cliente vive", cam: "jornadas", perg: "O que o cliente vive, e o que roda por trás?" },
-    { id: "direcao", n: "05", rot: "O que decidir", cam: "direção", perg: "O que o Einstein precisa decidir para a empresa nascer?" }
+    { id: "direcao", n: "05", rot: "O que decidir", cam: "direção", perg: "O que falta definir para a empresa ficar de pé?" }
   ];
   /* o checkpoint da convergência no cabeçalho: que Cs cada camada acende (C1 cruzamento · C2 coorte · C3 comprovação · volta = reuso) */
   var LIT_VISTA = { contexto: ["C1", "C2", "C3", "volta"], ecossistema: ["C3", "volta"], sistema: ["C1", "C2", "C3"], servicos: ["C3", "volta"], jornadas: ["C1", "C2", "C3", "volta"], direcao: ["C1", "C2", "C3", "volta"] };
@@ -128,7 +131,7 @@
     ecossistema: ["sistema", "e como o dado público vira algo que a farmacêutica paga?"],
     sistema: ["servicos", "o que, exatamente, se vende?"],
     servicos: ["jornadas", "como o cliente vive isso, etapa por etapa?"],
-    jornadas: ["direcao", "o que o Einstein precisa decidir?"],
+    jornadas: ["direcao", "o que falta definir?"],
     direcao: ["contexto", "de volta ao começo: de onde partimos"]
   };
   /* a manchete de cada camada (sintese.csv, manchete_*); a do contexto é a frase única, a que o leitor leva */
@@ -155,22 +158,23 @@
     /* a linha de cima: o número e o nome em caixa alta, a pergunta em itálico (a 00 traz a tese); a manchete é a afirmação da camada.
        Na direção não há manchete: a conclusão abre a coluna da esquerda, como na Longevidade */
     document.getElementById("pergunta").innerHTML = "<b>" + v.n + " · " + esc(v.rot) + "</b> · " + esc(v.perg);
-    var mEl = document.getElementById("manchete"); if (mEl) mEl.textContent = (v.id !== "direcao" && manchete(v.id)) ? manchete(v.id) + "." : "";
+    var mEl = document.getElementById("manchete"); if (mEl) mEl.textContent = (v.id !== "direcao" && v.id !== "contexto" && manchete(v.id)) ? manchete(v.id) + "." : ""; /* na 00 a figura é a manchete; a frase única está no cartão */
     if (window.HDBC) {
       var cvh = document.getElementById("cv-header");
       if (cvh) { HDBC.desenha(cvh, { lit: LIT_VISTA[v.id], escuro: false }); cvh.setAttribute("title", "Nesta camada: " + HDBC.nomes(LIT_VISTA[v.id])); }
     }
-    if (v.id === "contexto") montaRoda();
+    if (v.id === "contexto") montaLaco();
     if (item !== undefined) seleciona(v.id, item);
     estadoNaUrl();
     reencaixa();
   }
-  var selecao = { ecossistema: null, sistema: null, servicos: null, jornadas: null, direcao: null };
+  var selecao = { contexto: null, ecossistema: null, sistema: null, servicos: null, jornadas: null, direcao: null };
   function seleciona(vista, item) {
     if (vista === "ecossistema") selecionaEco(item);
     else if (vista === "sistema") selecionaSis(item);
     else if (vista === "servicos") selecionaServico(item);
     else if (vista === "direcao") mostraBloco(item);
+    else if (vista === "contexto") mostraDetalhe("momento", item);
   }
   function estadoNaUrl() {
     var q = "?vista=" + vistaAtual + (selecao[vistaAtual] ? "&item=" + encodeURIComponent(selecao[vistaAtual]) : "") +
@@ -191,52 +195,160 @@
     });
   }
 
-  /* ================= 00 · CONTEXTO: a roda dos três Cs e a história, em uma tela (27/10/2026) =================
-     À esquerda, a roda (motor em js/roda.js): C¹ Cruzamento → C² Coorte → C³ Comprovação, a volta tracejada enquanto
-     estiver por construir, o mantra dos três verbos no centro; cada nó abre o C na camada 02. À direita, o contexto:
-     quem precisa da evidência e o filme dos três pacotes, o caminho dela e onde emperra, a virada com a régua 3 · 17 · 65
-     (vendidos · empate · capacidade), os compradores como pontos, e a frase única, que é também a manchete da aba. */
-  var CORW = { C1: "#0369a1", C2: "#0f766e", C3: "#a8730e", volta: "#b91c1c" };
+  /* ================= 00 · CONTEXTO: o laço dos três momentos e a história, em uma tela (28/10/2026) =================
+     À esquerda, o core da peça, escolhido pelo usuário entre seis formas (08_sintese/site/opcoes_core.html): a fusão dos
+     diamantes (três momentos, para olhar um a um) com o laço (o ciclo fluido e os dois atos). Dois atos em forma de oito:
+     quem pergunta, à esquerda; a convergência dos três Cs, à direita. Três momentos como regiões: 1 a pergunta (o laço da
+     esquerda: E1 pergunta → E2 desenho), 2 Cruzamento e coorte (a metade de cima do laço da convergência: C¹ cruzar, no
+     cruzamento dos dois laços, → C² construir), 3 Comprovação (a metade de baixo: C³ comprovar → E3 análise → E4 entrega).
+     As três respostas do Einstein vivem só na 05: as portas (anel duplo em E1, C¹ e E4) saíram da figura na noite de
+     28/10 ("tire, não fica claro"). A volta é o arco de retorno do
+     laço de quem pergunta, tracejado enquanto estiver por construir; não é um ponto nem uma linha à parte. Na figura só
+     as siglas e o número de cada momento; nomes, verbos e portas ficam na legenda ao lado, clicável. A posição é estrutura
+     e fica aqui; os textos vêm de sintese.csv (momento_*, entrega_*, resposta_*), etapas.csv, convergencia.csv e
+     passagens.csv. Clicar numa região, num C ou numa etapa, na figura ou na legenda, escreve o detalhe na linha sob a
+     figura, com o elo para a camada onde vive (02, 04, 05). À direita, o contexto: quem precisa da evidência e o filme
+     dos três pacotes, o caminho dela e onde emperra, a virada com a régua 3 · 17 · 65, e a frase única, que é também a
+     manchete da aba. Rodadas do usuário no mesmo dia, em ordem: "melhore a nitidez" · "troque o símbolo no cabeçalho" ·
+     "somente as letras; traga à direita as etapas e os Cs; não gosto dessa linha vermelha" · "tire o E6; E3 e C1 são
+     iguais, coloque C1 ao centro" · "3 a prova ficou ruim demais; o 2 é cruzamento + coorte; resgate os 3 Cs" ·
+     "renumere os Es" (daí E1 E2 M E3 E4 V nos dados). */
+  var CORW = { C1: "#0369a1", C2: "#0f766e", C3: "#a8730e", volta: "#b91c1c", tinta: "#16233a" };
   var VOLTA = (D.convergencia || []).filter(function (c) { return c.sigla === "volta"; })[0] || null;
+  var VOLTA_ABERTA = !VOLTA || VOLTA.estado === "aberto";
   var PASSA = {}; (D.passagens || []).forEach(function (p) { PASSA[p.de] = p; });
-  var rodaEl = document.getElementById("roda"), rodaRot = document.getElementById("roda-rot"), leituraCtx = document.getElementById("leitura-ctx"), roda = null;
+  var lacoEl = document.getElementById("laco"), lacoRot = document.getElementById("laco-rot"), leituraCtx = document.getElementById("leitura-ctx");
   function sintTxt(k) { var s = (D.sintese || {})[k]; return s ? s.texto : ""; }
   function sintConf(k) { var s = (D.sintese || {})[k]; return s && s.confianca ? " " + conf(s.confianca) : ""; }
-  function ganchoDe(c) {
-    var n = D.contagens.filter(function (x) { return (x.c || []).indexOf(c.sigla) >= 0; })[0];
-    if (n) return n.valor + " " + n.unidade + " · " + n.rotulo.toLowerCase();
-    if (c.sigla === "C2") return D.bases.length + " bases públicas, uma pessoa";
-    return "";
-  }
-  function mostraC(i) {
-    Array.prototype.forEach.call(document.querySelectorAll("#mantra li"), function (li, k) { li.classList.toggle("on", k === i); li.classList.toggle("dim", i !== null && k !== i); });
-    var g = document.getElementById("mantra-gancho"); if (g) g.textContent = i === null ? "gire, ou clique num C" : ganchoDe(CS3[i]);
-    if (!rodaRot) return;
-    if (i === null) { rodaRot.innerHTML = "<b>Os três Cs</b> gire, ou clique num C: cada um abre na camada 02"; return; }
-    var c = CS3[i];
-    rodaRot.innerHTML = "<b>" + CSUP[c.sigla] + " " + esc(c.nome) + "</b> " + esc(ponto(c.oque)) + " <button type='button' class='l-elo inline' data-vista='sistema' data-item='" + c.sigla + "'>abrir na camada 02 →</button>";
-    ligaElos(rodaRot);
-  }
-  function montaRoda() {
-    if (roda || !rodaEl || !window.HDBR || CS3.length !== 3) return;
-    var PARADAS = CS3.map(function (c, i) {
-      var p = { id: c.sigla.toLowerCase(), num: CSUP[c.sigla], linhas: [c.nome, c.verbo], cor: CORW[c.sigla], aberto: false }, pas = PASSA[c.sigla];
-      /* cada arco leva quem faz a passagem ao C seguinte (passagens.csv); o último arco é a volta, e quem a leva */
-      if (pas && !(i === 2 && VOLTA)) p.arco = { rotulo: "quem leva\n" + pas.quem };
-      if (i === 2 && VOLTA) p.arco = { cor: CORW.volta, aberto: VOLTA.estado === "aberto", rotulo: "↻ a " + VOLTA.nome.toLowerCase() + " · " + (VOLTA.estado === "aberto" ? "a construir" : "em uso") + (pas ? "\nquem leva: " + pas.quem : "") };
-      return p;
+  function tituloCorpo(k) { var x = sintTxt(k), i = x.indexOf(": "); return i > 0 ? [x.slice(0, i), x.slice(i + 2)] : [x, ""]; }
+  /* os três momentos: a região, o fio (etapas e Cs na ordem em que o leitor os percorre) e a camada que abrem */
+  var MOMENTOS = [
+    { id: "pergunta", n: 1, cor: "tinta", fio: ["E1", "E2"], vista: "jornadas" },
+    { id: "coorte", n: 2, cor: "C2", fio: ["C1", "C2"], vista: "sistema", item: "C2" },
+    { id: "prova", n: 3, cor: "C3", fio: ["C3", "E3", "E4"], vista: "sistema", item: "C3" }
+  ];
+  var CAMADA_DE = { ecossistema: "01", sistema: "02", servicos: "03", jornadas: "04", direcao: "05" };
+  function momentoDe(id) { return MOMENTOS.filter(function (m) { return m.id === id; })[0]; }
+  function eloPara(vista, item, rot) { return " <button type='button' class='l-elo inline' data-vista='" + vista + "'" + (item ? " data-item='" + esc(item) + "'" : "") + ">" + rot + "</button>"; }
+  /* a geometria do oito, compacta (300 × 170): o cruzamento em (150,85), onde fica o C¹; quem pergunta à esquerda, a
+     convergência à direita. Só as siglas e os números dos momentos na figura; o resto na legenda. */
+  var LACO = { E1: [42.4, 138.6], E2: [108.7, 138.6], C1: [150, 85], C2: [280, 85], C3: [242.9, 146.2], E3: [205.2, 145.2], E4: [172, 122.6] };
+  var ARCO = { esqCima: "M150,85 C120,0 20,0 20,85", esqBaixo: "M20,85 C20,170 120,170 150,85", dirCima: "M150,85 C180,0 280,0 280,85", dirBaixo: "M280,85 C280,170 180,170 150,85" };
+  var REGIAO = { pergunta: ARCO.esqCima + " C20,170 120,170 150,85 Z", coorte: ARCO.dirCima + " Z", prova: ARCO.dirBaixo + " Z" };
+  var NUMERO_MOMENTO = { pergunta: [82, 95], coorte: [222, 66], prova: [222, 124] };
+  var SIGLA_ETAPA = { E1: [42.4, 152.5], E2: [108.7, 152.5], E3: [205.2, 160], E4: [170, 140] };
+  /* os dois atos: quem pergunta (o laço da esquerda) e a convergência dos três Cs (o da direita: a palavra-sistema do HDB, desde 24/10/2026) */
+  var ATO_DE = { pergunta: "quem pergunta", coorte: "a convergência", prova: "a convergência" };
+  function corDe(id) { var cs = C_DE_ETAPA[id] || []; return CORW[cs.length > 1 && cs.indexOf("C2") >= 0 ? "C2" : cs[0]] || CORW.volta; }
+  function montaLaco() {
+    if (!lacoEl || lacoEl.firstChild || CS3.length !== 3) return;
+    var h = "<svg class='lc-svg' viewBox='0 0 300 170' role='group' aria-label='" + esc(window.HDBC ? HDBC.resumo() : "o laço dos três momentos") + "'>";
+    /* as três regiões: os momentos (clicáveis) */
+    MOMENTOS.forEach(function (m) {
+      var tc = tituloCorpo("momento_" + m.id), rot = m.n + " · " + tc[0] + (tc[1] ? ": " + tc[1] : "");
+      h += "<path class='lc-reg lc-reg-" + m.id + "' d='" + REGIAO[m.id] + "' data-momento='" + m.id + "' role='button' tabindex='0' aria-label='" + esc(rot) + "'><title>" + esc(rot) + "</title></path>";
     });
-    var centro = "<div class='mantra' id='mantra'><p class='mantra-rot'>a convergência</p><ol class='mantra-lista'>" + CS3.map(function (c, i) {
-      return "<li data-vai='" + i + "' style='--cor:" + CORW[c.sigla] + "' title='" + esc(c.nome + ": " + c.oque) + "'><b>" + CSUP[c.sigla] + "</b><span>" + esc(c.verbo) + "</span></li>";
-    }).join("") + "</ol><p class='mantra-gancho' id='mantra-gancho'></p></div>";
-    roda = HDBR.cria(rodaEl, {
-      paradas: PARADAS, tamanho: "grande", progresso: false, arcos: "cores", centro: centro, repouso: true,
-      rotulo: window.HDBC ? HDBC.resumo() : "a convergência", rolagem: document.getElementById("cena-ctx"), empilha: EMPILHA,
-      ligado: function () { return vistaAtual === "contexto"; },
-      ao: mostraC
+    /* os arcos: cinza em quem pergunta (o de cima é a volta: tracejado enquanto não existir); o método na cor do momento */
+    h += "<path class='lc-arco" + (VOLTA_ABERTA ? " lc-aberta" : "") + "' d='" + ARCO.esqCima + "' stroke='#9aa3b2'/>";
+    h += "<path class='lc-arco' d='" + ARCO.esqBaixo + "' stroke='#9aa3b2'/>";
+    h += "<path class='lc-arco' d='" + ARCO.dirCima + "' stroke='" + CORW.C2 + "'/>";
+    h += "<path class='lc-arco' d='" + ARCO.dirBaixo + "' stroke='" + CORW.C3 + "'/>";
+    [[73.8, 21.3, 180, "#9aa3b2"], [73.8, 148.8, 0, "#9aa3b2"], [183, 37.2, -38, CORW.C2], [263.8, 132.8, 133, CORW.C3]].forEach(function (s) {
+      h += "<path class='lc-seta' d='M-3.5,-3 L3,0 L-3.5,3 Z' transform='translate(" + s[0] + "," + s[1] + ") rotate(" + s[2] + ")' fill='" + s[3] + "'/>";
     });
-    rodaEl.addEventListener("click", function (e) { var li = e.target.closest && e.target.closest("[data-vai]"); if (li && roda) roda.vai(+li.getAttribute("data-vai")); });
-    mostraC(null);
+    /* o número de cada momento, grande e leve, dentro da região */
+    MOMENTOS.forEach(function (m) {
+      var q = NUMERO_MOMENTO[m.id];
+      h += "<text class='lc-num' x='" + q[0] + "' y='" + q[1] + "' text-anchor='middle' fill='" + CORW[m.cor] + "'>" + m.n + "</text>";
+    });
+    /* os três Cs, sobre o laço do método */
+    CS3.forEach(function (c) {
+      var q = LACO[c.sigla], cor = CORW[c.sigla];
+      if (!q) return;
+      h += "<g class='lc-no' data-c='" + c.sigla + "' role='button' tabindex='0' style='--cor:" + cor + "' aria-label='" + esc(CSUP[c.sigla] + " " + c.nome) + "'><title>" + esc(CSUP[c.sigla] + " " + c.nome + ": " + c.oque) + "</title>" +
+        "<circle cx='" + q[0] + "' cy='" + q[1] + "' r='11'/><text class='lc-nt' x='" + q[0] + "' y='" + (q[1] + 3.3) + "' text-anchor='middle'>" + CSUP[c.sigla] + "</text></g>";
+    });
+    /* as seis etapas: pontos na cor do C que as agrupa, a sigla ao lado; as portas levam o anel duplo */
+    (D.etapas || []).forEach(function (e) {
+      var q = LACO[e.id], s = SIGLA_ETAPA[e.id];
+      if (!q || !s) return;
+      var cor = corDe(e.id), vazio = false;
+      h += "<g class='lc-etapa' data-etapa='" + e.id + "' role='button' tabindex='0' aria-label='" + esc(e.id + " " + e.nome) + "'><title>" + esc(e.id + " " + e.nome + ": " + e.oque) + "</title>" +
+        "<circle class='lc-ponto' cx='" + q[0] + "' cy='" + q[1] + "' r='4' fill='" + (vazio ? "#fff" : cor) + "' stroke='" + cor + "'" + (vazio ? " stroke-dasharray='2.4 1.6'" : "") + "/>" +
+        "<text class='lc-sg' x='" + s[0] + "' y='" + s[1] + "' text-anchor='middle' fill='" + cor + "'>" + siglaEtapa(e.id) + "</text></g>";
+    });
+    h += "</svg>";
+    lacoEl.innerHTML = h;
+    legendaLaco();
+    /* cliques e teclado, delegados na cena (figura e legenda): cada coisa abre o seu detalhe na linha sob a figura */
+    var cena = document.getElementById("cena-ctx") || lacoEl;
+    cena.addEventListener("click", function (e) {
+      var alvo = e.target.closest && e.target.closest("[data-momento],[data-c],[data-etapa]");
+      if (!alvo) { if (e.target.closest && e.target.closest(".lc-svg")) mostraDetalhe(null); return; }
+      if (alvo.hasAttribute("data-momento")) mostraDetalhe("momento", alvo.getAttribute("data-momento"));
+      else if (alvo.hasAttribute("data-c")) mostraDetalhe("c", alvo.getAttribute("data-c"));
+      else mostraDetalhe("etapa", alvo.getAttribute("data-etapa"));
+    });
+    cena.addEventListener("keydown", function (e) {
+      if ((e.key === "Enter" || e.key === " ") && e.target.closest && e.target.closest(".lc-svg [role=button]")) { e.preventDefault(); e.target.click(); }
+    });
+    mostraDetalhe(null);
+  }
+  /* a legenda ao lado da figura: os três momentos, cada um com o seu fio (siglas, nomes, verbos e portas); tudo clicável */
+  function legendaLaco() {
+    var leg = document.getElementById("laco-leg");
+    if (!leg) return;
+    leg.innerHTML = MOMENTOS.map(function (m) {
+      var tc = tituloCorpo("momento_" + m.id);
+      var itens = m.fio.map(function (k) {
+        var c = CS3.filter(function (x) { return x.sigla === k; })[0];
+        if (c) return "<button type='button' class='lg-item' data-c='" + k + "' style='--cor:" + CORW[k] + "'><b>" + CSUP[k] + "</b><span>" + esc(c.nome) + " <i>" + esc(c.verbo) + "</i></span></button>";
+        var e = ETAPA[k];
+        if (!e) return "";
+        return "<button type='button' class='lg-item' data-etapa='" + k + "' style='--cor:" + corDe(k) + "'><b>" + siglaEtapa(k) + "</b><span>" + esc(e.curto) + "</span></button>";
+      }).join("");
+      return "<div class='lg-grupo' style='--cor:" + CORW[m.cor] + "'><button type='button' class='lg-titulo' data-momento='" + m.id + "'><b>" + m.n + "</b><span>" + esc(tc[0]) + " <i>" + ATO_DE[m.id] + "</i></span></button>" + itens + "</div>";
+    }).join("");
+  }
+  function mostraDetalhe(tipo, id) {
+    if (!lacoEl) return;
+    if (tipo === "momento" && !momentoDe(id)) tipo = null;
+    Array.prototype.forEach.call(lacoEl.querySelectorAll(".lc-reg"), function (r) {
+      var meu = r.getAttribute("data-momento") === id;
+      r.classList.toggle("on", tipo === "momento" && meu);
+      r.classList.toggle("dim", tipo === "momento" && !meu);
+    });
+    var cena = document.getElementById("cena-ctx") || lacoEl, attr = { momento: "data-momento", c: "data-c", etapa: "data-etapa" }[tipo];
+    Array.prototype.forEach.call(cena.querySelectorAll("[data-momento],[data-c],[data-etapa]"), function (x) {
+      x.classList.toggle("on", !!attr && x.getAttribute(attr) === id);
+    });
+    selecao.contexto = tipo === "momento" ? id : null;
+    if (vistaAtual === "contexto") estadoNaUrl();
+    if (!lacoRot) return;
+    var html, c, e;
+    if (!tipo) {
+      html = "<b>Como ler</b> dois laços: quem pergunta, e a convergência dos três Cs · três momentos, 1 2 3, cada um com o seu fio ao lado (clique) · tracejado: a volta, por construir";
+    } else if (tipo === "momento") {
+      var m = momentoDe(id), tc = tituloCorpo("momento_" + id);
+      var fio = m.fio.map(function (k) {
+        var cc = CS3.filter(function (x) { return x.sigla === k; })[0]; if (cc) return CSUP[k] + " " + cc.verbo;
+        var ee = ETAPA[k]; return ee ? siglaEtapa(k) + " " + ee.curto.toLowerCase() : k;
+      }).join(" → ");
+      html = "<b>" + m.n + " · " + esc(tc[0]) + "</b> " + esc(fio) + ". Entrega: " + esc(ponto(sintTxt("entrega_" + id))) +
+        eloPara(m.vista, m.item, "abrir na camada " + CAMADA_DE[m.vista] + " →");
+    } else if (tipo === "c") {
+      c = CS3.filter(function (x) { return x.sigla === id; })[0];
+      html = c ? "<b>" + CSUP[id] + " " + esc(c.nome) + "</b> " + esc(ponto(c.oque)) + eloPara("sistema", id, "abrir na camada 02 →") : "";
+    } else if (tipo === "etapa") {
+      e = ETAPA[id];
+      html = e ? "<b>" + siglaEtapa(id) + " " + esc(e.nome) + "</b> " + esc(ponto(e.oque)) +
+        (id === "V" ? (VOLTA_ABERTA ? " " + esc(ponto(sintTxt("laco_nota"))) + " Tracejado: por construir." : "") + eloPara("direcao", null, "abrir na camada 05 →")
+          : eloPara("jornadas", null, "abrir na camada 04 →")) : "";
+    } else {
+      html = "";
+    }
+    lacoRot.innerHTML = html;
+    ligaElos(lacoRot);
   }
   /* a régua: o número barulhento e os silenciosos na mesma escala (vendidos · empate · capacidade, em pacotes por ano) */
   function regua() {
@@ -263,7 +375,7 @@
     if (!leituraCtx) return;
     var obst = sintTxt("ato1_obstaculos").split(" · ").map(function (s) { return s.trim(); }).filter(Boolean), v = CONT.vendidos;
     var html = "<div class='ctx-grid'><div>";
-    html += "<div class='bloco ficha'><div class='rotulo'>Quem precisa da prova</div><h3 class='ctx-h'>" + esc(ponto(sintTxt("ato1_historia"))) + "</h3><p>" + esc(ponto(sintTxt("ato1_filme"))) + sintConf("ato1_filme") + "</p></div>";
+    html += "<div class='bloco ficha'><div class='rotulo'>Quem precisa da prova</div><h3 class='ctx-h'>" + esc(ponto(sintTxt("ato1_historia"))) + "</h3></div>"; /* o filme dos três pacotes saiu a pedido do usuário (28/10): a régua e a frase única já dizem o que importa */
     if (obst.length) html += "<div class='bloco'><div class='rotulo'>O caminho dela, e onde emperra</div><ol class='obst'>" + obst.map(function (o, i) {
       return "<li" + (i === obst.length - 1 ? " class='aberta'" : "") + ">" + esc(maiuscula(o.replace(/^e,\s*/, ""))) + "</li>";
     }).join("") + "</ol></div>";
@@ -502,7 +614,7 @@
       var gl = (D.glossario || []).filter(function (g) { return (g.c || []).indexOf(id) >= 0; })[0];
       html += "<div class='bloco ficha'><div class='rotulo'>" + SUPC[id] + " · " + esc(c.nome) + " · " + esc(c.verbo) + " " + conf(c.confianca) + "</div><h3>" + esc(maiuscula(c.oque)) + ".</h3>" +
         (gl ? "<p>" + esc(gl.explicacao) + ".</p>" : "") +
-        "<dl>" + (c.etapas || []).map(function (e) { var et = ETAPA[e]; return et ? "<dt>" + e + " · " + esc(et.curto) + "</dt><dd>" + esc(et.oque) + "</dd>" : ""; }).join("") + "</dl>" +
+        "<dl>" + (c.etapas || []).map(function (e) { var et = ETAPA[e]; return et ? "<dt>" + siglaEtapa(e) + " · " + esc(et.curto) + "</dt><dd>" + esc(et.oque) + "</dd>" : ""; }).join("") + "</dl>" +
         passagemHtml(id) + "</div>";
       html += "<div class='bloco'>" + D.achados.filter(function (a) { return a.camada !== "fecho" && (a.c || []).indexOf(id) >= 0; }).map(function (a) {
         return "<div class='achado'><b>" + esc(a.titulo) + "</b><span>" + esc(maiuscula(a.texto)) + ".</span></div>";
@@ -521,56 +633,91 @@
     escreve(leituraSis, html);
   }
 
-  /* ================= 03 · SERVIÇOS: a matriz de cobertura =================
-     Linhas: o que se vende. Colunas: as etapas. A cor diz quem paga. Reuso é "depois": lá está o que não existe. */
-  var matriz = document.getElementById("matriz"), leituraServ = document.getElementById("leitura-serv");
-  (function montaMatriz() {
-    var h = "<div class='mz'><div></div>" + faixaCs("mz-zona");
-    h += "<div class='mz-cab'></div>" + COLS.map(function (c) { return "<div class='mz-cab'><small>" + c + "</small><b>" + esc(ETAPA[c].curto) + "</b></div>"; }).join("");
-    D.servicos.forEach(function (s) {
-      var e = ENQ[s.enquadramento];
-      h += "<div class='mz-l clicavel c-" + s.confianca + "' data-serv='" + s.id + "' tabindex='0'><div class='mz-lin'><b>" + esc(s.nome) + "</b><div class='meta'>" + tagEnq(s.enquadramento, "", true) + conf(s.confianca) + "</div></div>";
-      COLS.forEach(function (c, i) {
-        var tem = s.etapas.indexOf(c) >= 0;
-        var antes = i > 0 && s.etapas.indexOf(COLS[i - 1]) >= 0, depois = i < COLS.length - 1 && s.etapas.indexOf(COLS[i + 1]) >= 0;
-        h += "<div class='mz-cel" + (c === "E6" ? " depois" : "") + (tem && !antes ? " ini" : "") + (tem && !depois ? " fim" : "") + "'>" + (tem ? "<i style='background-color:" + e.cor + "'></i>" : "") + "</div>";
+  /* ================= 03 · SERVIÇOS: o portfólio, no molde da Longevidade (28/10/2026) =================
+     Em cima, as linhas clínicas: onde a coorte já foi montada e onde a expertise existe (linhas.csv). Embaixo, um cartão
+     por pacote (servicos.csv): para quem, o que entra (entregas.csv × componentes.csv) agrupado pelos três Cs e pela
+     volta, o que já foi feito e o que falta construir, e o que cada pacote destrava adiante. Um pacote que contém outro
+     inteiro diz "tudo do X" e lista só o que acrescenta, como os pacotes da Longevidade. O usuário (28/10): "e sobre os
+     segmentos, que eles falaram de oncologia, cirurgia, ou por cliente; gere um portfólio e coloque na aba Serviços assim
+     como no projeto Longevidade". A matriz serviços × etapas que vivia aqui saiu: a cobertura está nos grupos dos cartões.
+     Três pacotes, pelo princípio do usuário: "a pergunta é do cliente, a coorte é do HDB e a comprovação é a análise";
+     saíram o painel para o gestor (canal condicionado a edital) e a coorte entregue (perde valor sem a comprovação). */
+  var portfolio = document.getElementById("portfolio");
+  var LINHA_ESTADO = { vendido: ["vendido", "ok"], a_validar: ["sem concorrente · a validar", "ceu"], expertise: ["expertise dos inventores · demanda a confirmar", "ouro"], parcial: ["parcial · concorrente presente", "cinza"], aspiracao: ["aspiração", "cinza"] };
+  function selecionaServico(id) {
+    selecao.servicos = id || null;
+    if (!portfolio) return;
+    Array.prototype.forEach.call(portfolio.querySelectorAll(".pf-cartao"), function (c) { c.classList.toggle("on", c.getAttribute("data-serv") === id); });
+  }
+  (function montaPortfolio() {
+    if (!portfolio || !(D.servicos || []).length) return;
+    var ENT = {}; (D.entregas || []).forEach(function (e) { ENT[e.id] = e; });
+    var COMP = {}; (D.componentes || []).forEach(function (c) { (COMP[c.servico] = COMP[c.servico] || []).push(c.entrega); });
+    var ORDEM_C = ["C1", "C2", "C3", "volta"], NOME_C = {};
+    CS3.forEach(function (c) { NOME_C[c.sigla] = CSUP[c.sigla] + " " + c.verbo; });
+    NOME_C.volta = "↻ a " + (VOLTA ? VOLTA.nome.toLowerCase() : "volta");
+    var h = "";
+    /* as linhas clínicas */
+    if ((D.linhas || []).length) {
+      h += "<div class='pf-linhas'><span class='pf-rot'>As linhas clínicas · onde a coorte já foi montada, e onde a expertise existe</span><div class='pf-chips'>" + D.linhas.map(function (l) {
+        var est = LINHA_ESTADO[l.estado] || [l.estado, "cinza"];
+        return "<span class='pf-linha pf-" + est[1] + (l.estado === "a_validar" || l.estado === "aspiracao" ? " pf-trac" : "") + "' title='" + esc(l.leitura) + "'><b>" + esc(l.nome) + "</b><i>" + esc(est[0]) + "</i></span>";
+      }).join("") + "</div></div>";
+    }
+    /* um cartão por pacote */
+    var cartoes = D.servicos.map(function (s) {
+      var itens = COMP[s.id] || [], tem = {};
+      itens.forEach(function (k) { tem[k] = true; });
+      /* um pacote só "herda" de outro que vem antes dele na ordem do portfólio: o Pacote de coorte é a referência */
+      var base = null, posS = D.servicos.indexOf(s);
+      D.servicos.forEach(function (o, posO) {
+        var outros = COMP[o.id] || [];
+        if (posO >= posS || !outros.length || outros.length >= itens.length) return;
+        if (outros.every(function (k) { return tem[k]; }) && (!base || outros.length > (COMP[base.id] || []).length)) base = o;
       });
-      h += "</div>";
-    });
-    h += "<div class='mz-rodape'><span>Clique numa linha para ver o que ela é.</span><span class='depois'>Só um serviço é vendido hoje; o que acumula receita ainda não existe.</span></div></div>";
-    escreve(matriz, h);
-    Array.prototype.forEach.call(matriz.querySelectorAll(".mz-l"), function (l) {
-      clicavel(l, function () { selecionaServico(selecao.servicos === l.dataset.serv ? null : l.dataset.serv); estadoNaUrl(); });
+      var herdadas = {}; if (base) (COMP[base.id] || []).forEach(function (k) { herdadas[k] = true; });
+      var proprias = itens.filter(function (k) { return !herdadas[k]; });
+      /* sem contagens: "N entregas · M feitas" era uma soma do nosso próprio catálogo, sem fonte (o usuário, 28/10: "sem fontes, retire-os") */
+      var grupos = {}; proprias.forEach(function (k) { var e = ENT[k]; if (e) (grupos[e.c] = grupos[e.c] || []).push(e); });
+      var corpo = "";
+      if (base) corpo += "<p class='pf-base'>Tudo do " + esc(base.nome) + "</p><p class='pf-mais'>O que só este pacote acrescenta</p>";
+      corpo += ORDEM_C.filter(function (c) { return grupos[c]; }).map(function (c) {
+        return "<p class='pf-c' style='--cor:" + CORW[c] + "'>" + esc(NOME_C[c] || c) + "</p><ul class='pf-lista'>" + grupos[c].map(function (e) {
+          return "<li class='" + (e.estado === "feito" ? "pf-feito" : "pf-abrir") + "' style='--cor:" + CORW[c] + "' title='" + esc(e.descricao) + "'>" + esc(e.nome) + "</li>";
+        }).join("") + "</ul>";
+      }).join("");
+      var destrava = s.destrava && s.destrava !== "—" ? s.destrava.split(" · ").map(function (d) { return "<span class='pf-mod'>" + esc(d) + "</span>"; }).join("") : "—";
+      return "<article class='pf-cartao c-" + s.confianca + "' data-serv='" + s.id + "' tabindex='0'><h3>" + esc(s.nome) + "</h3>" +
+        "<p class='pf-quem'><span class='pf-sub'>Para quem</span>" + esc(s.para_quem || "") + "</p>" +
+        "<p class='pf-desc'>" + esc(maiuscula(s.descricao)) + ".</p>" + corpo +
+        "<p class='pf-destrava'><span class='pf-sub'>Destrava adiante</span>" + destrava + "</p>" +
+        "<p class='pf-pe'>" + tagEnq(s.enquadramento, "", true) + conf(s.confianca) + "</p></article>";
+    }).join("");
+    h += "<div class='pf-grade'>" + cartoes + "</div>";
+    /* a legenda e o que a camada revela; os achados desta camada numa linha, com o texto ao passar o mouse */
+    h += "<p class='pf-leg'>" + ORDEM_C.map(function (c) { return "<span class='pf-leg-c' style='--cor:" + CORW[c] + "'>" + esc(NOME_C[c]) + "</span>"; }).join("") +
+      "<span><i>itálico: a construir</i> · o mouse mostra a entrega · a etiqueta diz quem paga</span>" + elo("servicos") + "</p>";
+    var achs = (D.achados || []).filter(function (a) { return a.camada === "servicos"; });
+    if (achs.length) h += "<p class='pf-achados'><span class='pf-rot'>O que já sabemos</span>" + achs.map(function (a) { return "<span class='pf-ach' title='" + esc(ponto(a.texto)) + "'>" + esc(a.titulo) + "</span>"; }).join("") + "</p>";
+    if (sintTxt("revela_servicos")) h += "<p class='pf-revela'><span class='pf-rot'>O que isso revela</span>" + esc(ponto(sintTxt("revela_servicos"))) + sintConf("revela_servicos") + "</p>";
+    escreve(portfolio, h);
+    portfolio.addEventListener("click", function (e) {
+      var c = e.target.closest && e.target.closest(".pf-cartao");
+      if (!c || (e.target.closest && e.target.closest("button"))) return;
+      selecionaServico(c.getAttribute("data-serv") === selecao.servicos ? null : c.getAttribute("data-serv"));
+      estadoNaUrl();
     });
   })();
-  function selecionaServico(id) {
-    selecao.servicos = id;
-    Array.prototype.forEach.call(matriz.querySelectorAll(".mz-l"), function (l) { l.classList.toggle("on", l.dataset.serv === id); });
-    var s = id && D.servicos.filter(function (x) { return x.id === id; })[0], html = "";
-    if (s) {
-      html += "<div class='bloco ficha'><div class='rotulo'>Serviço " + conf(s.confianca) + "</div><h3>" + esc(s.nome) + "</h3><p>" + esc(maiuscula(s.descricao)) + ".</p>" +
-        "<dl><dt>Quem paga</dt><dd>" + tagEnq(s.enquadramento) + "</dd><dt>Etapas</dt><dd>" + s.etapas.map(function (e) { return esc(ETAPA[e].curto); }).join(" · ") + "</dd></dl></div>";
-      html += "<div class='bloco'><div class='rotulo'>O que cada etapa exige</div><ul class='lista'>" + s.etapas.map(function (e) {
-        return "<li style='cursor:default'><b>" + esc(ETAPA[e].nome) + "</b>: " + esc(ETAPA[e].oque) + (ETAPA[e].recurso && ETAPA[e].recurso !== "—" ? " · <i>" + esc(ETAPA[e].recurso) + "</i>" : "") + "</li>";
-      }).join("") + "</ul></div>";
-    } else {
-      html += "<div class='bloco'>" + achadosHtml("servicos", true) + "</div>";
-      var usados = {}; D.servicos.forEach(function (x) { usados[x.enquadramento] = 1; });
-      html += "<div class='bloco'><div class='rotulo'>A cor diz quem paga</div>" + Object.keys(usados).map(function (k) { return tagEnq(k); }).join(" ") + "<p class='dica'>Barra listrada: serviço ainda em aberto, sem comprador confirmado.</p></div>";
-    }
-    html += elo("servicos");
-    escreve(leituraServ, html);
-  }
 
   /* ================= 04 · JORNADAS: o blueprint ================= */
   (function montaBlueprint() {
     var J = {}; D.jornada.forEach(function (j) { J[j.etapa] = j; });
     function linha(rotulo, cel) {
-      return "<div class='bp-lin'>" + rotulo + "</div>" + COLS.map(function (c) { return cel(J[c], ETAPA[c]).replace("<div", c === "E6" ? "<div class='depois'" : "<div").replace("class='depois' class='", "class='depois "); }).join("");
+      return "<div class='bp-lin'>" + rotulo + "</div>" + COLS.map(function (c) { return cel(J[c], ETAPA[c]).replace("<div", c === "V" ? "<div class='depois'" : "<div").replace("class='depois' class='", "class='depois "); }).join("");
     }
     var h = "<div class='bp'><div class='bp-zona vazio'></div>" + faixaCs("bp-zona");
     /* a espera antes da etapa (jornada.espera · Goh, "a rota real"): um círculo vazado e a duração, em itálico */
-    h += "<div class='bp-lin'></div>" + COLS.map(function (c) { return "<div class='bp-cab" + (c === "E6" ? " depois" : "") + "'><small>" + c + "</small><b>" + esc(ETAPA[c].curto) + "</b><small>" + esc(J[c].quando) + "</small>" +
+    h += "<div class='bp-lin'></div>" + COLS.map(function (c) { return "<div class='bp-cab" + (c === "V" ? " depois" : "") + "'><small>" + siglaEtapa(c) + "</small><b>" + esc(ETAPA[c].curto) + "</b><small>" + esc(J[c].quando) + "</small>" +
       (J[c].espera ? "<span class='bp-espera'><i></i>" + esc(J[c].espera) + "</span>" : "") + "</div>"; }).join("");
     h += linha("O cliente vive", function (j) { return "<div class='bp-palco" + (j.fonte === "inferencia" ? " inf" : "") + "'>" + esc(maiuscula(j.vive)) + "</div>"; });
     h += "<div class='bp-vis'><span>LINHA DE VISIBILIDADE</span></div>";
@@ -588,7 +735,7 @@
       "<div class='bloco'>" + achadosHtml("jornadas", true) + "</div>" +
       (window.HDBC && HDBC.laco ? "<div class='bloco'>" + HDBC.laco() + "</div>" : "") +
       "<p class='dica'>Acima da linha, o que o cliente vê; abaixo, o que roda por trás. Círculo vazado: a espera antes da etapa. Itálico: leitura nossa, ainda não observada num cliente real.</p>" +
-      "<div class='bloco fecho'><div class='rotulo'>As três respostas da instituição</div><ol>" + RESPOSTAS.map(function (r) {
+      "<div class='bloco fecho'><div class='rotulo'>As três definições em aberto</div><ol>" + RESPOSTAS.map(function (r) {
         var tc = respostaTC(r[0]); return tc[0] ? "<li><b>" + esc(tc[0]) + "</b><span>" + esc(maiuscula(tc[1])) + (tc[1] ? "." : "") + "</span></li>" : "";
       }).join("") + "</ol></div>" + elo("jornadas"));
   })();
@@ -606,7 +753,7 @@
     var GRADE = { parcerias: "1/1/3/3", atividades: "1/3/2/5", recursos: "2/3/3/5", proposta: "1/5/3/7",
                   relacionamento: "1/7/2/9", canais: "2/7/3/9", segmentos: "1/9/3/11", custos: "3/1/4/6", receita: "3/6/4/11" };
     var CADEIA = ["segmentos", "proposta", "atividades", "recursos", "custos", "receita"];
-    var GRUPO = { G1: "para a empresa nascer", G2: "para captar e vender", G3: "só depois de nascer" };
+    var GRUPO = { G1: "para a empresa ficar de pé", G2: "para captar e vender", G3: "só depois de aberta" };
     var NOME_CAM = {}; VISTAS.forEach(function (v) { NOME_CAM[v.id] = v.n + " · " + v.rot.toLowerCase(); });
     function doBloco(lista, id) { return (lista || []).filter(function (x) { return x.componente === id; }); }
     function rot(t, qt) { return "<p class='pc-rot'>" + t + (qt !== undefined ? "<span>" + qt + "</span>" : "") + "</p>"; }
@@ -634,13 +781,13 @@
       var conta = (c.id === "custos" || c.id === "receita") ?
         "<p class='pc-conta'><a href='" + CONTA + "'>Para quem quer o número: a conta, em anexo →</a></p>" : "";
       return "<header class='pc-cab'><p class='pc-eyebrow'>" + (n ? "elo " + n + " da cadeia · " : "") + esc(c.componente) + " " + conf(c.confianca) +
-        (RESP_DE[c.id] ? " · <b class='pc-resp'>resposta " + RESP_DE[c.id] + " da instituição</b>" : "") + "</p>" +
+        (RESP_DE[c.id] ? " · <b class='pc-resp'>definição " + RESP_DE[c.id] + "</b>" : "") + "</p>" +
         "<h3 class='pc-tit'>" + esc(c.bloco) + "</h3></header>" +
-        "<div class='pc-pede'>" + rot("O que precisamos do Einstein") + "<p>" + esc(ponto(maiuscula(c.pedido))) + "</p></div>" +
+        "<div class='pc-pede'>" + rot("Em aberto com a instituição") + "<p>" + esc(ponto(maiuscula(c.pedido))) + "</p></div>" +
         "<div class='pc-dupla'><div>" + rot("O que já temos") + "<p class='pc-txt'>" + esc(ponto(maiuscula(c.temos))) + "</p></div>" +
-        "<div>" + rot("O que precisamos definir") + "<p class='pc-txt'>" + esc(ponto(maiuscula(c.preciso))) + "</p></div></div>" +
+        "<div>" + rot("O que ainda não está definido") + "<p class='pc-txt'>" + esc(ponto(maiuscula(c.preciso))) + "</p></div></div>" +
         pontos +
-        cond.map(function (a) { return "<p class='pc-cond'><b>Uma das três respostas:</b> " + esc(a.titulo) + ", " + esc(ponto(a.texto)) + "</p>"; }).join("") +
+        cond.map(function (a) { return "<p class='pc-cond'><b>Uma das três definições:</b> " + esc(a.titulo) + ", " + esc(ponto(a.texto)) + "</p>"; }).join("") +
         "<div class='pc-listas'><section>" + rot("O que já sabemos", sabe.length) + "<ul class='pc-ul'>" + (sabe.map(function (a) {
           return "<li><b>" + esc(a.titulo) + "</b><button type='button' class='l-elo pc-ver' data-vista='" + a.camada + "'>ver em " + esc((NOME_CAM[a.camada] || a.camada).replace(/^\d+ · /, "")) + " →</button></li>";
         }).join("") || vazio) + "</ul></section>" +

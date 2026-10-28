@@ -4,16 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Health Data Brasil · síntese do projeto</title>
-<meta name="description" content="A síntese do projeto Health Data Brasil em uma tela: o contexto (quem precisa da prova, os três pacotes vendidos, a virada), as camadas da empresa nova (quem paga e quem ganha · das bases públicas à coorte · o que se vende · o que o cliente vive) e a direção: as três respostas que o Einstein precisa dar.">
+<meta name="description" content="A síntese do projeto Health Data Brasil em uma tela: o contexto (quem precisa da prova, os três pacotes vendidos, a virada), as camadas da empresa nova (quem paga e quem ganha · das bases públicas à coorte · o que se vende · o que o cliente vive) e a direção: as três definições em aberto.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Health Data Brasil · o dado é de todos; a coorte, alguém paga para ter">
-<meta property="og:description" content="Coortes a partir das bases públicas de saúde do Brasil, cruzadas pela mesma pessoa. O contexto, as camadas da empresa nova e o que o Einstein precisa decidir, em uma tela.">
+<meta property="og:description" content="Coortes a partir das bases públicas de saúde do Brasil, cruzadas pela mesma pessoa. O contexto, as camadas da empresa nova e o que falta definir, em uma tela.">
 <meta property="og:url" content="https://biodesignbrasil.github.io/hdb-site/">
 <meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css?v=pub-9">
+<link rel="stylesheet" href="css/styles.css?v=pub-10">
 </head>
 <body>
 
@@ -29,11 +29,14 @@
   <p class="manchete" id="manchete"></p>
 
   <div class="vistas">
-    <!-- 00 · o contexto: a roda dos três Cs à esquerda, a história à direita -->
+    <!-- 00 · o contexto: o laço dos três momentos à esquerda, a história à direita (28/10/2026) -->
     <section class="vista v-contexto" id="v-contexto" role="tabpanel" aria-label="Contexto">
       <div class="cena cena-ctx" id="cena-ctx">
-        <div class="roda" id="roda" aria-label="a convergência: cruzamento, coorte, comprovação; a volta é o arco de retorno"></div>
-        <p class="roda-rot" id="roda-rot"></p>
+        <div class="laco-linha">
+          <div class="laco" id="laco" aria-label="o laço dos três momentos: quem pergunta e o método; a pergunta, a coorte, a prova; a volta, por construir"></div>
+          <div class="laco-leg" id="laco-leg" aria-label="os três momentos, com as etapas, os Cs e as portas de cada um"></div>
+        </div>
+        <p class="laco-rot" id="laco-rot"></p>
       </div>
       <aside class="leitura leitura-ctx" id="leitura-ctx" aria-live="polite" data-piso="0.5"></aside>
     </section>
@@ -51,9 +54,8 @@
       <aside class="leitura" id="leitura-sis" aria-live="polite"></aside>
     </section>
 
-    <section class="vista v-dupla" id="v-servicos" role="tabpanel" aria-label="Serviços">
-      <div class="painel" id="matriz"></div>
-      <aside class="leitura" id="leitura-serv" aria-live="polite"></aside>
+    <section class="vista v-cheia" id="v-servicos" role="tabpanel" aria-label="Serviços">
+      <div class="painel" id="portfolio" data-piso="0.55"></div>
     </section>
 
     <section class="vista v-jornadas" id="v-jornadas" role="tabpanel" aria-label="Jornadas">
@@ -74,9 +76,8 @@
   </p>
 </main>
 
-<script src="js/data.js?v=pub-9"></script>
-<script src="js/convergencia.js?v=pub-9"></script>
-<script src="js/roda.js?v=pub-9"></script>
-<script src="js/script.js?v=pub-9"></script>
+<script src="js/data.js?v=pub-10"></script>
+<script src="js/convergencia.js?v=pub-10"></script>
+<script src="js/script.js?v=pub-10"></script>
 </body>
 </html>

@@ -2,16 +2,17 @@
    Os três Cs e a volta, lidos de window.HDB.convergencia (data.js, GERADO de 08_sintese/dados/convergencia.csv):
      C¹ Cruzamento → C² Coorte → C³ Comprovação → volta (reuso) → C¹
    Assim como M¹ M² M³ são o método na Longevidade, os três Cs são a convergência do HDB: a palavra-sistema que o
-   leitor leva antes de qualquer detalhe. Um anel desenhado do dado: cada C é um nó; a volta é o arco de retorno,
-   tracejado e em vermelho enquanto o estado for "aberto". Checkpoint, não travessia: nada bloqueia a página.
-   Compartilhado pela entrada (../site/), pela Sistemática e pelo painel do caso econômico.
+   leitor leva antes de qualquer detalhe. Até 27/10 o símbolo era um anel (cada C um nó, a volta o arco de retorno);
+   desde 28/10/2026 é o laço dos três momentos em miniatura, o mesmo core da aba 00: quem pergunta à esquerda (cinza),
+   o método à direita com os três Cs sobre ele (C¹ no cruzamento, C² na ponta, C³ embaixo), as duas metades do método tingidas
+   como os momentos (a coorte, a prova); a volta é o arco de retorno de quem pergunta, tracejado enquanto estiver "aberta".
+   Checkpoint, não travessia: nada bloqueia a página. Compartilhado pela Sistemática e pelo painel do caso econômico.
    API: HDBC.desenha(el, opts) · HDBC.svg(opts) · HDBC.etiquetas(["C1","volta"]) · HDBC.sigla("C1") · HDBC.resumo() · HDBC.nomes(lista)
         · HDBC.laco() (o laço do reuso, de laco.csv)
-     opts.lit     siglas acesas (["C1","C3"]); ausente = todas
+     opts.lit     siglas acesas (["C1","C3"]); ausente = todas (as apagadas ficam vazadas e o trecho delas esmaece)
      opts.escuro  true sobre fundo navy (paleta clara); ausente = segue o tema da página
-     opts.nomes   true escreve nome e verbo fora dos nós e o rótulo da volta (o anel grande do herói)
-     opts.anima   true desenha os arcos em sequência (reduced-motion mostra pronto)
-     opts.centro  texto no centro do anel
+     opts.anima   true desenha os traços em sequência (reduced-motion mostra pronto)
+     opts.centro  texto curto dentro do laço de quem pergunta
    O CSS vai uma vez para o <head> (um <style> dentro de SVG inline vale para a página inteira), tudo com prefixo cv-. */
 window.HDBC = (function () {
   "use strict";
@@ -43,13 +44,13 @@ window.HDBC = (function () {
     s.id = "hdbc-css";
     s.textContent = [
       ".cv{display:block;overflow:visible;font-family:inherit}",
-      ".cv .cv-arco{fill:none;stroke-width:2.2;stroke-linecap:round}",
-      ".cv .cv-volta{fill:none;stroke-width:2;stroke-linecap:round}",
-      ".cv .cv-no circle{stroke-width:1.6}",
-      ".cv .cv-sigla{font-weight:800;font-size:7.5px}",
+      ".cv .cv-arco{fill:none;stroke-width:2;stroke-linecap:round}",
+      ".cv .cv-volta{fill:none;stroke-width:1.7;stroke-linecap:round}",
+      ".cv .cv-no circle{stroke-width:1.4}",
+      ".cv .cv-sigla{font-weight:800;font-size:6.2px}",
       ".cv .cv-nome{font-weight:700;font-size:8.5px;letter-spacing:-.01em}",
       ".cv .cv-verbo{font-weight:500;font-size:6px;letter-spacing:.14em;text-transform:uppercase}",
-      ".cv .cv-centro{font-weight:600;font-size:6px;letter-spacing:.24em;text-transform:uppercase}",
+      ".cv .cv-centro{font-weight:600;font-size:5.6px;letter-spacing:.2em;text-transform:uppercase}",
       ".cv .cv-volta-rot{font-weight:700;font-size:6.2px;letter-spacing:.04em}",
       ".cv .cv-volta-est{font-weight:500;font-size:5.4px;font-style:italic}",
       ".cv-anima .cv-arco{stroke-dasharray:100;stroke-dashoffset:100;animation:cvTraca .6s cubic-bezier(.4,0,.2,1) forwards}",
@@ -102,41 +103,28 @@ window.HDBC = (function () {
     var lit = null;
     if (opts.lit) { lit = {}; opts.lit.forEach(function (s) { lit[s] = true; }); }
     function aceso(s) { return !lit || !!lit[s]; }
-    var uid = "cv" + (++seq) + "-", grande = !!opts.nomes;
-    var vb = grande ? "0 -6 160 128" : "33 13 94 76";
-    var h = "<svg class='cv" + (opts.anima ? " cv-anima" : "") + (grande ? " cv-grande" : "") + "' viewBox='" + vb + "' role='img' aria-label='" + esc(rotulo()) + "'>";
-    var vAberta = !V || V.estado === "aberto", vCor = vAberta ? P.aberto : P.C3;
-    h += "<defs>" + N.map(function (c) {
-      return "<marker id='" + uid + c.sigla + "' viewBox='0 0 6 6' refX='4.6' refY='3' markerWidth='3.6' markerHeight='3.6' orient='auto'><path d='M0,0 L6,3 L0,6 Z' fill='" + P[c.sigla] + "'/></marker>";
-    }).join("") + "<marker id='" + uid + "volta' viewBox='0 0 6 6' refX='4.6' refY='3' markerWidth='3.6' markerHeight='3.6' orient='auto'><path d='M0,0 L6,3 L0,6 Z' fill='" + vCor + "'/></marker></defs>";
-    /* os dois arcos que seguem: C¹→C² e C²→C³, na cor do nó de origem */
+    var uid = "cv" + (++seq) + "-", c1 = N[0], c2 = N[1], c3 = N[2];
+    var vAberta = !V || V.estado === "aberto";
+    var tint = escuro ? ["rgba(255,255,255,.07)", "rgba(124,207,182,.16)", "rgba(242,203,110,.16)"] : ["#eef1f5", "#e4f2ef", "#f7f0e1"];
+    var h = "<svg class='cv" + (opts.anima ? " cv-anima" : "") + "' viewBox='0 0 120 72' role='img' aria-label='" + esc(rotulo()) + "'>";
+    /* os dois atos: quem pergunta (cinza) e o método, com as duas metades tingidas como os momentos 2 e 3 */
+    h += "<path d='M60,36 C48,18 14,18 14,36 C14,54 48,54 60,36 Z' fill='" + tint[0] + "'/>";
+    h += "<path d='M60,36 C72,18 106,18 106,36 Z' fill='" + tint[1] + "'/><path d='M106,36 C106,54 72,54 60,36 Z' fill='" + tint[2] + "'/>";
+    /* o arco de cima de quem pergunta é a volta: tracejado enquanto estiver por construir */
+    h += "<path class='cv-arco' d='M60,36 C48,18 14,18 14,36' pathLength='100' stroke='" + P.base + "' opacity='" + (aceso("volta") ? "1" : ".4") + "'" + (vAberta ? " stroke-dasharray='2.4 2'" : "") + " style='animation-delay:0s'/>";
+    h += "<path class='cv-arco' d='M14,36 C14,54 48,54 60,36' pathLength='100' stroke='" + P.base + "' style='animation-delay:.2s'/>";
+    h += "<path class='cv-arco' d='M60,36 C72,18 106,18 106,36' pathLength='100' stroke='" + P[c2.sigla] + "' opacity='" + (aceso(c1.sigla) && aceso(c2.sigla) ? ".95" : ".3") + "' style='animation-delay:.35s'/>";
+    h += "<path class='cv-arco' d='M106,36 C106,54 72,54 60,36' pathLength='100' stroke='" + P[c3.sigla] + "' opacity='" + (aceso(c3.sigla) ? ".95" : ".3") + "' style='animation-delay:.7s'/>";
+    /* os três Cs sobre o laço do método */
+    var POS = { C1: [60, 36], C2: [106, 36], C3: [84, 49.5] };
     N.forEach(function (c, i) {
-      if (i === 2) return;
-      var on = aceso(c.sigla) && aceso(N[i + 1].sigla);
-      h += "<path class='cv-arco' d='" + arco(ang(i), ang(i + 1)) + "' pathLength='100' stroke='" + P[c.sigla] + "' opacity='" + (on ? ".95" : ".3") + "' marker-end='url(#" + uid + c.sigla + ")' style='animation-delay:" + (0.15 + i * 0.55).toFixed(2) + "s'/>";
-    });
-    /* a volta: C³→C¹, tracejada e em vermelho enquanto o reuso estiver aberto */
-    h += "<path class='cv-volta' d='" + arco(ang(2), ang(3)) + "' stroke='" + vCor + "' opacity='" + (aceso("volta") ? ".95" : ".3") + "'" +
-      (vAberta ? " stroke-dasharray='3.2 2.6'" : "") + " marker-end='url(#" + uid + "volta)' style='animation-delay:1.25s'/>";
-    /* os nós */
-    N.forEach(function (c, i) {
-      var p = pt(ang(i), R), cor = P[c.sigla], on = aceso(c.sigla);
+      var p = POS[c.sigla] || [60, 36], cor = P[c.sigla], on = aceso(c.sigla);
       var extra = (c.estado === "aberto" ? " stroke-dasharray='2 1.6'" : "") + (c.estado === "parcial" ? " fill-opacity='.45'" : "");
-      h += "<g class='cv-no' style='animation-delay:" + (i * 0.55).toFixed(2) + "s'><title>" + esc(SUP[c.sigla] + " " + c.nome + ": " + c.oque) + "</title>" +
-        "<circle cx='" + p[0] + "' cy='" + p[1] + "' r='" + NR + "' fill='" + (on ? cor : P.fundo) + "' stroke='" + cor + "'" + (on ? "" : " stroke-opacity='.55'") + extra + "/>" +
-        "<text class='cv-sigla' x='" + p[0] + "' y='" + (p[1] + 2.7).toFixed(2) + "' text-anchor='middle' fill='" + (on ? P.textoNo : cor) + "'" + (on ? "" : " opacity='.75'") + ">" + SUP[c.sigla] + "</text></g>";
-      if (grande) {
-        var ny = i === 0 ? p[1] - NR - 9 : p[1] + NR + 9.5, vy = i === 0 ? p[1] - NR - 3.2 : p[1] + NR + 16.5;
-        h += "<text class='cv-nome' x='" + p[0] + "' y='" + ny.toFixed(2) + "' text-anchor='middle' fill='" + (on ? P.tinta : P.cinza) + "' style='animation-delay:" + (i * 0.55 + 0.2).toFixed(2) + "s'>" + esc(c.nome) + "</text>" +
-          "<text class='cv-verbo' x='" + p[0] + "' y='" + vy.toFixed(2) + "' text-anchor='middle' fill='" + P.cinza + "' style='animation-delay:" + (i * 0.55 + 0.25).toFixed(2) + "s'>" + esc(c.verbo) + "</text>";
-      }
+      h += "<g class='cv-no' style='animation-delay:" + (i * 0.35).toFixed(2) + "s'><title>" + esc(SUP[c.sigla] + " " + c.nome + ": " + c.oque) + "</title>" +
+        "<circle cx='" + p[0] + "' cy='" + p[1] + "' r='6.4' fill='" + (on ? cor : P.fundo) + "' stroke='" + cor + "'" + (on ? "" : " stroke-opacity='.55'") + extra + "/>" +
+        "<text class='cv-sigla' x='" + p[0] + "' y='" + (p[1] + 2.2).toFixed(2) + "' text-anchor='middle' fill='" + (on ? P.textoNo : cor) + "'" + (on ? "" : " opacity='.75'") + ">" + SUP[c.sigla] + "</text></g>";
     });
-    if (grande && V) {
-      var q = pt(210 * PI / 180, R + 9);
-      h += "<text class='cv-volta-rot' x='" + q[0] + "' y='" + (q[1] - 1).toFixed(2) + "' text-anchor='end' fill='" + vCor + "' style='animation-delay:1.3s'>" + SUP.volta + " " + esc(V.nome.toLowerCase()) + "</text>" +
-        "<text class='cv-volta-est' x='" + q[0] + "' y='" + (q[1] + 6).toFixed(2) + "' text-anchor='end' fill='" + P.cinza + "' style='animation-delay:1.35s'>" + esc(vAberta ? "a construir" : "em uso") + "</text>";
-    }
-    if (opts.centro) h += "<text class='cv-centro' x='" + CX + "' y='" + (CY + 2.2) + "' text-anchor='middle' fill='" + P.cinza + "' style='animation-delay:.9s'>" + esc(opts.centro) + "</text>";
+    if (opts.centro) h += "<text class='cv-centro' x='37' y='38.4' text-anchor='middle' fill='" + P.cinza + "' style='animation-delay:.9s'>" + esc(opts.centro) + "</text>";
     return h + "</svg>";
   }
   function desenha(el, opts) {
