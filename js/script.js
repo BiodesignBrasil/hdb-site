@@ -119,7 +119,7 @@
 
   /* ---------- as cinco camadas, como capítulos ---------- */
   var VISTAS = [
-    { id: "contexto", n: "00", rot: "De onde partimos", cam: "contexto", perg: "O dado é de todos. A coorte, alguém paga para ter." },
+    { id: "contexto", n: "00", rot: "Abertura", cam: "contexto", perg: "O dado é de todos. A coorte, alguém paga para ter." },
     { id: "ecossistema", n: "01", rot: "Quem paga, quem ganha", cam: "ecossistema", perg: "Quem paga, e quem ganha?" },
     { id: "sistema", n: "02", rot: "Das bases à coorte", cam: "sistema", perg: "Como um dado público vira algo que alguém paga para ter?" },
     { id: "servicos", n: "03", rot: "O que se vende", cam: "serviços", perg: "O que entra em cada pacote, e para quem?" },
@@ -219,7 +219,7 @@
   var VOLTA = (D.convergencia || []).filter(function (c) { return c.sigla === "volta"; })[0] || null;
   var VOLTA_ABERTA = !VOLTA || VOLTA.estado === "aberto";
   var PASSA = {}; (D.passagens || []).forEach(function (p) { PASSA[p.de] = p; });
-  var lacoEl = document.getElementById("laco"), lacoRot = document.getElementById("laco-rot"), leituraCtx = document.getElementById("leitura-ctx");
+  var lacoEl = document.getElementById("laco"), leituraCtx = document.getElementById("leitura-ctx");
   function sintTxt(k) { var s = (D.sintese || {})[k]; return s ? s.texto : ""; }
   function sintConf(k) { var s = (D.sintese || {})[k]; return s && s.confianca ? " " + conf(s.confianca) : ""; }
   function tituloCorpo(k) { var x = sintTxt(k), i = x.indexOf(": "); return i > 0 ? [x.slice(0, i), x.slice(i + 2)] : [x, ""]; }
@@ -240,7 +240,6 @@
   var NUMERO_MOMENTO = { pergunta: [82, 95], coorte: [222, 66], prova: [222, 124] };
   var SIGLA_ETAPA = { E1: [42.4, 152.5], E2: [108.7, 152.5], E3: [205.2, 160], E4: [170, 140] };
   /* os dois atos: quem pergunta (o laço da esquerda) e a convergência dos três Cs (o da direita: a palavra-sistema do HDB, desde 24/10/2026) */
-  var ATO_DE = { pergunta: "quem pergunta", coorte: "a convergência", prova: "a convergência" };
   function corDe(id) { var cs = C_DE_ETAPA[id] || []; return CORW[cs.length > 1 && cs.indexOf("C2") >= 0 ? "C2" : cs[0]] || CORW.volta; }
   /* o traço de pena: amostra a cúbica "M x,y C x,y x,y x,y", desloca cada ponto pela normal com uma largura que sobe e
      desce (fina nas pontas, 3,4 no meio) e fecha o caminho; sem filtro, sem tremor */
@@ -333,12 +332,12 @@
       var tc = tituloCorpo("momento_" + m.id);
       var itens = m.fio.map(function (k) {
         var c = CS3.filter(function (x) { return x.sigla === k; })[0];
-        if (c) return "<button type='button' class='lg-item' data-c='" + k + "' style='--cor:" + CORW[k] + "'><b>" + CSUP[k] + "</b><span>" + esc(c.nome) + " <i>" + esc(c.verbo) + "</i></span></button>";
+        if (c) return "<button type='button' class='lg-item' data-c='" + k + "' style='--cor:" + CORW[k] + "'><b>" + CSUP[k] + "</b><span>" + esc(c.nome) + "</span></button>";
         var e = ETAPA[k];
         if (!e) return "";
         return "<button type='button' class='lg-item' data-etapa='" + k + "' style='--cor:" + corDe(k) + "'><b>" + siglaEtapa(k) + "</b><span>" + esc(e.curto) + "</span></button>";
       }).join("");
-      return "<div class='lg-grupo' style='--cor:" + CORW[m.cor] + "'><button type='button' class='lg-titulo' data-momento='" + m.id + "'><b>" + m.n + "</b><span>" + esc(tc[0]) + " <i>" + ATO_DE[m.id] + "</i></span></button>" + itens + "</div>";
+      return "<div class='lg-grupo' style='--cor:" + CORW[m.cor] + "'><button type='button' class='lg-titulo' data-momento='" + m.id + "'><b>" + m.n + "</b><span>" + esc(tc[0]) + "</span></button>" + itens + "</div>";
     }).join("");
   }
   function mostraDetalhe(tipo, id) {
@@ -353,33 +352,12 @@
     Array.prototype.forEach.call(cena.querySelectorAll("[data-momento],[data-c],[data-etapa]"), function (x) {
       x.classList.toggle("on", !!attr && x.getAttribute(attr) === id);
     });
+    if (leituraCtx) Array.prototype.forEach.call(leituraCtx.querySelectorAll(".w5-passo"), function (b) {
+      b.classList.toggle("on", tipo === "momento" && b.getAttribute("data-momento") === id);
+    });
     selecao.contexto = tipo === "momento" ? id : null;
     if (vistaAtual === "contexto") estadoNaUrl();
-    if (!lacoRot) return;
-    var html, c, e;
-    if (!tipo) {
-      html = "<b>Como ler</b> dois laços: quem pergunta, e a convergência dos três Cs · três momentos, 1 2 3, cada um com o seu fio ao lado (clique) · tracejado: a volta, por construir";
-    } else if (tipo === "momento") {
-      var m = momentoDe(id), tc = tituloCorpo("momento_" + id);
-      var fio = m.fio.map(function (k) {
-        var cc = CS3.filter(function (x) { return x.sigla === k; })[0]; if (cc) return CSUP[k] + " " + cc.verbo;
-        var ee = ETAPA[k]; return ee ? siglaEtapa(k) + " " + ee.curto.toLowerCase() : k;
-      }).join(" → ");
-      html = "<b>" + m.n + " · " + esc(tc[0]) + "</b> " + esc(fio) + ". Entrega: " + esc(ponto(sintTxt("entrega_" + id))) +
-        eloPara(m.vista, m.item, "abrir na camada " + CAMADA_DE[m.vista] + " →");
-    } else if (tipo === "c") {
-      c = CS3.filter(function (x) { return x.sigla === id; })[0];
-      html = c ? "<b>" + CSUP[id] + " " + esc(c.nome) + "</b> " + esc(ponto(c.oque)) + eloPara("sistema", id, "abrir na camada 02 →") : "";
-    } else if (tipo === "etapa") {
-      e = ETAPA[id];
-      html = e ? "<b>" + siglaEtapa(id) + " " + esc(e.nome) + "</b> " + esc(ponto(e.oque)) +
-        (id === "V" ? (VOLTA_ABERTA ? " " + esc(ponto(sintTxt("laco_nota"))) + " Tracejado: por construir." : "") + eloPara("direcao", null, "abrir na camada 05 →")
-          : eloPara("jornadas", null, "abrir na camada 04 →")) : "";
-    } else {
-      html = "";
-    }
-    lacoRot.innerHTML = html;
-    ligaElos(lacoRot);
+    /* a linha "como ler" e o detalhe sob a figura saíram (o usuário, 28/10: "já fica entendível ao olhar o desenho e suas legendas") */
   }
   /* a régua: o número barulhento e os silenciosos na mesma escala (vendidos · empate · capacidade, em pacotes por ano) */
   function regua() {
@@ -402,23 +380,38 @@
     });
     return h + "</svg>";
   }
+  /* a abertura em sete perguntas (5W2H), para quem chega sem contexto: o molde é a Longevidade (montaAbertura). O usuário,
+     28/10: "chame de Abertura, inclusive no conteúdo do quadro à direita, um 5W2H didático e contextualizador a quem está
+     tendo contato pela primeira vez". Textos em sintese.csv (w_*); "para quem" lê compradores.csv; "como" são os três
+     momentos do laço ao lado (clicar acende o momento na figura); "quanto" leva a régua 3 · 17 · 65, sem reais. */
   function leituraContexto() {
     if (!leituraCtx) return;
-    var obst = sintTxt("ato1_obstaculos").split(" · ").map(function (s) { return s.trim(); }).filter(Boolean);
-    var html = "<div class='ctx-grid'><div>";
-    html += "<div class='bloco ficha'><div class='rotulo'>Quem precisa da prova</div><h3 class='ctx-h'>" + esc(ponto(sintTxt("ato1_historia"))) + "</h3></div>"; /* o filme dos três pacotes saiu a pedido do usuário (28/10): a régua e a frase única já dizem o que importa */
-    if (obst.length) html += "<div class='bloco'><div class='rotulo'>O caminho dela, e onde emperra</div><ol class='obst'>" + obst.map(function (o, i) {
-      return "<li" + (i === obst.length - 1 ? " class='aberta'" : "") + ">" + esc(maiuscula(o.replace(/^e,\s*/, ""))) + "</li>";
-    }).join("") + "</ol></div>";
-    html += "</div><div>";
-    /* a virada continua o caminho: abre com a frase que fecha os obstáculos ("o método entrega; o que não acontece é a
-       próxima venda"), a régua, e a leitura dos números. Era uma caixa tingida à parte, "solta" (o usuário, 28/10). */
-    html += "<div class='bloco ctx-box'><div class='rotulo'>A virada</div><p class='ctx-entrega'>" + esc(ponto(sintTxt("ato1_entrega"))) + "</p>" + regua() +
-      "<p class='ctx-virada'>" + esc(ponto(sintTxt("ato2_virada"))) + sintConf("ato2_virada") + "</p></div>"; /* sem a nota sob a régua: repetia a virada e os obstáculos (o usuário, 28/10) */
-    html += "</div></div>";
-    html += "<p class='ctx-frase'>" + esc(ponto(sintTxt("frase_unica"))) + "</p>";
+    function linha(rot, corpo, cls) { return "<div class='w5" + (cls ? " " + cls : "") + "'><dt>" + rot + "</dt><dd>" + corpo + "</dd></div>"; }
+    var comp = (D.compradores || []).map(function (p) {
+      return "<li" + (p.foco === "sim" ? " class='foco'" : "") + "><b>" + esc(p.nome) + "</b> " + esc(p.motivacao) + "</li>";
+    }).join("");
+    var passos = MOMENTOS.map(function (m, i) {
+      var tc = tituloCorpo("momento_" + m.id);
+      return "<button type='button' class='w5-passo' data-momento='" + m.id + "' style='--cor:" + CORW[m.cor] + "'><b>" + m.n + " " + esc(tc[0]) + "</b>" + esc(sintTxt("w_como_" + (i + 1))) + "</button>";
+    }).join("");
+    var html = (sintTxt("w_intro") ? "<p class='w5-intro'>" + esc(ponto(sintTxt("w_intro"))) + "</p>" : "") +
+      "<dl class='w5h'>" +
+      linha("O quê", esc(ponto(sintTxt("w_oque")))) +
+      linha("Por quê", esc(ponto(sintTxt("w_porque")))) +
+      linha("Para quem", esc(ponto(sintTxt("w_quem"))) + (comp ? "<ul class='w5-pes'>" + comp + "</ul>" : ""), "w5-quem") +
+      linha("Onde", esc(ponto(sintTxt("w_onde")))) +
+      linha("Quando", esc(ponto(sintTxt("w_quando")))) +
+      linha("Como", esc(ponto(sintTxt("w_como"))) + "<span class='w5-passos'>" + passos + "</span>", "w5-como") +
+      linha("Quanto", esc(ponto(sintTxt("w_quanto"))) + regua(), "w5-quanto") +
+      "</dl>";
+    html += "<p class='w5-camadas'>Depois, as cinco camadas: " + VISTAS.filter(function (v) { return v.id !== "contexto"; }).map(function (v) {
+      return "<button type='button' class='l-elo inline' data-vista='" + v.id + "'>" + v.n + " " + esc(v.rot.toLowerCase()) + "</button>";
+    }).join(" · ") + "</p>";
     html += elo("contexto");
     escreve(leituraCtx, html);
+    Array.prototype.forEach.call(leituraCtx.querySelectorAll(".w5-passo"), function (b) {
+      b.addEventListener("click", function () { mostraDetalhe("momento", b.getAttribute("data-momento")); });
+    });
   }
 
   /* ================= 01 · ECOSSISTEMA: quem paga → o spin-off → quem ganha =================
@@ -426,8 +419,9 @@
   var eco = document.getElementById("eco"), leituraEco = document.getElementById("leitura-eco");
   var W = 250, H = 50, X0 = 20, X1 = 325, X2 = 630;
   var POS = {
-    pharma: { x: X0, y: 70, col: 0 }, financiador: { x: X0, y: 140, col: 0 }, fomento: { x: X0, y: 210, col: 0 },
-    pesquisador: { x: X0, y: 280, col: 0 }, orgaos: { x: X0, y: 350, col: 0 },
+    /* sem o financiador (o usuário, 28/10: "retire o financiador"); o fomento acima do pesquisador, que ele paga */
+    pharma: { x: X0, y: 70, col: 0 }, fomento: { x: X0, y: 150, col: 0 },
+    pesquisador: { x: X0, y: 230, col: 0 }, orgaos: { x: X0, y: 320, col: 0 },
     hdb: { x: X1, y: 130, col: 1, h: 70 }, fundadores: { x: X1, y: 270, col: 1, w: 96 }, infra: { x: X1 + 102, y: 270, col: 1, w: 148 }, /* "Infraestrutura local" precisa de 148 com folga */
     conitec: { x: X2, y: 80, col: 2 }, einstein: { x: X2, y: 200, col: 2 },
     techtrials: { x: 40, y: 462, col: 3 }, precision: { x: 325, y: 462, col: 3 }, cidacs: { x: 610, y: 462, col: 3 }
@@ -448,7 +442,7 @@
     }
     D.fluxos.forEach(function (f) {
       var a = POS[f.de], b = POS[f.para], d, c1, c2, m;
-      if (a.col === b.col) { // dentro do spin-off: desce em linha reta
+      if (a.col === b.col) { // na mesma coluna (dentro da empresa, ou o fomento → o pesquisador): desce em linha reta
         var xa = a.x + 60, xb = b.x + (b.w || W) / 2;
         d = [xa, a.y + (a.h || H)]; m = [xb, b.y];
         c1 = [xa, d[1] + 30]; c2 = [xb, m[1] - 30];
@@ -657,7 +651,8 @@
         texto(g, x + 12, BY + 22, SUPC[c.sigla] + " " + c.nome.toUpperCase(), "banda-rot");
         texto(g, x + 12, BY + 36, c.verbo, "banda-verbo");
         var cx = x + 12;
-        (c.etapas || []).forEach(function (e) {
+        /* só as etapas que o cliente vive (E1 a E4): o M é o trabalho do próprio C e, como sigla, não dizia nada (o usuário, 28/10) */
+        (c.etapas || []).filter(function (e) { return e !== "M"; }).forEach(function (e) {
           var ch = el("g", { "class": "chip-e" }, g);
           el("rect", { x: cx, y: BY + BH2 - 28, width: 40, height: 16, rx: 8 }, ch);
           texto(ch, cx + 20, BY + BH2 - 17, e, "", "middle");
@@ -744,32 +739,13 @@
      saíram o painel para o gestor (canal condicionado a edital) e a coorte entregue (perde valor sem a comprovação). */
   var portfolio = document.getElementById("portfolio");
   var LINHA_ESTADO = { vendido: ["vendido", "ok"], a_validar: ["sem concorrente · a validar", "ceu"], expertise: ["expertise dos inventores · demanda a confirmar", "ouro"], parcial: ["parcial · concorrente presente", "cinza"], aspiracao: ["aspiração", "cinza"] };
-  var leituraPf = document.getElementById("leitura-pf"), SERV = {}, ORDEM_C = ["C1", "C2", "C3", "volta"], NOME_C = {};
+  var SERV = {}, ORDEM_C = ["C1", "C2", "C3", "volta"], NOME_C = {};
+  /* não há mais pacote "aberto": os três cartões levam tudo, lado a lado (o usuário, 28/10: "a última coluna, pacote em aberto,
+     é redundante; tire e dê maior enfoque de tamanho e tela aos três itens do portfólio"). `?item=` só realça um cartão */
   function selecionaServico(id) {
     selecao.servicos = id || null;
     if (!portfolio) return;
-    Array.prototype.forEach.call(portfolio.querySelectorAll(".pf-cartao"), function (c) { c.classList.toggle("on", c.getAttribute("data-serv") === id); });
-    leituraPortfolio(id);
-  }
-  /* a leitura do pacote aberto, à direita: o que entra, com a descrição de cada entrega à vista, e o que destrava */
-  function leituraPortfolio(id) {
-    if (!leituraPf) return;
-    var s = id && SERV[id], html = "";
-    if (!s) {
-      html = "<p class='dica'>Clique num pacote para ler o que entra nele.</p>";
-    } else {
-      html += "<div class='bloco ficha'><div class='rotulo'>Pacote " + conf(s.s.confianca) + "</div><h3>" + esc(s.s.nome) + "</h3>" +
-        "<p class='pf-quem'><span class='pf-sub'>Para quem</span>" + esc(s.s.para_quem || "") + "</p><p>" + esc(maiuscula(s.s.descricao)) + ".</p></div>";
-      html += "<div class='bloco'><div class='rotulo'>O que entra</div>" + (s.base ? "<p class='pf-base'>Tudo do " + esc(s.base.nome) + "</p><p class='pf-mais'>O que só este pacote acrescenta</p>" : "") +
-        ORDEM_C.filter(function (c) { return s.grupos[c]; }).map(function (c) {
-          return "<p class='pf-c' style='--cor:" + CORW[c] + "'>" + esc(NOME_C[c] || c) + "</p><ul class='pf-lista'>" + s.grupos[c].map(function (e) {
-            return "<li class='" + (e.estado === "feito" ? "pf-feito" : "pf-abrir") + "' style='--cor:" + CORW[c] + "'>" + esc(e.nome) + "<small>" + esc(ponto(e.descricao)) + "</small></li>";
-          }).join("") + "</ul>";
-        }).join("") + "</div>";
-      html += "<div class='bloco'><div class='rotulo'>Destrava adiante</div><p class='pf-destrava'>" + s.destrava + "</p><p class='pf-pe'>" + tagEnq(s.s.enquadramento, "", true) + "</p></div>";
-    }
-    html += elo("servicos");
-    escreve(leituraPf, html);
+    Array.prototype.forEach.call(portfolio.querySelectorAll(".pf-cartao"), function (c) { c.classList.toggle("on", !!id && c.getAttribute("data-serv") === id); });
   }
   (function montaPortfolio() {
     if (!portfolio || !(D.servicos || []).length) return;
@@ -795,43 +771,38 @@
       var destrava = s.destrava && s.destrava !== "—" ? s.destrava.split(" · ").map(function (d) { return "<span class='pf-mod'>" + esc(d) + "</span>"; }).join("") : "—";
       SERV[s.id] = { s: s, base: base, grupos: grupos, destrava: destrava };
     });
-    var h = "";
-    /* as linhas clínicas */
+    var h = "", linhas = "";
+    /* as linhas clínicas, abaixo dos pacotes: a primeira tela abre nos três cartões ("uma coisa primeiro") */
     if ((D.linhas || []).length) {
-      h += "<div class='pf-linhas'><span class='pf-rot'>As linhas clínicas · onde a coorte já foi montada, e onde a expertise existe</span><div class='pf-chips'>" + D.linhas.map(function (l) {
+      linhas += "<div class='pf-linhas'><span class='pf-rot'>As linhas clínicas · onde a coorte já foi montada, e onde a expertise existe</span><div class='pf-chips'>" + D.linhas.map(function (l) {
         var est = LINHA_ESTADO[l.estado] || [l.estado, "cinza"];
         return "<span class='pf-linha pf-" + est[1] + (l.estado === "a_validar" || l.estado === "aspiracao" ? " pf-trac" : "") + "'><b>" + esc(l.nome) + "</b><i>" + esc(est[0]) + "</i><small>" + esc(ponto(l.leitura)) + "</small></span>";
       }).join("") + "</div></div>";
     }
-    /* um cartão por pacote, compacto: o esquema à esquerda; o pacote aberto se lê à direita (o usuário, 28/10: "a informação ficou pequena e difícil de ler") */
+    /* um cartão por pacote, completo: para quem, a descrição, o que entra (cada entrega com a sua descrição), o que destrava, quem paga */
     var cartoes = D.servicos.map(function (s) {
       var p = SERV[s.id];
       var corpo = (p.base ? "<p class='pf-base'>Tudo do " + esc(p.base.nome) + "</p><p class='pf-mais'>O que só este pacote acrescenta</p>" : "") +
         ORDEM_C.filter(function (c) { return p.grupos[c]; }).map(function (c) {
           return "<p class='pf-c' style='--cor:" + CORW[c] + "'>" + esc(NOME_C[c] || c) + "</p><ul class='pf-lista'>" + p.grupos[c].map(function (e) {
-            /* a descrição só aparece empilhado (celular), no cartão aberto: ali a leitura da direita fica escondida, senão o pacote repetia no fim */
             return "<li class='" + (e.estado === "feito" ? "pf-feito" : "pf-abrir") + "' style='--cor:" + CORW[c] + "'>" + esc(e.nome) + "<small>" + esc(ponto(e.descricao)) + "</small></li>";
           }).join("") + "</ul>";
         }).join("");
-      return "<article class='pf-cartao c-" + s.confianca + "' data-serv='" + s.id + "' tabindex='0'><h3>" + esc(s.nome) + "</h3>" +
-        "<p class='pf-quem'><span class='pf-sub'>Para quem</span>" + esc(s.para_quem || "") + "</p><p class='pf-desc pf-so-empilha'>" + esc(maiuscula(s.descricao)) + ".</p>" + corpo +
-        "<p class='pf-destrava pf-so-empilha'><span class='pf-sub'>Destrava adiante</span>" + p.destrava + "</p>" +
+      return "<article class='pf-cartao c-" + s.confianca + "' data-serv='" + s.id + "'><h3>" + esc(s.nome) + "</h3>" +
+        "<p class='pf-quem'><span class='pf-sub'>Para quem</span>" + esc(s.para_quem || "") + "</p><p class='pf-desc'>" + esc(maiuscula(s.descricao)) + ".</p>" + corpo +
+        "<p class='pf-destrava'><span class='pf-sub'>Destrava adiante</span>" + p.destrava + "</p>" +
         "<p class='pf-pe'>" + tagEnq(s.enquadramento, "", true) + conf(s.confianca) + "</p></article>";
     }).join("");
     h += "<div class='pf-grade'>" + cartoes + "</div>";
     h += "<p class='pf-leg'>" + ORDEM_C.map(function (c) { return "<span class='pf-leg-c' style='--cor:" + CORW[c] + "'>" + esc(NOME_C[c]) + "</span>"; }).join("") +
-      "<span><i>itálico: a construir</i> · a etiqueta diz quem paga · clique num pacote para ler o que entra</span></p>";
+      "<span><i>itálico: a construir</i> · a etiqueta diz quem paga</span></p>";
+    h += linhas;
     /* os achados desta camada, com o texto à vista, e o que a camada revela */
     var achs = (D.achados || []).filter(function (a) { return a.camada === "servicos"; });
     if (achs.length) h += "<div class='pf-sabemos'><span class='pf-rot'>O que já sabemos</span>" + achs.map(function (a) { return "<div class='achado mini'><b>" + esc(a.titulo) + "</b><span>" + esc(maiuscula(a.texto)) + ".</span></div>"; }).join("") + "</div>";
     if (sintTxt("revela_servicos")) h += "<p class='pf-revela'><span class='pf-rot'>O que isso revela</span>" + esc(ponto(sintTxt("revela_servicos"))) + sintConf("revela_servicos") + "</p>";
+    h += "<p class='pf-fim'>" + elo("servicos") + "</p>";
     escreve(portfolio, h);
-    portfolio.addEventListener("click", function (e) {
-      var c = e.target.closest && e.target.closest(".pf-cartao");
-      if (!c || (e.target.closest && e.target.closest("button"))) return;
-      selecionaServico(c.getAttribute("data-serv"));
-      estadoNaUrl();
-    });
   })();
 
   /* ================= 04 · JORNADAS: o blueprint ================= */
@@ -962,6 +933,6 @@
   leituraContexto();
   if (!comparativo) leituraSistema(null);
   leituraEcossistema(null, null);
-  selecionaServico((D.servicos || []).length ? D.servicos[0].id : null); /* o primeiro pacote abre de saída, com as descrições das entregas */
+  selecionaServico(selecao.servicos); /* só realça o pacote vindo da URL; de saída, nenhum: os três se leem inteiros */
   abre(q.get("vista") || "contexto", q.get("item") || undefined);
 })();

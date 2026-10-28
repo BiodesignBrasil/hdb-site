@@ -74,14 +74,6 @@ window.HDB = {
    "confianca": "confirmado"
   },
   {
-   "id": "financiador",
-   "nome": "Quem financia a empresa nova",
-   "papel": "quem aporta o capital até o primeiro lucro · fundadores, Einstein ou investidor",
-   "curto": "Financiador (a definir)",
-   "lado": "fora",
-   "confianca": "aberto"
-  },
-  {
    "id": "techtrials",
    "nome": "Techtrials",
    "papel": "concorrente direto · vende acesso seguro a dados de saúde · foco em farmacêuticas e nos pedidos ao SUS",
@@ -118,12 +110,6 @@ window.HDB = {
    "curto": "empresa",
    "cor": "#0C3A6F",
    "fundo": "#E6ECF3"
-  },
-  "financiador": {
-   "rotulo": "Pago pelo financiador (a definir)",
-   "curto": "financiador",
-   "cor": "#9C5518",
-   "fundo": "#F8EBDD"
   },
   "fomento": {
    "rotulo": "Pago por fomento à pesquisa",
@@ -178,17 +164,6 @@ window.HDB = {
    ]
   },
   {
-   "id": "F3",
-   "de": "financiador",
-   "para": "hdb",
-   "oque": "capital até o primeiro lucro operacional",
-   "tipo": "confirmar",
-   "enquadramento": "financiador",
-   "etapas": [
-    "E1"
-   ]
-  },
-  {
    "id": "F4",
    "de": "orgaos",
    "para": "hdb",
@@ -226,8 +201,19 @@ window.HDB = {
   {
    "id": "F7",
    "de": "fomento",
+   "para": "pesquisador",
+   "oque": "verba de pesquisa para o estudo",
+   "tipo": "confirmar",
+   "enquadramento": "fomento",
+   "etapas": [
+    "V"
+   ]
+  },
+  {
+   "id": "F9",
+   "de": "pesquisador",
    "para": "hdb",
-   "oque": "estudo acadêmico via pesquisador",
+   "oque": "pacote para o artigo, pago com o fomento",
    "tipo": "confirmar",
    "enquadramento": "fomento",
    "etapas": [
@@ -1003,6 +989,12 @@ window.HDB = {
    "titulo": "Os achados no celular",
    "o_que_mudou": "Na 03 empilhada, o bloco \"o que já sabemos\" vinha numa grade de três colunas e os achados saíam esmagados. Em celular passa a uma coluna. No desktop nada muda",
    "versao": 14
+  },
+  {
+   "data": "2026-10-28",
+   "titulo": "A abertura em sete perguntas",
+   "o_que_mudou": "A 00 chama-se Abertura e o quadro à direita passou às sete perguntas (o quê, por quê, para quem, onde, quando, como, quanto), no molde da Longevidade, para quem chega sem contexto. Sob o laço ficam só os nomes: saíram os itálicos e a linha \"como ler\". Na 01 saiu o financiador e o pesquisador liga-se ao fomento. Na 02 saiu o chip M sob os Cs. Na 03 a coluna do pacote aberto saiu: a aba ocupa a tela inteira e cada um dos três pacotes se lê completo no próprio cartão, em letra maior, com as linhas clínicas abaixo",
+   "versao": 15
   }
  ],
  "sintese": {
@@ -1144,6 +1136,50 @@ window.HDB = {
   },
   "revela_servicos": {
    "texto": "A linha clínica não é o pacote: a mesma coorte de oncologia sai como pacote, volta ou coorte viva. A coorte sozinha não se vende: o valor está na comprovação",
+   "confianca": "provavel"
+  },
+  "w_intro": {
+   "texto": "Antes das camadas, o básico para quem chega agora: o que é, por quê, para quem, onde, quando, como e quanto",
+   "confianca": "confirmado"
+  },
+  "w_oque": {
+   "texto": "Uma empresa nova, nascida no Einstein, que cruza as bases públicas de saúde do Brasil pela mesma pessoa e entrega o grupo de pacientes certo, com a análise pronta, em dias",
+   "confianca": "confirmado"
+  },
+  "w_porque": {
+   "texto": "O dado é público e qualquer um pode baixar. O caro é ligar os registros da mesma pessoa entre dez bases que não se falam, e hoje isso leva semanas numa consultoria. Quem mais ganha com a resposta é o SUS, e o SUS não paga por ela",
+   "confianca": "provavel"
+  },
+  "w_quem": {
+   "texto": "Quem precisa provar, com pacientes brasileiros de verdade, que um tratamento funciona. Até hoje quem comprou foi a área de acesso de farmacêuticas. Os outros perfis ainda são hipótese",
+   "confianca": "provavel"
+  },
+  "w_onde": {
+   "texto": "Nas dez bases públicas de saúde do Brasil, baixadas e cruzadas numa máquina própria da empresa, sem nuvem. O método nasceu no Einstein. A empresa está sendo aberta para vendê-lo",
+   "confianca": "confirmado"
+  },
+  "w_quando": {
+   "texto": "Da pergunta à entrega, dias em vez de semanas: o cruzamento leva cerca de 20 minutos, a leitura clínica e a análise levam o resto. Três pacotes vendidos até hoje",
+   "confianca": "provavel"
+  },
+  "w_como": {
+   "texto": "Em três momentos, que se repetem a cada nova pergunta (o desenho ao lado)",
+   "confianca": "confirmado"
+  },
+  "w_como_1": {
+   "texto": "quem pergunta, e o desenho do estudo",
+   "confianca": "confirmado"
+  },
+  "w_como_2": {
+   "texto": "o cruzamento das bases e a coorte",
+   "confianca": "confirmado"
+  },
+  "w_como_3": {
+   "texto": "a análise, a prova e a entrega",
+   "confianca": "confirmado"
+  },
+  "w_quanto": {
+   "texto": "Cada pacote vendido paga o próprio custo com folga. A equipe de hoje dá conta de 65 pacotes por ano, a conta fecha com 17 e até hoje foram 3. O que falta definir está na Direção",
    "confianca": "provavel"
   }
  },
@@ -1795,8 +1831,8 @@ window.HDB = {
   }
  ],
  "versao": {
-  "numero": 14,
+  "numero": 15,
   "data": "2026-10-28",
-  "titulo": "Os achados no celular"
+  "titulo": "A abertura em sete perguntas"
  }
 };

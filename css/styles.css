@@ -243,7 +243,7 @@ svg text{font-family:var(--font)}
 /* ---- 03 · serviços (28/10/2026): o portfólio no molde da Longevidade: as linhas clínicas em cima, um cartão por pacote ---- */
 .v-cheia.on{display:block}
 .pf-rot{font-size:11.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--cinza);margin-right:10px}
-.pf-linhas{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;padding:0 0 8px;border-bottom:1px solid var(--filete);margin-bottom:10px}
+.pf-linhas{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;padding:10px 0 0;border-top:1px solid var(--filete);margin-top:10px}
 .pf-chips{display:flex;flex-wrap:wrap;gap:6px}
 .pf-linha{display:inline-grid;grid-template-columns:auto auto;column-gap:8px;align-items:baseline;padding:4px 10px 5px;border-radius:9px;border:1px solid;font-size:13px;line-height:1.5;background:#fff;max-width:300px}
 .pf-linha small{grid-column:1/-1;font-size:12px;line-height:1.3;color:var(--cinza-escuro)}
@@ -255,24 +255,25 @@ svg text{font-family:var(--font)}
 .pf-cinza{border-color:var(--filete-forte)}
 .pf-cinza b{color:var(--cinza)}
 .pf-trac{border-style:dashed}
-.pf-grade{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:stretch}
-.pf-cartao{background:#fff;border:1px solid var(--filete);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:5px;cursor:pointer;outline:none;transition:box-shadow .2s,border-color .2s}
-.pf-cartao:hover,.pf-cartao:focus-visible,.pf-cartao.on{border-color:var(--tinta);box-shadow:0 2px 10px rgba(22,35,58,.08)}
+/* os três pacotes na largura inteira, cada um completo (28/10: "dê maior enfoque de tamanho e tela aos três itens do portfólio") */
+.pf-grade{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:stretch}
+.pf-cartao{background:#fff;border:1px solid var(--filete);border-top:5px solid var(--cam);border-radius:12px;padding:16px 18px 14px;display:flex;flex-direction:column;gap:6px}
+.pf-cartao.on{border-color:var(--tinta);border-top-color:var(--cam)}
 .pf-cartao.c-aberto{border-style:dashed}
-.pf-cartao h3{font-family:var(--serif);font-size:17px;font-weight:500;margin:0;line-height:1.2;color:var(--tinta)}
+.pf-cartao h3{font-family:var(--serif);font-size:21px;font-weight:500;margin:0;line-height:1.2;color:var(--tinta)}
 .pf-sub{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cinza);margin-bottom:1px}
-.pf-quem{margin:0;font-size:13px;color:var(--tinta);font-weight:600;line-height:1.3}
-.pf-desc{margin:0;font-size:13px;color:var(--cinza-escuro);line-height:1.35}
+.pf-quem{margin:0;font-size:14px;color:var(--tinta);font-weight:600;line-height:1.3}
+.pf-desc{margin:0;font-size:14px;color:var(--cinza-escuro);line-height:1.4}
 .pf-conta{margin:3px 0 0;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--cinza)}
 .pf-conta b{color:var(--ok)}
 .pf-conta i{font-style:normal;color:var(--ouro)}
-.pf-base{margin:2px 0 0;padding:4px 8px;border:1px dashed var(--primary);border-radius:6px;font-size:13px;font-weight:600;color:var(--primary)}
+.pf-base{margin:4px 0 0;padding:4px 8px;border:1px dashed var(--primary);border-radius:6px;font-size:13.5px;font-weight:600;color:var(--primary)}
 .pf-mais{margin:2px 0 0;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--primary)}
-.pf-c{margin:4px 0 0;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cor)}
+.pf-c{margin:6px 0 0;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cor)}
 .pf-lista{list-style:none;margin:0;padding:0}
-.pf-lista li{font-size:13.5px;line-height:1.3;padding:1px 0 1px 9px;border-left:3px solid var(--cor);margin:2px 0;color:var(--tinta)}
+.pf-lista li{font-size:14.5px;line-height:1.3;padding:2px 0 2px 10px;border-left:3px solid var(--cor);margin:4px 0;color:var(--tinta)}
 .pf-lista li.pf-abrir{font-style:italic;color:var(--cinza-escuro);border-left-style:dashed}
-.pf-destrava{margin:auto 0 0;padding-top:6px;border-top:1px solid var(--filete);font-size:13px}
+.pf-destrava{margin:auto 0 0;padding-top:8px;border-top:1px solid var(--filete);font-size:13.5px}
 .pf-mod{display:inline-block;font-size:11.5px;font-weight:600;padding:0 7px;border-radius:999px;background:var(--papel-2);color:var(--tinta);margin:2px 3px 0 0}
 .pf-pe{margin:0;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
 .pf-leg{margin:8px 0 0;font-size:12.5px;color:var(--cinza-escuro);display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}
@@ -281,13 +282,9 @@ svg text{font-family:var(--font)}
 .pf-achados{margin:4px 0 0;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;font-size:13px}
 .pf-ach{color:var(--cinza-escuro)}
 .pf-ach b{color:var(--tinta);font-weight:600}
-.pf-lista li small{display:block;font-size:11.5px;line-height:1.3;color:var(--cinza);font-style:normal}
-/* o pacote aberto se lê na coluna da direita, com a descrição de cada entrega; os cartões da esquerda levam só os nomes */
-.leitura .pf-lista li small{display:block;font-size:12.5px;color:var(--cinza-escuro)}
-.pf-cartao .pf-lista li small,.pf-cartao .pf-so-empilha{display:none}
-.leitura .pf-lista li{font-size:14px;margin:4px 0}
-.leitura .pf-c{margin-top:8px}
-.leitura .pf-destrava{margin:0;padding:0;border:0;font-size:13.5px}
+.pf-lista li small{display:block;font-size:12.5px;line-height:1.35;color:var(--cinza-escuro);font-style:normal}
+.pf-fim{margin:4px 0 0;display:flex;justify-content:flex-end}
+.pf-fim .l-elo{width:auto;margin:0;border-top:0;padding:4px 0 0}
 .pf-sabemos{margin-top:8px;padding-top:8px;border-top:1px solid var(--filete);display:grid;grid-template-columns:auto repeat(2,minmax(0,1fr));gap:4px 14px;align-items:start}
 .pf-sabemos .pf-rot{grid-row:span 2;align-self:start;padding-top:2px}
 .pf-revela{margin:8px 0 0;padding:8px 0 0;border-top:1px solid var(--filete);font-size:14px;color:var(--cinza-escuro);line-height:1.45}
@@ -398,7 +395,6 @@ svg text{font-family:var(--font)}
 /* o desenho toma toda a altura que sobra (largura e altura, o que limitar primeiro); a legenda em três colunas logo abaixo e a linha de leitura no pé.
    Antes a legenda ficava ao lado e a figura saía com 400 px de largura ("não tivemos ganho de tamanho", o usuário, 28/10) */
 .cena-ctx{align-items:stretch;justify-content:flex-start;gap:8px;padding:4px 0}
-.cena-ctx .laco-rot{flex:0 0 auto;max-width:none}
 .laco-linha{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;align-items:stretch;gap:8px;width:100%}
 /* o oito compacto tem 300 × 170; a largura manda, e a altura da tela é o teto */
 .laco{flex:1 1 auto;min-height:0;min-width:0;width:100%;container-type:inline-size}
@@ -434,28 +430,28 @@ svg text{font-family:var(--font)}
 .lg-titulo{font-family:var(--serif);font-size:14.5px;border-bottom:1px solid var(--filete);border-radius:5px 5px 0 0;padding-bottom:3px;margin-bottom:2px}
 .lg-titulo b{font-family:var(--font);font-size:12px;font-weight:800;color:var(--cor)}
 .lg-item b{font-size:11px;font-weight:800;color:var(--cor);letter-spacing:.03em}
-.lg-item i,.lg-titulo i{font-style:italic;color:var(--cinza);font-size:11.5px;font-weight:400}
 .lg-item:hover,.lg-item.on,.lg-titulo:hover,.lg-titulo.on{background:color-mix(in srgb,var(--cor) 11%,#fff)}
 .lg-item:focus-visible,.lg-titulo:focus-visible{outline:2px solid var(--cor);outline-offset:1px}
-.laco-rot{flex:0 0 auto;font-family:var(--serif);font-style:italic;font-size:13px;color:var(--cinza-escuro);text-align:center;max-width:84ch;line-height:1.4;min-height:2.8em}
-.laco-rot b{font-family:var(--font);font-style:normal;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--tinta);margin-right:6px}
-/* o cartão da história: com a coluna da esquerda mais larga, a virada desce para baixo da história quando o cartão aperta */
-.leitura-ctx{container-type:inline-size}
-@container (max-width:600px){.ctx-grid{grid-template-columns:1fr}}
-.ctx-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:0 28px;align-items:start}
-/* a virada no mesmo papel da história, sem caixa: continua o caminho, não o interrompe */
-.ctx-box{border-bottom:0}
-.ctx-box .dica{margin-top:4px}
-.ctx-h{font-family:var(--serif)!important;font-size:21px!important;font-weight:500!important;line-height:1.2!important;letter-spacing:-.01em;margin-bottom:8px!important}
-.ficha p,.leitura-ctx .bloco p{font-size:14px}
-.obst{counter-reset:o;list-style:none;border-top:1px solid var(--filete-forte)}
-.obst li{counter-increment:o;display:grid;grid-template-columns:22px 1fr;gap:8px;padding:5px 0;border-bottom:1px solid var(--filete);font-size:13.5px;color:var(--cinza-escuro)}
-.obst li::before{content:counter(o);font-family:var(--serif);font-size:14px;color:var(--cinza)}
-.obst li.aberta{color:var(--risco);border-bottom:1px dashed var(--risco)}
-.obst li.aberta::before{color:var(--risco)}
-.ctx-entrega{font-family:var(--serif);font-size:17px!important;line-height:1.25;color:var(--tinta);margin-bottom:4px}
-.ctx-virada{font-family:var(--serif);font-size:14px!important;line-height:1.35;color:var(--tinta);margin-bottom:6px}
-.regua-svg{display:block;width:100%;max-width:520px;height:auto;overflow:visible;margin:2px 0 8px}
+/* a abertura em sete perguntas (5W2H), molde da Longevidade: rótulo à esquerda, resposta à direita, em duas colunas; "como" e "quanto" na largura inteira */
+.w5-intro{font-family:var(--serif);font-size:15px;color:var(--cinza-escuro);margin:0 0 4px;line-height:1.35}
+.w5h{margin:0 0 8px;padding:0;display:grid;grid-template-columns:1fr 1fr;column-gap:26px}
+.w5{display:grid;grid-template-columns:76px 1fr;gap:10px;padding:7px 0;border-bottom:1px solid var(--filete)}
+.w5 dt{font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--cam,var(--tinta));padding-top:2px}
+.w5 dd{margin:0;font-size:14px;line-height:1.45;color:var(--tinta)}
+.w5-quem,.w5-como,.w5-quanto{grid-column:1/-1}
+/* os cinco compradores em três colunas, na largura inteira: em coluna única a lista dobrava a altura do quadro */
+.w5-pes{list-style:none;margin:5px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px 14px}
+.w5-pes li{font-size:12.5px;line-height:1.35;color:var(--cinza-escuro);padding-left:14px;position:relative}
+.w5-pes li::before{content:"";position:absolute;left:0;top:6px;width:7px;height:7px;border-radius:50%;background:var(--cinza)}
+.w5-pes li.foco::before{background:var(--cam,var(--tinta));box-shadow:0 0 0 2px #fff,0 0 0 3.5px var(--cam,var(--tinta))}
+.w5-pes li b{color:var(--tinta)}
+.w5-passos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
+.w5-passo{all:unset;cursor:pointer;display:block;font-family:var(--font);font-size:12.5px;line-height:1.35;color:var(--cinza-escuro);padding:6px 9px;border:1px solid var(--filete);border-left:3px solid var(--cor);border-radius:6px;background:#fff}
+.w5-passo b{display:block;font-family:var(--serif);font-size:14px;font-weight:500;color:var(--cor);margin-bottom:1px}
+.w5-passo:hover,.w5-passo.on{background:color-mix(in srgb,var(--cor) 9%,#fff)}
+.w5-passo:focus-visible{outline:2px solid var(--cor);outline-offset:1px}
+.w5-camadas{margin:4px 0 0;font-size:13px;color:var(--cinza-escuro)}
+.regua-svg{display:block;width:100%;max-width:460px;height:auto;overflow:visible;margin:6px 0 0}
 .rg-base{stroke:var(--filete-forte);stroke-width:1.5}
 .rg-feito{stroke:var(--risco);stroke-width:6;stroke-linecap:round}
 .rg-falta{stroke:var(--risco);stroke-width:2;stroke-dasharray:5 5}
@@ -510,10 +506,6 @@ svg text{font-family:var(--font)}
   .lp-fonte{margin-left:0}
   .v-contexto.on{display:block}
   .pf-grade{grid-template-columns:1fr}
-  /* empilhado, o pacote aberto se lê no próprio cartão; a leitura da direita some (repetia o pacote no fim: o usuário, 28/10) */
-  #v-servicos .leitura{display:none}
-  .pf-cartao.on .pf-lista li small{display:block;font-size:12px;color:var(--cinza-escuro)}
-  .pf-cartao.on .pf-so-empilha{display:block}
   /* "o que já sabemos" numa coluna só, em celular: a grade de três colunas com o rótulo em duas linhas esmagava os achados */
   .pf-sabemos{display:block}
   .pf-sabemos .pf-rot{display:block;margin-bottom:6px}
@@ -525,8 +517,8 @@ svg text{font-family:var(--font)}
   .laco{width:min(92vw,560px);margin:0 auto}
   .laco .lc-svg{height:auto}
   .laco-leg{width:100%;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-  .ctx-grid{grid-template-columns:1fr}
+  .w5h{grid-template-columns:1fr}
 }
 
 /* celular estreito: a legenda do laço numa coluna só, para os nomes não quebrarem */
-@media (max-width:520px){.laco-leg{grid-template-columns:1fr}.lg-grupo{display:grid;grid-template-columns:auto 1fr 1fr;gap:2px 8px;align-items:baseline}.lg-grupo .lg-titulo{grid-column:1/-1}}
+@media (max-width:520px){.w5-passos,.w5-pes{grid-template-columns:1fr}.laco-leg{grid-template-columns:1fr}.lg-grupo{display:grid;grid-template-columns:auto 1fr 1fr;gap:2px 8px;align-items:baseline}.lg-grupo .lg-titulo{grid-column:1/-1}}
