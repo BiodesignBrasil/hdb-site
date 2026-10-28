@@ -985,6 +985,12 @@ window.HDB = {
    "titulo": "Legível de bater o olho",
    "o_que_mudou": "A revisão ao vivo da peça, aba a aba, com o usuário no Chrome. A 02 abre com os dois olhares lado a lado e um clique põe um deles em foco, esquema à esquerda e leitura à direita · a 03 passou ao mesmo molde, com o pacote aberto lido à direita · a 04 ocupa a tela inteira · a 01 numera as setas do ator aberto e traz o depoimento dos fundadores sobre o concorrente mais próximo · a 00 ganhou o laço a traço de pena, maior, com a legenda embaixo e uma frase única com valor. Nada fica escondido no mouse, nada se repete, e o encaixe para em 0,82 de escala, com rolagem interna só se faltar espaço",
    "versao": 11
+  },
+  {
+   "data": "2026-10-28",
+   "titulo": "Ajustes de celular",
+   "o_que_mudou": "Conferência de responsividade depois da publicação 11: em celular, os dois olhares da 02 voltam a rolar de lado em vez de encolher, e a legenda do laço da 00 passa a uma coluna. Nada muda no desktop",
+   "versao": 12
   }
  ],
  "sintese": {
@@ -1777,8 +1783,8 @@ window.HDB = {
   }
  ],
  "versao": {
-  "numero": 11,
+  "numero": 12,
   "data": "2026-10-28",
-  "titulo": "Legível de bater o olho"
+  "titulo": "Ajustes de celular"
  }
 };

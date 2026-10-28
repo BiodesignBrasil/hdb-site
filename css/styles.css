@@ -493,8 +493,9 @@ svg text{font-family:var(--font)}
   .cena{height:auto;overflow-x:auto}
   .cena svg{height:auto;min-width:760px}
   .tempos{grid-template-columns:1fr}
-  .duo{grid-template-columns:1fr}
-  .duo svg{min-width:0;height:auto}
+  .duo{grid-template-columns:1fr;overflow-x:auto}
+  .duo svg{height:auto}
+  .laco-leg{gap:6px 10px}
   .leitura{margin-top:14px;padding:14px 16px 16px}
   .leitura,.painel{height:auto;overflow:visible}
   .painel{overflow-x:auto}
@@ -517,3 +518,6 @@ svg text{font-family:var(--font)}
   .laco-leg{width:100%;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
   .ctx-grid{grid-template-columns:1fr}
 }
+
+/* celular estreito: a legenda do laço numa coluna só, para os nomes não quebrarem */
+@media (max-width:520px){.laco-leg{grid-template-columns:1fr}.lg-grupo{display:grid;grid-template-columns:auto 1fr 1fr;gap:2px 8px;align-items:baseline}.lg-grupo .lg-titulo{grid-column:1/-1}}
