@@ -997,6 +997,12 @@ window.HDB = {
    "titulo": "O pacote no celular",
    "o_que_mudou": "Empilhada (celular e tablet), a aba 03 escondia a leitura da direita embaixo dos cartões e o pacote aberto aparecia duas vezes. Agora, empilhado, o pacote aberto se lê no próprio cartão (descrição, entregas com a descrição, o que destrava) e a leitura da direita some. No desktop nada muda",
    "versao": 13
+  },
+  {
+   "data": "2026-10-28",
+   "titulo": "Os achados no celular",
+   "o_que_mudou": "Na 03 empilhada, o bloco \"o que já sabemos\" vinha numa grade de três colunas e os achados saíam esmagados. Em celular passa a uma coluna. No desktop nada muda",
+   "versao": 14
   }
  ],
  "sintese": {
@@ -1789,8 +1795,8 @@ window.HDB = {
   }
  ],
  "versao": {
-  "numero": 13,
+  "numero": 14,
   "data": "2026-10-28",
-  "titulo": "O pacote no celular"
+  "titulo": "Os achados no celular"
  }
 };
