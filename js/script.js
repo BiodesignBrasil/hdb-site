@@ -67,7 +67,7 @@
   function st(s) { return "<span class='st st-" + s + "'>" + ST_TXT[s] + "</span>"; }
   function tagEnq(k, prefixo, curto) {
     var e = ENQ[k];
-    return "<span class='tag' title='" + esc(e.rotulo) + "' style='color:" + e.cor + ";background:" + e.fundo + ";border-color:" + e.cor + "55'>" +
+    return "<span class='tag' style='color:" + e.cor + ";background:" + e.fundo + ";border-color:" + e.cor + "55'>" +
       (prefixo || "") + esc(curto ? e.curto : e.rotulo) + "</span>";
   }
   function clicavel(g, fn) {
@@ -90,11 +90,13 @@
     w.style.zoom = "1";
     /* a altura livre desconta o padding do cartão; a Direção e o contexto descem mais (data-piso) */
     var cs = getComputedStyle(cont), pad = (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0);
-    var alvo = cont.clientHeight - pad - 6, piso = +(cont.getAttribute("data-piso") || 0.6);
+    /* o piso é 0,82 para todas as abas (legibilidade, o usuário, 28/10); o que não couber rola por dentro do cartão */
+    var alvo = cont.clientHeight - pad - 6, piso = Math.max(+(cont.getAttribute("data-piso") || 0.6), 0.82);
     for (var z = 1; z > piso && w.getBoundingClientRect().height > alvo;) {
       z -= 0.03;
       w.style.zoom = String(z);
     }
+    cont.classList.toggle("rola", w.getBoundingClientRect().height > alvo + 2);
   }
   function escreve(cont, html) {
     cont.innerHTML = "<div class='ajusta'>" + html + "</div>";
@@ -178,7 +180,7 @@
   }
   function estadoNaUrl() {
     var q = "?vista=" + vistaAtual + (selecao[vistaAtual] ? "&item=" + encodeURIComponent(selecao[vistaAtual]) : "") +
-      (vistaAtual === "sistema" && tempoAtual !== 2 ? "&tempo=" + tempoAtual : "");
+      (vistaAtual === "sistema" && !comparativo ? "&tempo=" + tempoAtual : "");
     try { history.replaceState(null, "", q); } catch (e) { /* file:// em alguns navegadores */ }
   }
   /* a conta é anexo : só os blocos Custos e Receitas da Direção levam a ela. O publicador reescreve para ../caso-economico/ */
@@ -240,21 +242,50 @@
   /* os dois atos: quem pergunta (o laço da esquerda) e a convergência dos três Cs (o da direita: a palavra-sistema do HDB, desde 24/10/2026) */
   var ATO_DE = { pergunta: "quem pergunta", coorte: "a convergência", prova: "a convergência" };
   function corDe(id) { var cs = C_DE_ETAPA[id] || []; return CORW[cs.length > 1 && cs.indexOf("C2") >= 0 ? "C2" : cs[0]] || CORW.volta; }
+  /* o traço de pena: amostra a cúbica "M x,y C x,y x,y x,y", desloca cada ponto pela normal com uma largura que sobe e
+     desce (fina nas pontas, 3,4 no meio) e fecha o caminho; sem filtro, sem tremor */
+  function cubica(d) {
+    var n = d.match(/-?[\d.]+/g).map(Number), P = [[n[0], n[1]], [n[2], n[3]], [n[4], n[5]], [n[6], n[7]]];
+    return function (t) {
+      var u = 1 - t, a = u * u * u, b = 3 * u * u * t, c = 3 * u * t * t, e = t * t * t;
+      var x = a * P[0][0] + b * P[1][0] + c * P[2][0] + e * P[3][0], y = a * P[0][1] + b * P[1][1] + c * P[2][1] + e * P[3][1];
+      var dx = 3 * u * u * (P[1][0] - P[0][0]) + 6 * u * t * (P[2][0] - P[1][0]) + 3 * t * t * (P[3][0] - P[2][0]);
+      var dy = 3 * u * u * (P[1][1] - P[0][1]) + 6 * u * t * (P[2][1] - P[1][1]) + 3 * t * t * (P[3][1] - P[2][1]);
+      var L = Math.sqrt(dx * dx + dy * dy) || 1;
+      return { x: x, y: y, nx: -dy / L, ny: dx / L };
+    };
+  }
+  function faixa(d, cor) {
+    var f = cubica(d), N = 48, esq = [], dir = [], i, t, p, w;
+    for (i = 0; i <= N; i++) {
+      t = i / N; p = f(t); w = 0.7 + 2.7 * Math.pow(Math.sin(Math.PI * t), 0.9);
+      esq.push((p.x + p.nx * w / 2).toFixed(2) + "," + (p.y + p.ny * w / 2).toFixed(2));
+      dir.push((p.x - p.nx * w / 2).toFixed(2) + "," + (p.y - p.ny * w / 2).toFixed(2));
+    }
+    return "<path class='lc-arco' d='M" + esq.join(" L") + " L" + dir.reverse().join(" L") + " Z' fill='" + cor + "'/>";
+  }
+  function pontilha(d, cor) {
+    var f = cubica(d), N = 26, h = "", i, p, r;
+    for (i = 1; i < N; i++) { p = f(i / N); r = 0.9 + 0.6 * Math.sin(Math.PI * i / N); h += "<circle class='lc-arco lc-aberta' cx='" + p.x.toFixed(2) + "' cy='" + p.y.toFixed(2) + "' r='" + r.toFixed(2) + "' fill='" + cor + "'/>"; }
+    return h;
+  }
   function montaLaco() {
     if (!lacoEl || lacoEl.firstChild || CS3.length !== 3) return;
     var h = "<svg class='lc-svg' viewBox='0 0 300 170' role='group' aria-label='" + esc(window.HDBC ? HDBC.resumo() : "o laço dos três momentos") + "'>";
     /* as três regiões: os momentos (clicáveis) */
     MOMENTOS.forEach(function (m) {
       var tc = tituloCorpo("momento_" + m.id), rot = m.n + " · " + tc[0] + (tc[1] ? ": " + tc[1] : "");
-      h += "<path class='lc-reg lc-reg-" + m.id + "' d='" + REGIAO[m.id] + "' data-momento='" + m.id + "' role='button' tabindex='0' aria-label='" + esc(rot) + "'><title>" + esc(rot) + "</title></path>";
+      h += "<path class='lc-reg lc-reg-" + m.id + "' d='" + REGIAO[m.id] + "' data-momento='" + m.id + "' role='button' tabindex='0' aria-label='" + esc(rot) + "'></path>";
     });
-    /* os arcos: cinza em quem pergunta (o de cima é a volta: tracejado enquanto não existir); o método na cor do momento */
-    h += "<path class='lc-arco" + (VOLTA_ABERTA ? " lc-aberta" : "") + "' d='" + ARCO.esqCima + "' stroke='#9aa3b2'/>";
-    h += "<path class='lc-arco' d='" + ARCO.esqBaixo + "' stroke='#9aa3b2'/>";
-    h += "<path class='lc-arco' d='" + ARCO.dirCima + "' stroke='" + CORW.C2 + "'/>";
-    h += "<path class='lc-arco' d='" + ARCO.dirBaixo + "' stroke='" + CORW.C3 + "'/>";
+    /* os arcos como traços de pena: uma fita que engrossa no meio e afina nas pontas (um caminho fechado, não um stroke),
+       cinza em quem pergunta e na cor do momento na convergência. A volta, por construir, é um pontilhado de tinta.
+       (O usuário, 28/10: "o símbolo está quebrado, parece feito por uma criança; traga um tom artístico".) */
+    h += VOLTA_ABERTA ? pontilha(ARCO.esqCima, "#9aa3b2") : faixa(ARCO.esqCima, "#9aa3b2");
+    h += faixa(ARCO.esqBaixo, "#9aa3b2");
+    h += faixa(ARCO.dirCima, CORW.C2);
+    h += faixa(ARCO.dirBaixo, CORW.C3);
     [[73.8, 21.3, 180, "#9aa3b2"], [73.8, 148.8, 0, "#9aa3b2"], [183, 37.2, -38, CORW.C2], [263.8, 132.8, 133, CORW.C3]].forEach(function (s) {
-      h += "<path class='lc-seta' d='M-3.5,-3 L3,0 L-3.5,3 Z' transform='translate(" + s[0] + "," + s[1] + ") rotate(" + s[2] + ")' fill='" + s[3] + "'/>";
+      h += "<path class='lc-seta' d='M-4.5,-3.2 L4,0 L-4.5,3.2 Q-2.2,0 -4.5,-3.2 Z' transform='translate(" + s[0] + "," + s[1] + ") rotate(" + s[2] + ")' fill='" + s[3] + "'/>";
     });
     /* o número de cada momento, grande e leve, dentro da região */
     MOMENTOS.forEach(function (m) {
@@ -265,7 +296,7 @@
     CS3.forEach(function (c) {
       var q = LACO[c.sigla], cor = CORW[c.sigla];
       if (!q) return;
-      h += "<g class='lc-no' data-c='" + c.sigla + "' role='button' tabindex='0' style='--cor:" + cor + "' aria-label='" + esc(CSUP[c.sigla] + " " + c.nome) + "'><title>" + esc(CSUP[c.sigla] + " " + c.nome + ": " + c.oque) + "</title>" +
+      h += "<g class='lc-no' data-c='" + c.sigla + "' role='button' tabindex='0' style='--cor:" + cor + "' aria-label='" + esc(CSUP[c.sigla] + " " + c.nome) + "'>" +
         "<circle cx='" + q[0] + "' cy='" + q[1] + "' r='11'/><text class='lc-nt' x='" + q[0] + "' y='" + (q[1] + 3.3) + "' text-anchor='middle'>" + CSUP[c.sigla] + "</text></g>";
     });
     /* as seis etapas: pontos na cor do C que as agrupa, a sigla ao lado; as portas levam o anel duplo */
@@ -273,7 +304,7 @@
       var q = LACO[e.id], s = SIGLA_ETAPA[e.id];
       if (!q || !s) return;
       var cor = corDe(e.id), vazio = false;
-      h += "<g class='lc-etapa' data-etapa='" + e.id + "' role='button' tabindex='0' aria-label='" + esc(e.id + " " + e.nome) + "'><title>" + esc(e.id + " " + e.nome + ": " + e.oque) + "</title>" +
+      h += "<g class='lc-etapa' data-etapa='" + e.id + "' role='button' tabindex='0' aria-label='" + esc(e.id + " " + e.nome) + "'>" +
         "<circle class='lc-ponto' cx='" + q[0] + "' cy='" + q[1] + "' r='4' fill='" + (vazio ? "#fff" : cor) + "' stroke='" + cor + "'" + (vazio ? " stroke-dasharray='2.4 1.6'" : "") + "/>" +
         "<text class='lc-sg' x='" + s[0] + "' y='" + s[1] + "' text-anchor='middle' fill='" + cor + "'>" + siglaEtapa(e.id) + "</text></g>";
     });
@@ -357,33 +388,33 @@
     var max = Math.max(+c.valor, +e.valor, +v.valor) * 1.06, W = 600, x0 = 20, x1 = W - 20, y = 56;
     function X(n) { return +(x0 + (x1 - x0) * n / max).toFixed(1); }
     var xv = X(v.valor), xe = X(e.valor), xc = X(c.valor);
-    var h = "<svg class='regua-svg' viewBox='0 0 " + W + " 112' role='img' aria-label='" + esc(v.valor + " " + v.rotulo.toLowerCase() + ", " + e.valor + " de " + e.rotulo.toLowerCase() + " e " + c.valor + " de " + c.rotulo.toLowerCase() + ", na mesma escala, em " + c.unidade) + "'>";
+    /* só três rótulos, grandes o bastante para a coluna estreita; "o que falta vender" e "capacidade ociosa" ficam no texto */
+    var h = "<svg class='regua-svg' viewBox='0 0 " + W + " 110' role='img' aria-label='" + esc(v.valor + " " + v.rotulo.toLowerCase() + ", " + e.valor + " de " + e.rotulo.toLowerCase() + " e " + c.valor + " de " + c.rotulo.toLowerCase() + ", na mesma escala, em " + c.unidade) + "'>";
     h += "<line class='rg-base' x1='" + x0 + "' y1='" + y + "' x2='" + x1 + "' y2='" + y + "'/>";
     h += "<line class='rg-feito' x1='" + x0 + "' y1='" + y + "' x2='" + xv + "' y2='" + y + "'/>";
     h += "<line class='rg-falta' x1='" + xv + "' y1='" + y + "' x2='" + xe + "' y2='" + y + "'/>";
     h += "<line class='rg-sobra' x1='" + xe + "' y1='" + y + "' x2='" + xc + "' y2='" + y + "'/>";
-    h += "<text class='rg-seg' x='" + ((xv + xe) / 2).toFixed(1) + "' y='" + (y + 44) + "' text-anchor='middle'>o que falta vender, por ano</text>";
-    h += "<text class='rg-seg' x='" + ((xe + xc) / 2).toFixed(1) + "' y='" + (y + 44) + "' text-anchor='middle'>capacidade ociosa</text>";
-    [[xv, v, "risco", "start", x0, "start"], [xe, e, "ouro", "middle", xe + 10, "start"], [xc, c, "tinta", "end", x1, "end"]].forEach(function (m) {
+    /* o 3 e o 17 ficam perto na escala: o rótulo do 17 desce uma linha para não cobrir o do 3 */
+    [[xv, v, "risco", "start", x0, "start", 28], [xe, e, "ouro", "middle", xe, "start", 50], [xc, c, "tinta", "end", x1, "end", 28]].forEach(function (m) {
       h += "<circle class='rg-no rg-" + m[2] + "' cx='" + m[0] + "' cy='" + y + "' r='5.5'/>";
       h += "<text class='rg-num rg-" + m[2] + "' x='" + m[0] + "' y='" + (y - 16) + "' text-anchor='" + m[3] + "'>" + m[1].valor + "</text>";
-      h += "<text class='rg-rot' x='" + m[4] + "' y='" + (y + 22) + "' text-anchor='" + m[5] + "'>" + esc(m[1].rotulo.toLowerCase()) + "</text>";
+      h += "<text class='rg-rot' x='" + m[4] + "' y='" + (y + m[6]) + "' text-anchor='" + m[5] + "'>" + esc(m[1].rotulo.toLowerCase()) + "</text>";
     });
     return h + "</svg>";
   }
   function leituraContexto() {
     if (!leituraCtx) return;
-    var obst = sintTxt("ato1_obstaculos").split(" · ").map(function (s) { return s.trim(); }).filter(Boolean), v = CONT.vendidos;
+    var obst = sintTxt("ato1_obstaculos").split(" · ").map(function (s) { return s.trim(); }).filter(Boolean);
     var html = "<div class='ctx-grid'><div>";
     html += "<div class='bloco ficha'><div class='rotulo'>Quem precisa da prova</div><h3 class='ctx-h'>" + esc(ponto(sintTxt("ato1_historia"))) + "</h3></div>"; /* o filme dos três pacotes saiu a pedido do usuário (28/10): a régua e a frase única já dizem o que importa */
     if (obst.length) html += "<div class='bloco'><div class='rotulo'>O caminho dela, e onde emperra</div><ol class='obst'>" + obst.map(function (o, i) {
       return "<li" + (i === obst.length - 1 ? " class='aberta'" : "") + ">" + esc(maiuscula(o.replace(/^e,\s*/, ""))) + "</li>";
     }).join("") + "</ol></div>";
-    html += "<p class='ctx-entrega'>" + esc(ponto(sintTxt("ato1_entrega"))) + "</p>";
     html += "</div><div>";
-    /* a virada: a manchete e a régua; a outra metade dos fatos e os compradores como pontos já vivem na 03 e na Direção */
-    html += "<div class='bloco ctx-box'><div class='rotulo'>A virada</div><p class='ctx-virada'>" + esc(ponto(sintTxt("ato2_virada"))) + sintConf("ato2_virada") + "</p>" + regua() +
-      (v ? "<p class='dica'>" + esc(maiuscula(v.rotulo)) + ": " + esc(ponto(v.leitura)) + " Quem comprou foi sempre o mesmo tipo de cliente: a área de acesso de uma farmacêutica.</p>" : "") + "</div>";
+    /* a virada continua o caminho: abre com a frase que fecha os obstáculos ("o método entrega; o que não acontece é a
+       próxima venda"), a régua, e a leitura dos números. Era uma caixa tingida à parte, "solta" (o usuário, 28/10). */
+    html += "<div class='bloco ctx-box'><div class='rotulo'>A virada</div><p class='ctx-entrega'>" + esc(ponto(sintTxt("ato1_entrega"))) + "</p>" + regua() +
+      "<p class='ctx-virada'>" + esc(ponto(sintTxt("ato2_virada"))) + sintConf("ato2_virada") + "</p></div>"; /* sem a nota sob a régua: repetia a virada e os obstáculos (o usuário, 28/10) */
     html += "</div></div>";
     html += "<p class='ctx-frase'>" + esc(ponto(sintTxt("frase_unica"))) + "</p>";
     html += elo("contexto");
@@ -397,7 +428,7 @@
   var POS = {
     pharma: { x: X0, y: 70, col: 0 }, financiador: { x: X0, y: 140, col: 0 }, fomento: { x: X0, y: 210, col: 0 },
     pesquisador: { x: X0, y: 280, col: 0 }, orgaos: { x: X0, y: 350, col: 0 },
-    hdb: { x: X1, y: 130, col: 1, h: 70 }, fundadores: { x: X1, y: 270, col: 1, w: 122 }, infra: { x: X1 + 128, y: 270, col: 1, w: 122 },
+    hdb: { x: X1, y: 130, col: 1, h: 70 }, fundadores: { x: X1, y: 270, col: 1, w: 96 }, infra: { x: X1 + 102, y: 270, col: 1, w: 148 }, /* "Infraestrutura local" precisa de 148 com folga */
     conitec: { x: X2, y: 80, col: 2 }, einstein: { x: X2, y: 200, col: 2 },
     techtrials: { x: 40, y: 462, col: 3 }, precision: { x: 325, y: 462, col: 3 }, cidacs: { x: 610, y: 462, col: 3 }
   };
@@ -429,8 +460,7 @@
       var cor = ENQ[f.enquadramento].cor;
       var p = el("path", { d: "M" + d.join(",") + " C" + c1.join(",") + " " + c2.join(",") + " " + m.join(","), "class": "seta t-" + f.tipo, stroke: cor }, camadaSetas);
       el("circle", { cx: m[0], cy: m[1], r: 3.2, fill: cor, "class": "seta-ponta" }, camadaSetas);
-      var r = texto(camadaSetas, (d[0] + m[0]) / 2, (d[1] + m[1]) / 2 - 6, f.oque + " · " + csDeEtapas(f.etapas).map(function (s) { return CSUP[s]; }).join(" "), "rot-seta", "middle"); r.setAttribute("fill", cor);
-      setas.push({ f: f, p: p, r: r });
+      setas.push({ f: f, p: p, meio: [(d[0] + m[0]) / 2, (d[1] + m[1]) / 2], cor: cor });
     });
     Object.keys(POS).forEach(function (id) {
       var a = ATOR[id], pz = POS[id], h = pz.h || H, w = pz.w || W;
@@ -444,8 +474,17 @@
       clicavel(g, function () { selecionaEco(selecao.ecossistema === "a:" + id ? null : "a:" + id); estadoNaUrl(); });
       pz.g = g;
     });
+    /* os números das setas ficam numa camada acima das caixas: o vão entre as colunas (55 px) não cabe um rótulo escrito,
+       e o escrito ficava atrás dos quadros (o usuário, 28/10). O número liga a seta à linha da leitura */
+    var camadaNums = el("g", { "class": "nums" }, eco);
+    setas.forEach(function (s) {
+      s.r = el("g", { "class": "rot-seta" }, camadaNums);
+      el("circle", { cx: s.meio[0], cy: s.meio[1], r: 9, fill: s.cor }, s.r);
+      s.t = texto(s.r, s.meio[0], s.meio[1] + 3.5, "", "", "middle");
+    });
     texto(eco, 880, 522, "setas: cor = quem paga · cheia = pagamento · tracejada = a confirmar · pontilhada = ganho sem pagamento", "nota-svg", "end");
   })();
+  var numFluxo = {};
   function selecionaEco(item) {
     selecao.ecossistema = item;
     var ator = item && item.indexOf("a:") === 0 ? item.slice(2) : null;
@@ -454,16 +493,22 @@
       var on = id === ator || (fluxo && setas.some(function (s) { return s.f.id === fluxo && (s.f.de === id || s.f.para === id); }));
       POS[id].g.classList.toggle("on", !!on);
     });
+    numFluxo = {};
+    var n = 0;
     setas.forEach(function (s) {
       var on = (ator && (s.f.de === ator || s.f.para === ator)) || (fluxo && s.f.id === fluxo);
+      if (on) { n += 1; numFluxo[s.f.id] = n; s.t.textContent = String(n); }
       s.p.classList.toggle("on", !!on); s.r.classList.toggle("on", !!on);
       s.p.classList.toggle("apaga", !!item && !on);
     });
     leituraEcossistema(ator, fluxo);
   }
   function itemFluxo(f, ativo) {
-    return "<li class='clicavel t-" + f.tipo + (ativo ? " on" : "") + "' tabindex='0' data-fluxo='" + f.id + "' style='border-left-color:" + ENQ[f.enquadramento].cor + "'>" +
-      "<b>" + esc(ATOR[f.de].curto) + " → " + esc(ATOR[f.para].curto) + "</b>: " + esc(f.oque) + (window.HDBC ? HDBC.etiquetas(csDeEtapas(f.etapas)) : "") + "</li>";
+    var n = numFluxo[f.id], cor = ENQ[f.enquadramento].cor;
+    return "<li class='clicavel t-" + f.tipo + (ativo ? " on" : "") + "' tabindex='0' data-fluxo='" + f.id + "' style='border-left-color:" + cor + "'>" +
+      (n ? "<span class='n' style='background:" + cor + "'>" + n + "</span>" : "") +
+      "<b>" + esc(ATOR[f.de].curto) + " → " + esc(ATOR[f.para].curto) + "</b>: " + esc(f.oque) +
+      "<span class='cs-mini'>" + csDeEtapas(f.etapas).map(function (s) { return CSUP[s]; }).join(" ") + "</span></li>";
   }
   function leituraEcossistema(ator, fluxo) {
     var html = "";
@@ -471,17 +516,25 @@
       var a = ATOR[ator];
       var seus = D.fluxos.filter(function (f) { return f.de === ator || f.para === ator; });
       html += "<div class='bloco ficha'><div class='rotulo'>Ator " + conf(a.confianca) + "</div><h3>" + esc(a.nome) + "</h3><p>" + esc(maiuscula(a.papel)) + ".</p></div>";
-      html += "<div class='bloco'><div class='rotulo'>Relações de dinheiro</div><ul class='lista'>" +
+      if (seus.length || ator !== "techtrials") html += "<div class='bloco'><div class='rotulo'>Relações de dinheiro</div><ul class='lista'>" +
         (seus.length ? seus.map(function (f) { return itemFluxo(f, false); }).join("") : "<li>Nenhuma relação de dinheiro registrada: " + (POS[ator].col === 3 ? "concorre pelo mesmo cliente, ou o substitui de graça." : "o ganho não volta como pagamento.") + "</li>") + "</ul></div>";
     } else {
-      html += "<div class='bloco'>" + achadosHtml("ecossistema", true) + "</div>";
+      /* uma coisa primeiro (Goh): a tese em caixa; os outros achados só pelo título, com o texto no mouse, como na 03.
+         "Como ler as setas" saiu: a nota ao pé do desenho já diz; fica só a linha das cores (o usuário, 28/10: "muita informação") */
+      var achs = D.achados.filter(function (a) { return a.camada === "ecossistema"; }), a0 = achs[0];
+      if (a0) html += "<div class='bloco'><div class='achado tese'><b>" + esc(a0.titulo) + "</b>" + (window.HDBC ? HDBC.etiquetas(a0.c) : "") + "<span>" + esc(maiuscula(a0.texto)) + ".</span></div>" +
+        achs.slice(1).map(function (a) { return "<div class='achado mini'><b>" + esc(a.titulo) + "</b><span>" + esc(maiuscula(a.texto)) + ".</span></div>"; }).join("") + "</div>"; /* texto à vista, nada no mouse (o usuário, 28/10) */
     }
-    html += "<div class='bloco'><div class='rotulo'>Como ler as setas</div><p style='margin-bottom:8px'>A cor diz <b>quem paga</b>. Linha cheia: pagamento · tracejada: <i>a confirmar</i> · pontilhada: ganho sem pagamento. A etiqueta diz <b>em que C</b> o dinheiro passa.</p>" +
-      Object.keys(ENQ).map(function (k) { return tagEnq(k); }).join(" ") + "</div>";
-    if (!ator) {
-      /* recolhida : aberta, a lista passava da altura da tela já em HEAD; abre no clique, como os achados do percurso */
-      html += "<details class='bloco relacoes'" + (fluxo ? " open" : "") + "><summary class='rotulo'>Todas as relações de dinheiro · " + D.fluxos.length + "</summary><ul class='lista'>" +
-        D.fluxos.map(function (f) { return itemFluxo(f, f.id === fluxo); }).join("") + "</ul></details>";
+    /* sem legenda das cores nem a lista de todas as relações na leitura: as relações se leem clicando num ator, numeradas
+       ("para que ficar explicando se é didático"; "isso está pequeno demais, qual o intuito?", o usuário, 28/10) */
+    if (fluxo && !ator) {
+      var fl = D.fluxos.filter(function (f) { return f.id === fluxo; })[0];
+      if (fl) html += "<div class='bloco'><div class='rotulo'>Relação de dinheiro</div><ul class='lista'>" + itemFluxo(fl, true) + "</ul></div>";
+    }
+    /* o concorrente mais próximo, nas palavras dos fundadores (comparativo.csv): o que o HDB faz e o que o rival faz */
+    if (ator === "techtrials" && (D.comparativo || []).length) {
+      html += "<div class='bloco'><div class='rotulo'>Nas palavras dos fundadores " + conf(D.comparativo[0].confianca) + "</div><table class='compara'><thead><tr><th></th><th>Health Data Brasil</th><th>" + esc(ATOR.techtrials.curto) + "</th></tr></thead><tbody>" +
+        D.comparativo.map(function (r) { return "<tr><th>" + esc(r.tema) + "</th><td>" + esc(maiuscula(r.hdb)) + "</td><td>" + esc(maiuscula(r.rival)) + "</td></tr>"; }).join("") + "</tbody></table></div>";
     }
     html += elo("ecossistema");
     escreve(leituraEco, html);
@@ -494,25 +547,63 @@
      As dez bases à esquerda são as mesmas nos dois tempos. O que muda é o meio:
      (1) hoje, à mão: cada base baixada, limpa e conciliada em separado, sem a mesma pessoa entre elas;
      (2) com o HDB: cruzamento pela mesma pessoa → coorte → análise → dossiê. */
-  var sis = document.getElementById("sis"), leituraSis = document.getElementById("leitura-sis");
-  var tempoAtual = 2, TEMPOS = [[1, "Hoje, à mão"], [2, "Com o HDB · os três Cs"]];
+  var sisFoco = document.getElementById("sis"), sis = sisFoco, leituraSis = document.getElementById("leitura-sis");
+  var DUO = { 1: document.getElementById("sis1"), 2: document.getElementById("sis2") };
+  /* os dois olhares como dois cartões largos, cada um com o seu efeito numa linha ("isso está escondido", o usuário, 28/10).
+     O que era o bloco "O que muda" da leitura vive aqui. A camada abre com os dois fluxos desenhados lado a lado, como
+     comparativo, na tela inteira; clicar num deles (no cartão, no desenho, numa base ou num C) põe esse olhar em foco:
+     o esquema à esquerda e a leitura à direita, como nas outras camadas. "← lado a lado" volta ao comparativo. */
+  var c20 = CONT.cruzamento;
+  var tempoAtual = 2, comparativo = true, TEMPOS = [
+    [1, "Hoje, à mão", "cada base baixada, limpa e arrumada em separado: <b>2 a 8 semanas</b> por análise (estimativa), em tabelas soltas, sem a mesma pessoa ligada entre elas"],
+    [2, "Com o HDB · os três Cs", "a mesma pessoa ligada entre as bases em <b>cerca de " + c20.valor + " " + esc(c20.unidade) + "</b> (" + CONF_TXT[c20.confianca] + "; o tempo da máquina, não do pacote), e a análise pronta: funciona, quanto, com que certeza"]
+  ];
   var SUPC = { C1: "C¹", C2: "C²", C3: "C³" }, CS3 = (D.convergencia || []).filter(function (c) { return c.sigla !== "volta"; }), CONVS = {};
   CS3.forEach(function (c) { CONVS[c.sigla] = c; });
-  var temposEl = document.getElementById("tempos");
-  temposEl.innerHTML = "<span class='tempos-rot'>olhar</span>" + TEMPOS.map(function (t) {
-    return "<button type='button' data-tempo='" + t[0] + "' role='tab'><b>" + t[0] + "</b>" + t[1] + "</button>";
+  var temposEl = document.getElementById("tempos"), vSistema = document.getElementById("v-sistema");
+  temposEl.innerHTML = TEMPOS.map(function (t) {
+    return "<button type='button' data-tempo='" + t[0] + "' role='tab'><b>" + t[0] + "</b><span class='tp-t'>" + t[1] + "</span><small>" + t[2] + "</small></button>";
   }).join("");
   Array.prototype.forEach.call(temposEl.querySelectorAll("button"), function (b) {
-    b.addEventListener("click", function () { tempo(+b.dataset.tempo); selecionaSis(null); estadoNaUrl(); });
+    b.addEventListener("click", function () { escolheTempo(+b.dataset.tempo); });
   });
   var BASE = {}; D.bases.forEach(function (b) { BASE[b.id] = b; });
   var caixas = {};
+  /* o olhar em foco, desenhado na cena da esquerda */
   function tempo(n) {
     tempoAtual = n;
-    Array.prototype.forEach.call(temposEl.querySelectorAll("button"), function (b) { b.classList.toggle("on", +b.dataset.tempo === n); });
-    while (sis.firstChild) sis.removeChild(sis.firstChild);
-    montaSistema();
+    Array.prototype.forEach.call(temposEl.querySelectorAll("button"), function (b) { b.classList.toggle("on", !comparativo && +b.dataset.tempo === n); });
+    caixas = {};
+    desenhaSis(sisFoco, n, true);
   }
+  function desenhaSis(svg, n, foco) {
+    sis = svg;
+    while (sis.firstChild) sis.removeChild(sis.firstChild);
+    montaSistema(n, foco);
+    sis = sisFoco;
+  }
+  function escolheTempo(n, id) {
+    comparativo = false;
+    if (vSistema) vSistema.classList.remove("cheia");
+    tempo(n);
+    selecionaSis(id || null);
+    estadoNaUrl();
+  }
+  function comparar() {
+    comparativo = true;
+    selecao.sistema = null;
+    if (vSistema) vSistema.classList.add("cheia");
+    Array.prototype.forEach.call(temposEl.querySelectorAll("button"), function (b) { b.classList.remove("on"); });
+    leituraSis.innerHTML = "";
+    estadoNaUrl();
+    reencaixa();
+  }
+  /* os dois fluxos do comparativo, desenhados uma vez; um clique fora de um nó põe o olhar em foco */
+  [1, 2].forEach(function (n) {
+    if (!DUO[n]) return;
+    desenhaSis(DUO[n], n, false);
+    DUO[n].addEventListener("click", function (ev) { if (!(ev.target.closest && ev.target.closest(".clicavel"))) escolheTempo(n); });
+  });
   function no(cls, x, y, w, h, titulo, sub1, sub2) {
     var g = el("g", { "class": "no " + cls }, sis);
     el("rect", { x: x, y: y, width: w, height: h, rx: 6 }, g);
@@ -527,8 +618,10 @@
     el("path", { d: "M" + x1 + "," + y1 + " C" + cx + "," + y1 + " " + cx + "," + y2 + " " + x2 + "," + y2, "class": cls }, sis);
     if (ponta) el("circle", { cx: x2, cy: y2, r: 3.2, "class": ponta }, sis);
   }
-  function montaSistema() {
+  function montaSistema(n, foco) {
     var BW = 150, BH = 42, X0 = 20, X1 = 182, Y0 = 78, GAP = 10;
+    /* em foco, o clique abre a ficha ao lado; no comparativo, põe este olhar em foco já com o item escolhido */
+    var aoClicar = foco ? function (id) { selecionaSis(selecao.sistema === id ? null : id); estadoNaUrl(); } : function (id) { escolheTempo(n, id); };
     texto(sis, X0, 36, "AS BASES PÚBLICAS", "col-rot");
     texto(sis, X0, 52, "abertas a todos · a mesma pessoa aparece em várias, sem um número comum", "col-sub");
     caixas = {};
@@ -539,12 +632,12 @@
       el("rect", { x: x, y: y, width: BW, height: BH, rx: 4 }, g);
       texto(g, x + 9, y + 18, b.nome, "nome");
       texto(g, x + 9, y + 33, b.dominio.toUpperCase(), "dom");
-      clicavel(g, function () { selecionaSis(selecao.sistema === b.id ? null : b.id); estadoNaUrl(); });
-      caixas[b.id] = g;
+      clicavel(g, function () { aoClicar(b.id); });
+      if (foco) caixas[b.id] = g;
       if (col) ys.push(y + BH / 2);
     });
     var xSai = X1 + BW, yMeio = Y0 + 2.5 * (BH + GAP) - GAP / 2;
-    if (tempoAtual === 1) {
+    if (n === 1) {
       texto(sis, 880, 52, "hoje, à mão", "tempo-rot risco", "end");
       ys.forEach(function (y) { seta("fio-hoje", xSai, y, 400, yMeio); });
       no("no-hoje", 400, yMeio - 60, 250, 120, "Quem precisa da coorte", "baixa cada base, limpa e concilia à mão", "2 a 8 semanas por análise (estimativa)");
@@ -570,8 +663,8 @@
           texto(ch, cx + 20, BY + BH2 - 17, e, "", "middle");
           cx += 44;
         });
-        clicavel(g, function () { selecionaSis(selecao.sistema === c.sigla ? null : c.sigla); estadoNaUrl(); });
-        caixas[c.sigla] = g;
+        clicavel(g, function () { aoClicar(c.sigla); });
+        if (foco) caixas[c.sigla] = g;
       });
       ys.forEach(function (y) { seta("fio-hdb", xSai, y, 362, yMeio, "ponta-azul"); });
       no("no-hdb", 374, 112, 162, 100, "Cruzamento", "pela mesma pessoa", "nome, mãe, nascimento");
@@ -594,7 +687,7 @@
       texto(sis, 362, 384, "Os dados pessoais ficam só no cruzamento; o grupo sai sem eles (privacidade).", "nota-svg");
       texto(sis, 362, 398, "O cruzamento ainda não foi testado lado a lado com a Techtrials. Clique numa banda para ler o C.", "nota-svg");
     }
-    texto(sis, 20, 425, "clique numa base para ver o que ela cobre · alterne \"hoje, à mão\" e \"com o HDB\" para ver o que muda", "nota-svg");
+    texto(sis, 20, 425, foco ? "clique numa base para ver o que ela cobre · o outro olhar está no cartão de cima · \"lado a lado\" volta ao comparativo" : "clique neste olhar para abri-lo ao lado, com a leitura", "nota-svg");
   }
   /* a passagem que sai deste C (passagens.csv · Goh, "as passagens têm dono") */
   function passagemHtml(sig) {
@@ -604,33 +697,40 @@
       " · <span>quem leva: " + esc(p.quem) + "</span></p>";
   }
   function selecionaSis(id) {
+    if (id && comparativo) { escolheTempo(tempoAtual, id); return; }
     selecao.sistema = id;
     Object.keys(caixas).forEach(function (k) { caixas[k].classList.toggle("on", k === id); });
     leituraSistema(id);
+    reencaixa();
   }
   function leituraSistema(id) {
-    var html = "", b = id && BASE[id], c = id && CONVS[id];
+    var html = "<button type='button' class='volta-duo'>← os dois olhares, lado a lado</button>", b = id && BASE[id], c = id && CONVS[id];
+    if (b || c) html = "<button type='button' class='fecha-leitura' aria-label='fechar a ficha'>×</button>" + html;
     if (c) {
       var gl = (D.glossario || []).filter(function (g) { return (g.c || []).indexOf(id) >= 0; })[0];
       html += "<div class='bloco ficha'><div class='rotulo'>" + SUPC[id] + " · " + esc(c.nome) + " · " + esc(c.verbo) + " " + conf(c.confianca) + "</div><h3>" + esc(maiuscula(c.oque)) + ".</h3>" +
         (gl ? "<p>" + esc(gl.explicacao) + ".</p>" : "") +
-        "<dl>" + (c.etapas || []).map(function (e) { var et = ETAPA[e]; return et ? "<dt>" + siglaEtapa(e) + " · " + esc(et.curto) + "</dt><dd>" + esc(et.oque) + "</dd>" : ""; }).join("") + "</dl>" +
-        passagemHtml(id) + "</div>";
-      html += "<div class='bloco'>" + D.achados.filter(function (a) { return a.camada !== "fecho" && (a.c || []).indexOf(id) >= 0; }).map(function (a) {
-        return "<div class='achado'><b>" + esc(a.titulo) + "</b><span>" + esc(maiuscula(a.texto)) + ".</span></div>";
-      }).join("") + "</div>";
+        passagemHtml(id) + "</div>"; /* sem a lista das etapas: as etapas vivem na 04 e já estão nas fichas da banda; aqui, uma coisa primeiro */
+      /* os achados deste C só pelo título, como na 03 (o texto no mouse): com os textos inteiros a ficha descia a 0,58 */
+      /* só os achados desta camada que tocam o C; os das outras camadas vivem nelas (com os de todas, a ficha caía a 0,58) */
+      var achs = D.achados.filter(function (a) { return a.camada === "sistema" && (a.c || []).indexOf(id) >= 0; });
+      if (achs.length) html += "<div class='bloco'><div class='rotulo'>O que já sabemos</div>" + achs.map(function (a) { return "<div class='achado mini'><b>" + esc(a.titulo) + "</b><span>" + esc(maiuscula(a.texto)) + ".</span></div>"; }).join("") + "</div>"; /* texto à vista, nada no mouse */
     } else if (b) {
       html += "<div class='bloco ficha'><div class='rotulo'>Base pública " + conf(b.confianca) + "</div><h3>" + esc(b.nome) + "</h3><p>" + esc(maiuscula(b.cobre)) + ".</p>" +
         "<dl><dt>Domínio</dt><dd>" + esc(b.dominio) + "</dd><dt>Como se liga às outras</dt><dd>pela pessoa: nome, nome da mãe, data de nascimento, município e sexo; não há um número comum entre as bases</dd></dl></div>";
+    } else if (tempoAtual === 1) {
+      /* o repouso do olhar 1: o que o desenho diz, em prosa */
+      html += "<div class='bloco ficha'><div class='rotulo'>Hoje, à mão</div><h3>Cada base é um trabalho à parte; a mesma pessoa não se liga de uma base à outra.</h3>" +
+        "<p>Quem precisa da coorte baixa cada base, limpa e concilia à mão: <b>2 a 8 semanas</b> por análise <span class='c-provavel'>(estimativa)</span>. O resultado são tabelas por base, soltas.</p>" +
+        "<p>Os 11 artigos dos fundadores usaram tabelas prontas, sem cruzar bases: provam o método antigo, não a plataforma <span class='c-provavel'>(dito pelos fundadores)</span>.</p></div>";
     } else {
       html += "<div class='bloco'>" + achadosHtml("sistema", true) + "</div>";
     }
-    var c20 = CONT.cruzamento;
-    html += "<div class='bloco'><div class='rotulo'>O que muda</div><div class='dois'>" +
-      "<div><h5 class='risco'>Hoje, à mão</h5><p>Cada base é baixada, limpa e arrumada em separado: <b>2 a 8 semanas</b> por análise <span class='c-provavel'>(estimativa)</span>. O resultado são tabelas soltas, sem a mesma pessoa ligada entre elas.</p></div>" +
-      "<div><h5 class='ok'>Com o HDB</h5><p>A mesma pessoa ligada entre as bases em <b>cerca de " + c20.valor + " " + esc(c20.unidade) + "</b> " + conf(c20.confianca) + ", e a análise pronta: funciona, quanto, com que certeza. <span class='c-provavel'>Os 20 minutos são o tempo da máquina, não do pacote inteiro.</span></p></div></div></div>";
     html += elo("sistema");
     escreve(leituraSis, html);
+    var fx = leituraSis.querySelector(".fecha-leitura"), vd = leituraSis.querySelector(".volta-duo");
+    if (fx) fx.addEventListener("click", function () { selecionaSis(null); estadoNaUrl(); });
+    if (vd) vd.addEventListener("click", comparar);
   }
 
   /* ================= 03 · SERVIÇOS: o portfólio, no molde da Longevidade (28/10/2026) =================
@@ -644,28 +744,41 @@
      saíram o painel para o gestor (canal condicionado a edital) e a coorte entregue (perde valor sem a comprovação). */
   var portfolio = document.getElementById("portfolio");
   var LINHA_ESTADO = { vendido: ["vendido", "ok"], a_validar: ["sem concorrente · a validar", "ceu"], expertise: ["expertise dos inventores · demanda a confirmar", "ouro"], parcial: ["parcial · concorrente presente", "cinza"], aspiracao: ["aspiração", "cinza"] };
+  var leituraPf = document.getElementById("leitura-pf"), SERV = {}, ORDEM_C = ["C1", "C2", "C3", "volta"], NOME_C = {};
   function selecionaServico(id) {
     selecao.servicos = id || null;
     if (!portfolio) return;
     Array.prototype.forEach.call(portfolio.querySelectorAll(".pf-cartao"), function (c) { c.classList.toggle("on", c.getAttribute("data-serv") === id); });
+    leituraPortfolio(id);
+  }
+  /* a leitura do pacote aberto, à direita: o que entra, com a descrição de cada entrega à vista, e o que destrava */
+  function leituraPortfolio(id) {
+    if (!leituraPf) return;
+    var s = id && SERV[id], html = "";
+    if (!s) {
+      html = "<p class='dica'>Clique num pacote para ler o que entra nele.</p>";
+    } else {
+      html += "<div class='bloco ficha'><div class='rotulo'>Pacote " + conf(s.s.confianca) + "</div><h3>" + esc(s.s.nome) + "</h3>" +
+        "<p class='pf-quem'><span class='pf-sub'>Para quem</span>" + esc(s.s.para_quem || "") + "</p><p>" + esc(maiuscula(s.s.descricao)) + ".</p></div>";
+      html += "<div class='bloco'><div class='rotulo'>O que entra</div>" + (s.base ? "<p class='pf-base'>Tudo do " + esc(s.base.nome) + "</p><p class='pf-mais'>O que só este pacote acrescenta</p>" : "") +
+        ORDEM_C.filter(function (c) { return s.grupos[c]; }).map(function (c) {
+          return "<p class='pf-c' style='--cor:" + CORW[c] + "'>" + esc(NOME_C[c] || c) + "</p><ul class='pf-lista'>" + s.grupos[c].map(function (e) {
+            return "<li class='" + (e.estado === "feito" ? "pf-feito" : "pf-abrir") + "' style='--cor:" + CORW[c] + "'>" + esc(e.nome) + "<small>" + esc(ponto(e.descricao)) + "</small></li>";
+          }).join("") + "</ul>";
+        }).join("") + "</div>";
+      html += "<div class='bloco'><div class='rotulo'>Destrava adiante</div><p class='pf-destrava'>" + s.destrava + "</p><p class='pf-pe'>" + tagEnq(s.s.enquadramento, "", true) + "</p></div>";
+    }
+    html += elo("servicos");
+    escreve(leituraPf, html);
   }
   (function montaPortfolio() {
     if (!portfolio || !(D.servicos || []).length) return;
     var ENT = {}; (D.entregas || []).forEach(function (e) { ENT[e.id] = e; });
     var COMP = {}; (D.componentes || []).forEach(function (c) { (COMP[c.servico] = COMP[c.servico] || []).push(c.entrega); });
-    var ORDEM_C = ["C1", "C2", "C3", "volta"], NOME_C = {};
     CS3.forEach(function (c) { NOME_C[c.sigla] = CSUP[c.sigla] + " " + c.verbo; });
     NOME_C.volta = "↻ a " + (VOLTA ? VOLTA.nome.toLowerCase() : "volta");
-    var h = "";
-    /* as linhas clínicas */
-    if ((D.linhas || []).length) {
-      h += "<div class='pf-linhas'><span class='pf-rot'>As linhas clínicas · onde a coorte já foi montada, e onde a expertise existe</span><div class='pf-chips'>" + D.linhas.map(function (l) {
-        var est = LINHA_ESTADO[l.estado] || [l.estado, "cinza"];
-        return "<span class='pf-linha pf-" + est[1] + (l.estado === "a_validar" || l.estado === "aspiracao" ? " pf-trac" : "") + "' title='" + esc(l.leitura) + "'><b>" + esc(l.nome) + "</b><i>" + esc(est[0]) + "</i></span>";
-      }).join("") + "</div></div>";
-    }
-    /* um cartão por pacote */
-    var cartoes = D.servicos.map(function (s) {
+    /* o que cada pacote contém, calculado uma vez: a base herdada, o que só ele acrescenta (por C) e o que destrava */
+    D.servicos.forEach(function (s) {
       var itens = COMP[s.id] || [], tem = {};
       itens.forEach(function (k) { tem[k] = true; });
       /* um pacote só "herda" de outro que vem antes dele na ordem do portfólio: o Pacote de coorte é a referência */
@@ -679,32 +792,42 @@
       var proprias = itens.filter(function (k) { return !herdadas[k]; });
       /* sem contagens: "N entregas · M feitas" era uma soma do nosso próprio catálogo, sem fonte (o usuário, 28/10: "sem fontes, retire-os") */
       var grupos = {}; proprias.forEach(function (k) { var e = ENT[k]; if (e) (grupos[e.c] = grupos[e.c] || []).push(e); });
-      var corpo = "";
-      if (base) corpo += "<p class='pf-base'>Tudo do " + esc(base.nome) + "</p><p class='pf-mais'>O que só este pacote acrescenta</p>";
-      corpo += ORDEM_C.filter(function (c) { return grupos[c]; }).map(function (c) {
-        return "<p class='pf-c' style='--cor:" + CORW[c] + "'>" + esc(NOME_C[c] || c) + "</p><ul class='pf-lista'>" + grupos[c].map(function (e) {
-          return "<li class='" + (e.estado === "feito" ? "pf-feito" : "pf-abrir") + "' style='--cor:" + CORW[c] + "' title='" + esc(e.descricao) + "'>" + esc(e.nome) + "</li>";
-        }).join("") + "</ul>";
-      }).join("");
       var destrava = s.destrava && s.destrava !== "—" ? s.destrava.split(" · ").map(function (d) { return "<span class='pf-mod'>" + esc(d) + "</span>"; }).join("") : "—";
+      SERV[s.id] = { s: s, base: base, grupos: grupos, destrava: destrava };
+    });
+    var h = "";
+    /* as linhas clínicas */
+    if ((D.linhas || []).length) {
+      h += "<div class='pf-linhas'><span class='pf-rot'>As linhas clínicas · onde a coorte já foi montada, e onde a expertise existe</span><div class='pf-chips'>" + D.linhas.map(function (l) {
+        var est = LINHA_ESTADO[l.estado] || [l.estado, "cinza"];
+        return "<span class='pf-linha pf-" + est[1] + (l.estado === "a_validar" || l.estado === "aspiracao" ? " pf-trac" : "") + "'><b>" + esc(l.nome) + "</b><i>" + esc(est[0]) + "</i><small>" + esc(ponto(l.leitura)) + "</small></span>";
+      }).join("") + "</div></div>";
+    }
+    /* um cartão por pacote, compacto: o esquema à esquerda; o pacote aberto se lê à direita (o usuário, 28/10: "a informação ficou pequena e difícil de ler") */
+    var cartoes = D.servicos.map(function (s) {
+      var p = SERV[s.id];
+      var corpo = (p.base ? "<p class='pf-base'>Tudo do " + esc(p.base.nome) + "</p><p class='pf-mais'>O que só este pacote acrescenta</p>" : "") +
+        ORDEM_C.filter(function (c) { return p.grupos[c]; }).map(function (c) {
+          return "<p class='pf-c' style='--cor:" + CORW[c] + "'>" + esc(NOME_C[c] || c) + "</p><ul class='pf-lista'>" + p.grupos[c].map(function (e) {
+            return "<li class='" + (e.estado === "feito" ? "pf-feito" : "pf-abrir") + "' style='--cor:" + CORW[c] + "'>" + esc(e.nome) + "</li>";
+          }).join("") + "</ul>";
+        }).join("");
       return "<article class='pf-cartao c-" + s.confianca + "' data-serv='" + s.id + "' tabindex='0'><h3>" + esc(s.nome) + "</h3>" +
-        "<p class='pf-quem'><span class='pf-sub'>Para quem</span>" + esc(s.para_quem || "") + "</p>" +
-        "<p class='pf-desc'>" + esc(maiuscula(s.descricao)) + ".</p>" + corpo +
-        "<p class='pf-destrava'><span class='pf-sub'>Destrava adiante</span>" + destrava + "</p>" +
+        "<p class='pf-quem'><span class='pf-sub'>Para quem</span>" + esc(s.para_quem || "") + "</p>" + corpo +
         "<p class='pf-pe'>" + tagEnq(s.enquadramento, "", true) + conf(s.confianca) + "</p></article>";
     }).join("");
     h += "<div class='pf-grade'>" + cartoes + "</div>";
-    /* a legenda e o que a camada revela; os achados desta camada numa linha, com o texto ao passar o mouse */
     h += "<p class='pf-leg'>" + ORDEM_C.map(function (c) { return "<span class='pf-leg-c' style='--cor:" + CORW[c] + "'>" + esc(NOME_C[c]) + "</span>"; }).join("") +
-      "<span><i>itálico: a construir</i> · o mouse mostra a entrega · a etiqueta diz quem paga</span>" + elo("servicos") + "</p>";
+      "<span><i>itálico: a construir</i> · a etiqueta diz quem paga · clique num pacote para ler o que entra</span></p>";
+    /* os achados desta camada, com o texto à vista, e o que a camada revela */
     var achs = (D.achados || []).filter(function (a) { return a.camada === "servicos"; });
-    if (achs.length) h += "<p class='pf-achados'><span class='pf-rot'>O que já sabemos</span>" + achs.map(function (a) { return "<span class='pf-ach' title='" + esc(ponto(a.texto)) + "'>" + esc(a.titulo) + "</span>"; }).join("") + "</p>";
+    if (achs.length) h += "<div class='pf-sabemos'><span class='pf-rot'>O que já sabemos</span>" + achs.map(function (a) { return "<div class='achado mini'><b>" + esc(a.titulo) + "</b><span>" + esc(maiuscula(a.texto)) + ".</span></div>"; }).join("") + "</div>";
     if (sintTxt("revela_servicos")) h += "<p class='pf-revela'><span class='pf-rot'>O que isso revela</span>" + esc(ponto(sintTxt("revela_servicos"))) + sintConf("revela_servicos") + "</p>";
     escreve(portfolio, h);
     portfolio.addEventListener("click", function (e) {
       var c = e.target.closest && e.target.closest(".pf-cartao");
       if (!c || (e.target.closest && e.target.closest("button"))) return;
-      selecionaServico(c.getAttribute("data-serv") === selecao.servicos ? null : c.getAttribute("data-serv"));
+      selecionaServico(c.getAttribute("data-serv"));
       estadoNaUrl();
     });
   })();
@@ -729,15 +852,10 @@
     h += linha("Quem ganha", function (j) { return "<div>" + (j.ganha.length ? j.ganha.map(function (a) { return esc(ATOR[a].curto); }).join(", ") : "—") + "</div>"; });
     h += linha("O que falta aqui", function (j, e) { return "<div class='bp-risco" + (e.gate ? "" : " vazio") + "'>" + (e.gate ? esc(maiuscula(e.gate)) : "—") + "</div>"; });
     h += "</div>";
+    /* o blueprint ocupa a tela inteira: o quadro lateral (achados, o laço da volta, as três definições) saiu a pedido do
+       usuário (28/10); as definições vivem na 05, para onde o elo leva. Fica só a legenda de leitura, com o elo. */
+    h += "<p class='bp-pe'><span>Acima da linha, o que o cliente vê; abaixo, o que roda por trás. Círculo vazado: a espera antes da etapa. Itálico: leitura nossa, ainda não observada num cliente real.</span>" + elo("jornadas") + "</p>";
     escreve(document.getElementById("blueprint"), h);
-    /* as três respostas da instituição (sintese.csv, resposta_*): a mesma lista da entrada e da Direção, vista daqui */
-    escreve(document.getElementById("leitura-jor"),
-      "<div class='bloco'>" + achadosHtml("jornadas", true) + "</div>" +
-      (window.HDBC && HDBC.laco ? "<div class='bloco'>" + HDBC.laco() + "</div>" : "") +
-      "<p class='dica'>Acima da linha, o que o cliente vê; abaixo, o que roda por trás. Círculo vazado: a espera antes da etapa. Itálico: leitura nossa, ainda não observada num cliente real.</p>" +
-      "<div class='bloco fecho'><div class='rotulo'>As três definições em aberto</div><ol>" + RESPOSTAS.map(function (r) {
-        var tc = respostaTC(r[0]); return tc[0] ? "<li><b>" + esc(tc[0]) + "</b><span>" + esc(maiuscula(tc[1])) + (tc[1] ? "." : "") + "</span></li>" : "";
-      }).join("") + "</ol></div>" + elo("jornadas"));
   })();
 
   /* ================= 05 · DIREÇÃO: o modelo de negócio, bloco a bloco  =================
@@ -836,10 +954,12 @@
 
   /* ---------- início: estado vindo da URL ---------- */
   var q = new URLSearchParams(location.search);
+  comparativo = !q.get("tempo"); /* com &tempo= a 02 abre já em foco; sem ele, no comparativo */
+  if (vSistema) vSistema.classList.toggle("cheia", comparativo);
   tempo(+q.get("tempo") || 2);
   leituraContexto();
-  leituraSistema(null);
+  if (!comparativo) leituraSistema(null);
   leituraEcossistema(null, null);
-  selecionaServico(null);
+  selecionaServico((D.servicos || []).length ? D.servicos[0].id : null); /* o primeiro pacote abre de saída, com as descrições das entregas */
   abre(q.get("vista") || "contexto", q.get("item") || undefined);
 })();

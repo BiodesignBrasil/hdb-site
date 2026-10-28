@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css?v=pub-10">
+<link rel="stylesheet" href="css/styles.css?v=pub-11">
 </head>
 <body>
 
@@ -21,7 +21,6 @@
 <nav class="barra">
   <a class="wordmark" href="./"><span class="wm-nome">Health<span>Data</span> Brasil</span><span class="wm-sub">Síntese do projeto</span></a>
   <div class="nav-links" id="camadas" role="tablist" aria-label="o contexto, as camadas e a direção"></div>
-  <div class="cv-header" id="cv-header"></div>
 </nav>
 
 <main class="palco">
@@ -46,21 +45,25 @@
       <aside class="leitura" id="leitura-eco" aria-live="polite"></aside>
     </section>
 
-    <section class="vista v-dupla" id="v-sistema" role="tabpanel" aria-label="Sistema">
+    <section class="vista v-dupla cheia" id="v-sistema" role="tabpanel" aria-label="Sistema">
       <div class="cena">
         <div class="tempos" id="tempos" role="tablist" aria-label="o que olhar no sistema"></div>
+        <div class="duo" id="duo" aria-label="os dois olhares, lado a lado">
+          <svg id="sis1" viewBox="0 0 900 440" preserveAspectRatio="xMidYMin meet" role="img" aria-label="Hoje, à mão: cada base em separado"></svg>
+          <svg id="sis2" viewBox="0 0 900 440" preserveAspectRatio="xMidYMin meet" role="img" aria-label="Com o HDB: os três Cs"></svg>
+        </div>
         <svg id="sis" viewBox="0 0 900 440" role="img" aria-label="Das bases públicas à coorte: hoje à mão, e com o HDB"></svg>
       </div>
       <aside class="leitura" id="leitura-sis" aria-live="polite"></aside>
     </section>
 
-    <section class="vista v-cheia" id="v-servicos" role="tabpanel" aria-label="Serviços">
-      <div class="painel" id="portfolio" data-piso="0.55"></div>
+    <section class="vista v-dupla" id="v-servicos" role="tabpanel" aria-label="Serviços">
+      <div class="painel" id="portfolio" data-piso="0.6"></div>
+      <aside class="leitura" id="leitura-pf" aria-live="polite"></aside>
     </section>
 
-    <section class="vista v-jornadas" id="v-jornadas" role="tabpanel" aria-label="Jornadas">
+    <section class="vista v-cheia" id="v-jornadas" role="tabpanel" aria-label="Jornadas">
       <div class="painel" id="blueprint"></div>
-      <aside class="leitura" id="leitura-jor"></aside>
     </section>
 
     <section class="vista v-direcao" id="v-direcao" role="tabpanel" aria-label="Direção">
@@ -76,8 +79,8 @@
   </p>
 </main>
 
-<script src="js/data.js?v=pub-10"></script>
-<script src="js/convergencia.js?v=pub-10"></script>
-<script src="js/script.js?v=pub-10"></script>
+<script src="js/data.js?v=pub-11"></script>
+<script src="js/convergencia.js?v=pub-11"></script>
+<script src="js/script.js?v=pub-11"></script>
 </body>
 </html>

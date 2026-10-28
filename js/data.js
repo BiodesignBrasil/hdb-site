@@ -3,9 +3,9 @@ window.HDB = {
  "atores": [
   {
    "id": "hdb",
-   "nome": "A empresa nova (Health Data Brasil)",
+   "nome": "Health Data Brasil",
    "papel": "liga a mesma pessoa entre as bases e entrega a análise: o método, a escolha dos códigos, a estatística",
-   "curto": "A empresa nova · HDB",
+   "curto": "Health Data Brasil",
    "lado": "dentro",
    "confianca": "confirmado"
   },
@@ -979,6 +979,12 @@ window.HDB = {
    "titulo": "O laço dos três momentos",
    "o_que_mudou": "A aba 00 trocou a roda pelo laço dos três momentos, a forma escolhida entre seis desenhadas lado a lado. Dois atos em forma de oito: quem pergunta, à esquerda, o método, à direita. Três momentos como regiões, para olhar um a um, na espinha dos três Cs: a pergunta, o cruzamento e a coorte, a comprovação. Cada momento entrega algo ao seguinte: a pergunta certa, o grupo de pacientes, o número para o pedido. Na figura, só as siglas e o número de cada momento, com o C¹ no cruzamento dos dois laços, e ao lado a legenda com os nomes, os verbos e as portas. A volta é o arco de retorno de quem pergunta, tracejado enquanto não existir. Clicar num momento, num C ou numa etapa, na figura ou na legenda, abre o seu detalhe embaixo, com o elo para a camada onde vive. O símbolo do cabeçalho, no site e na conta, também virou o laço. A aba 03 virou o portfólio, no molde da Longevidade: em cima, as linhas clínicas que os fundadores nomearam (oncologia adulto, onde já se vendeu, oncologia pediátrica, sem concorrente, e patologia cirúrgica, a linha dos inventores) e, embaixo, um cartão por pacote (o pacote, que já se vende, a volta e a coorte viva) com para quem é, o que entra, o que já foi feito e o que destrava adiante. A pergunta é do cliente, a coorte é do HDB, a comprovação é a análise. A peça deixou de dizer que a empresa não existe: o CNPJ está em abertura e o contrato de sócios, em andamento, e a pergunta passou a ser o que falta para ela ficar de pé. O filme dos três pacotes saiu da aba 00. Tom neutro para a plateia do Einstein: a peça descreve o que está em aberto e quem resolve, sem cobrar, e as três respostas passaram a chamar-se as três definições em aberto",
    "versao": 10
+  },
+  {
+   "data": "2026-10-28",
+   "titulo": "Legível de bater o olho",
+   "o_que_mudou": "A revisão ao vivo da peça, aba a aba, com o usuário no Chrome. A 02 abre com os dois olhares lado a lado e um clique põe um deles em foco, esquema à esquerda e leitura à direita · a 03 passou ao mesmo molde, com o pacote aberto lido à direita · a 04 ocupa a tela inteira · a 01 numera as setas do ator aberto e traz o depoimento dos fundadores sobre o concorrente mais próximo · a 00 ganhou o laço a traço de pena, maior, com a legenda embaixo e uma frase única com valor. Nada fica escondido no mouse, nada se repete, e o encaixe para em 0,82 de escala, com rolagem interna só se faltar espaço",
+   "versao": 11
   }
  ],
  "sintese": {
@@ -1031,8 +1037,8 @@ window.HDB = {
    "confianca": "provavel"
   },
   "frase_unica": {
-   "texto": "O método funciona: já foi vendido 3 vezes. A empresa está sendo aberta: o CNPJ está em registro e o contrato entre os sócios, em andamento",
-   "confianca": "provavel"
+   "texto": "Dez bases públicas cruzadas pela mesma pessoa em cerca de 20 minutos, um método já vendido 3 vezes e uma empresa em abertura para vendê-lo",
+   "confianca": "confirmado"
   },
   "ato1_historia": {
    "texto": "A gerente de acesso de uma farmacêutica precisa provar que um remédio funciona em pacientes brasileiros de verdade, para o SUS adotá-lo",
@@ -1051,7 +1057,7 @@ window.HDB = {
    "confianca": "provavel"
   },
   "ato2_virada": {
-   "texto": "O problema não é fazer, é vender. 3 pessoas dão conta de 65 pacotes por ano. A conta fecha com 17. Até hoje foram 3",
+   "texto": "O problema não é fazer, é vender. A equipe de hoje dá conta de 65 pacotes por ano. A conta fecha com 17. Até hoje foram 3",
    "confianca": "provavel"
   },
   "ato2_outra_metade": {
@@ -1417,6 +1423,32 @@ window.HDB = {
    "fonte": "inferencia"
   }
  ],
+ "comparativo": [
+  {
+   "tema": "O cruzamento",
+   "hdb": "linkage real entre fontes, por chave comum, até o resultado estatístico",
+   "rival": "módulos individuais por fonte, para montar dashboards",
+   "confianca": "confirmado"
+  },
+  {
+   "tema": "As bases",
+   "hdb": "cruza DATASUS + ANS + RNDS por paciente e por evento, não por módulo",
+   "rival": "SUS e ANS/suplementar em módulos separados (EpiMarket)",
+   "confianca": "confirmado"
+  },
+  {
+   "tema": "A entrega",
+   "hdb": "coorte linkada → p-valor e tamanho de efeito, para pesquisa ou jornada",
+   "rival": "visualização e benchmarking por módulo",
+   "confianca": "confirmado"
+  },
+  {
+   "tema": "A caixa de ferramentas",
+   "hdb": "aberta (dado público): vendemos o manual",
+   "rival": "fechada, com instruções, mas sem o resultado cruzado",
+   "confianca": "confirmado"
+  }
+ ],
  "linhas": [
   {
    "id": "onco_adulto",
@@ -1745,8 +1777,8 @@ window.HDB = {
   }
  ],
  "versao": {
-  "numero": 10,
+  "numero": 11,
   "data": "2026-10-28",
-  "titulo": "O laço dos três momentos"
+  "titulo": "Legível de bater o olho"
  }
 };
