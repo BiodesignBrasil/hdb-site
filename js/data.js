@@ -201,8 +201,8 @@ window.HDB = {
   {
    "id": "F7",
    "de": "fomento",
-   "para": "pesquisador",
-   "oque": "verba de pesquisa para o estudo",
+   "para": "hdb",
+   "oque": "estudo acadêmico, via pesquisador",
    "tipo": "confirmar",
    "enquadramento": "fomento",
    "etapas": [
@@ -995,6 +995,12 @@ window.HDB = {
    "titulo": "A abertura em sete perguntas",
    "o_que_mudou": "A 00 chama-se Abertura e o quadro à direita passou às sete perguntas (o quê, por quê, para quem, onde, quando, como, quanto), no molde da Longevidade, para quem chega sem contexto. Sob o laço ficam só os nomes: saíram os itálicos e a linha \"como ler\". Na 01 saiu o financiador e o pesquisador liga-se ao fomento. Na 02 saiu o chip M sob os Cs. Na 03 a coluna do pacote aberto saiu: a aba ocupa a tela inteira e cada um dos três pacotes se lê completo no próprio cartão, em letra maior, com as linhas clínicas abaixo",
    "versao": 15
+  },
+  {
+   "data": "2026-10-28",
+   "titulo": "Nada rola na janela maximizada",
+   "o_que_mudou": "Medida ao vivo, a janela maximizada do usuário dá 1264 × 561. Para nenhuma aba rolar aí, com a escala no mínimo em 0,75, saiu o acessório: na 00 a introdução, a linha das camadas e a motivação dos compradores, com os textos encurtados· na 01 a tabela compacta e o fomento ligado direto à empresa· na 02 a ficha do C sem glossário e passagem· na 03 as entregas só pelo nome, as linhas clínicas só com o estado e sem \"o que já sabemos\"· na 04 e na 05 as células mais justas. A 00 na barra em maiúsculo, como as outras",
+   "versao": 16
   }
  ],
  "sintese": {
@@ -1138,28 +1144,24 @@ window.HDB = {
    "texto": "A linha clínica não é o pacote: a mesma coorte de oncologia sai como pacote, volta ou coorte viva. A coorte sozinha não se vende: o valor está na comprovação",
    "confianca": "provavel"
   },
-  "w_intro": {
-   "texto": "Antes das camadas, o básico para quem chega agora: o que é, por quê, para quem, onde, quando, como e quanto",
-   "confianca": "confirmado"
-  },
   "w_oque": {
-   "texto": "Uma empresa nova, nascida no Einstein, que cruza as bases públicas de saúde do Brasil pela mesma pessoa e entrega o grupo de pacientes certo, com a análise pronta, em dias",
+   "texto": "Empresa nova, nascida no Einstein: cruza as bases públicas de saúde pela mesma pessoa e entrega a coorte analisada, em dias",
    "confianca": "confirmado"
   },
   "w_porque": {
-   "texto": "O dado é público e qualquer um pode baixar. O caro é ligar os registros da mesma pessoa entre dez bases que não se falam, e hoje isso leva semanas numa consultoria. Quem mais ganha com a resposta é o SUS, e o SUS não paga por ela",
+   "texto": "O dado é público. O caro é ligar a mesma pessoa entre dez bases que não se falam, e isso hoje leva semanas",
    "confianca": "provavel"
   },
   "w_quem": {
-   "texto": "Quem precisa provar, com pacientes brasileiros de verdade, que um tratamento funciona. Até hoje quem comprou foi a área de acesso de farmacêuticas. Os outros perfis ainda são hipótese",
+   "texto": "Quem precisa provar, com pacientes brasileiros, que um tratamento funciona. Até hoje comprou a área de acesso de farmacêuticas",
    "confianca": "provavel"
   },
   "w_onde": {
-   "texto": "Nas dez bases públicas de saúde do Brasil, baixadas e cruzadas numa máquina própria da empresa, sem nuvem. O método nasceu no Einstein. A empresa está sendo aberta para vendê-lo",
+   "texto": "Nas dez bases públicas de saúde do Brasil, cruzadas numa máquina própria, sem nuvem. O método nasceu no Einstein",
    "confianca": "confirmado"
   },
   "w_quando": {
-   "texto": "Da pergunta à entrega, dias em vez de semanas: o cruzamento leva cerca de 20 minutos, a leitura clínica e a análise levam o resto. Três pacotes vendidos até hoje",
+   "texto": "Dias em vez de semanas: o cruzamento leva cerca de 20 minutos, a leitura clínica e a análise levam o resto",
    "confianca": "provavel"
   },
   "w_como": {
@@ -1179,7 +1181,7 @@ window.HDB = {
    "confianca": "confirmado"
   },
   "w_quanto": {
-   "texto": "Cada pacote vendido paga o próprio custo com folga. A equipe de hoje dá conta de 65 pacotes por ano, a conta fecha com 17 e até hoje foram 3. O que falta definir está na Direção",
+   "texto": "Cada pacote pago cobre o próprio custo com folga. A equipe dá conta de 65 por ano, a conta fecha com 17, até hoje foram 3",
    "confianca": "provavel"
   }
  },
@@ -1831,8 +1833,8 @@ window.HDB = {
   }
  ],
  "versao": {
-  "numero": 15,
+  "numero": 16,
   "data": "2026-10-28",
-  "titulo": "A abertura em sete perguntas"
+  "titulo": "Nada rola na janela maximizada"
  }
 };

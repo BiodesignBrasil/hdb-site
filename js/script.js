@@ -90,8 +90,9 @@
     w.style.zoom = "1";
     /* a altura livre desconta o padding do cartão; a Direção e o contexto descem mais (data-piso) */
     var cs = getComputedStyle(cont), pad = (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0);
-    /* o piso é 0,82 para todas as abas (legibilidade, o usuário, 28/10); o que não couber rola por dentro do cartão */
-    var alvo = cont.clientHeight - pad - 6, piso = Math.max(+(cont.getAttribute("data-piso") || 0.6), 0.82);
+    /* o piso é 0,75 para todas as abas (28/10, à noite: "não quero dar scroll em nada"; o acessório saiu para caber a 1264 × 561).
+       A classe `rola` fica como rede: na janela maximizada do usuário nenhuma aba deve acendê-la */
+    var alvo = cont.clientHeight - pad - 6, piso = Math.max(+(cont.getAttribute("data-piso") || 0.6), 0.75);
     for (var z = 1; z > piso && w.getBoundingClientRect().height > alvo;) {
       z -= 0.03;
       w.style.zoom = String(z);
@@ -387,26 +388,23 @@
   function leituraContexto() {
     if (!leituraCtx) return;
     function linha(rot, corpo, cls) { return "<div class='w5" + (cls ? " " + cls : "") + "'><dt>" + rot + "</dt><dd>" + corpo + "</dd></div>"; }
+    /* só os nomes (a motivação vive na Direção, em Segmentos): a lista com motivação dobrava a altura do quadro */
     var comp = (D.compradores || []).map(function (p) {
-      return "<li" + (p.foco === "sim" ? " class='foco'" : "") + "><b>" + esc(p.nome) + "</b> " + esc(p.motivacao) + "</li>";
+      return "<i" + (p.foco === "sim" ? " class='foco'" : "") + ">" + esc(p.nome) + "</i>";
     }).join("");
     var passos = MOMENTOS.map(function (m, i) {
       var tc = tituloCorpo("momento_" + m.id);
       return "<button type='button' class='w5-passo' data-momento='" + m.id + "' style='--cor:" + CORW[m.cor] + "'><b>" + m.n + " " + esc(tc[0]) + "</b>" + esc(sintTxt("w_como_" + (i + 1))) + "</button>";
     }).join("");
-    var html = (sintTxt("w_intro") ? "<p class='w5-intro'>" + esc(ponto(sintTxt("w_intro"))) + "</p>" : "") +
-      "<dl class='w5h'>" +
+    var html = "<dl class='w5h'>" +
       linha("O quê", esc(ponto(sintTxt("w_oque")))) +
       linha("Por quê", esc(ponto(sintTxt("w_porque")))) +
-      linha("Para quem", esc(ponto(sintTxt("w_quem"))) + (comp ? "<ul class='w5-pes'>" + comp + "</ul>" : ""), "w5-quem") +
+      linha("Para quem", esc(ponto(sintTxt("w_quem"))) + (comp ? "<span class='w5-pes'>" + comp + "</span>" : ""), "w5-quem") +
       linha("Onde", esc(ponto(sintTxt("w_onde")))) +
       linha("Quando", esc(ponto(sintTxt("w_quando")))) +
       linha("Como", esc(ponto(sintTxt("w_como"))) + "<span class='w5-passos'>" + passos + "</span>", "w5-como") +
       linha("Quanto", esc(ponto(sintTxt("w_quanto"))) + regua(), "w5-quanto") +
-      "</dl>";
-    html += "<p class='w5-camadas'>Depois, as cinco camadas: " + VISTAS.filter(function (v) { return v.id !== "contexto"; }).map(function (v) {
-      return "<button type='button' class='l-elo inline' data-vista='" + v.id + "'>" + v.n + " " + esc(v.rot.toLowerCase()) + "</button>";
-    }).join(" · ") + "</p>";
+      "</dl>"; /* sem a linha "depois, as cinco camadas": a barra já as mostra */
     html += elo("contexto");
     escreve(leituraCtx, html);
     Array.prototype.forEach.call(leituraCtx.querySelectorAll(".w5-passo"), function (b) {
@@ -702,10 +700,8 @@
     var html = "<button type='button' class='volta-duo'>← os dois olhares, lado a lado</button>", b = id && BASE[id], c = id && CONVS[id];
     if (b || c) html = "<button type='button' class='fecha-leitura' aria-label='fechar a ficha'>×</button>" + html;
     if (c) {
-      var gl = (D.glossario || []).filter(function (g) { return (g.c || []).indexOf(id) >= 0; })[0];
-      html += "<div class='bloco ficha'><div class='rotulo'>" + SUPC[id] + " · " + esc(c.nome) + " · " + esc(c.verbo) + " " + conf(c.confianca) + "</div><h3>" + esc(maiuscula(c.oque)) + ".</h3>" +
-        (gl ? "<p>" + esc(gl.explicacao) + ".</p>" : "") +
-        passagemHtml(id) + "</div>"; /* sem a lista das etapas: as etapas vivem na 04 e já estão nas fichas da banda; aqui, uma coisa primeiro */
+      /* sem o glossário nem a passagem (vivem na 04 e no vault) e sem a lista das etapas: a ficha precisa caber sem rolar */
+      html += "<div class='bloco ficha'><div class='rotulo'>" + SUPC[id] + " · " + esc(c.nome) + " · " + esc(c.verbo) + " " + conf(c.confianca) + "</div><h3>" + esc(maiuscula(c.oque)) + ".</h3></div>";
       /* os achados deste C só pelo título, como na 03 (o texto no mouse): com os textos inteiros a ficha descia a 0,58 */
       /* só os achados desta camada que tocam o C; os das outras camadas vivem nelas (com os de todas, a ficha caía a 0,58) */
       var achs = D.achados.filter(function (a) { return a.camada === "sistema" && (a.c || []).indexOf(id) >= 0; });
@@ -774,18 +770,19 @@
     var h = "", linhas = "";
     /* as linhas clínicas, abaixo dos pacotes: a primeira tela abre nos três cartões ("uma coisa primeiro") */
     if ((D.linhas || []).length) {
-      linhas += "<div class='pf-linhas'><span class='pf-rot'>As linhas clínicas · onde a coorte já foi montada, e onde a expertise existe</span><div class='pf-chips'>" + D.linhas.map(function (l) {
+      /* só nome e estado: a leitura de cada linha vive no vault e no recorte (cortar o acessório para caber sem rolar, 28/10) */
+      linhas += "<div class='pf-linhas'><span class='pf-rot'>As linhas clínicas</span><div class='pf-chips'>" + D.linhas.map(function (l) {
         var est = LINHA_ESTADO[l.estado] || [l.estado, "cinza"];
-        return "<span class='pf-linha pf-" + est[1] + (l.estado === "a_validar" || l.estado === "aspiracao" ? " pf-trac" : "") + "'><b>" + esc(l.nome) + "</b><i>" + esc(est[0]) + "</i><small>" + esc(ponto(l.leitura)) + "</small></span>";
+        return "<span class='pf-linha pf-" + est[1] + (l.estado === "a_validar" || l.estado === "aspiracao" ? " pf-trac" : "") + "'><b>" + esc(l.nome) + "</b><i>" + esc(est[0]) + "</i></span>";
       }).join("") + "</div></div>";
     }
-    /* um cartão por pacote, completo: para quem, a descrição, o que entra (cada entrega com a sua descrição), o que destrava, quem paga */
+    /* um cartão por pacote: para quem, a descrição, o que entra (só o nome de cada entrega: a descrição vive no recorte), o que destrava, quem paga */
     var cartoes = D.servicos.map(function (s) {
       var p = SERV[s.id];
       var corpo = (p.base ? "<p class='pf-base'>Tudo do " + esc(p.base.nome) + "</p><p class='pf-mais'>O que só este pacote acrescenta</p>" : "") +
         ORDEM_C.filter(function (c) { return p.grupos[c]; }).map(function (c) {
           return "<p class='pf-c' style='--cor:" + CORW[c] + "'>" + esc(NOME_C[c] || c) + "</p><ul class='pf-lista'>" + p.grupos[c].map(function (e) {
-            return "<li class='" + (e.estado === "feito" ? "pf-feito" : "pf-abrir") + "' style='--cor:" + CORW[c] + "'>" + esc(e.nome) + "<small>" + esc(ponto(e.descricao)) + "</small></li>";
+            return "<li class='" + (e.estado === "feito" ? "pf-feito" : "pf-abrir") + "' style='--cor:" + CORW[c] + "'>" + esc(e.nome) + "</li>";
           }).join("") + "</ul>";
         }).join("");
       return "<article class='pf-cartao c-" + s.confianca + "' data-serv='" + s.id + "'><h3>" + esc(s.nome) + "</h3>" +
@@ -794,14 +791,11 @@
         "<p class='pf-pe'>" + tagEnq(s.enquadramento, "", true) + conf(s.confianca) + "</p></article>";
     }).join("");
     h += "<div class='pf-grade'>" + cartoes + "</div>";
-    h += "<p class='pf-leg'>" + ORDEM_C.map(function (c) { return "<span class='pf-leg-c' style='--cor:" + CORW[c] + "'>" + esc(NOME_C[c]) + "</span>"; }).join("") +
-      "<span><i>itálico: a construir</i> · a etiqueta diz quem paga</span></p>";
-    h += linhas;
-    /* os achados desta camada, com o texto à vista, e o que a camada revela */
-    var achs = (D.achados || []).filter(function (a) { return a.camada === "servicos"; });
-    if (achs.length) h += "<div class='pf-sabemos'><span class='pf-rot'>O que já sabemos</span>" + achs.map(function (a) { return "<div class='achado mini'><b>" + esc(a.titulo) + "</b><span>" + esc(maiuscula(a.texto)) + ".</span></div>"; }).join("") + "</div>";
-    if (sintTxt("revela_servicos")) h += "<p class='pf-revela'><span class='pf-rot'>O que isso revela</span>" + esc(ponto(sintTxt("revela_servicos"))) + sintConf("revela_servicos") + "</p>";
-    h += "<p class='pf-fim'>" + elo("servicos") + "</p>";
+    /* o rodapé numa linha: a legenda das cores à esquerda, as linhas clínicas à direita (para caber sem rolar a 1264 × 561) */
+    h += "<div class='pf-rodape'><p class='pf-leg'>" + ORDEM_C.map(function (c) { return "<span class='pf-leg-c' style='--cor:" + CORW[c] + "'>" + esc(NOME_C[c]) + "</span>"; }).join("") +
+      "<span><i>itálico: a construir</i> · a etiqueta diz quem paga</span></p>" + linhas + "</div>";
+    /* sem "o que já sabemos": os achados desta camada vivem no recorte e na Direção (cortar o acessório para caber sem rolar, 28/10) */
+    h += "<p class='pf-revela'>" + (sintTxt("revela_servicos") ? "<span><span class='pf-rot'>O que isso revela</span>" + esc(ponto(sintTxt("revela_servicos"))) + sintConf("revela_servicos") + "</span>" : "<span></span>") + elo("servicos") + "</p>";
     escreve(portfolio, h);
   })();
 

@@ -37,7 +37,7 @@ nav.barra{position:sticky;top:0;z-index:50;height:var(--header);display:flex;ali
 .f-camada:hover{color:var(--tinta);border-color:var(--filete-forte)}
 .f-camada.on{background:var(--tinta);border-color:var(--tinta);color:#fff}
 .f-camada.on small{color:#9fd3f5}
-.f-camada.f-livro{font-family:var(--serif);font-style:italic;text-transform:none;letter-spacing:.04em;font-size:13.5px;font-weight:500}
+/* a 00 na barra como as outras, em maiúsculo (o usuário, 28/10: "00 ABERTURA com tudo em maiúsculo") */
 .f-camada:focus-visible,.clicavel:focus-visible,.l-elo:focus-visible,.tempos button:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
 /* o checkpoint da convergência (os três Cs), acendendo por camada */
 .cv-header{flex-shrink:0}
@@ -65,7 +65,7 @@ nav.barra{position:sticky;top:0;z-index:50;height:var(--header);display:flex;ali
 .duo{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .duo svg{width:100%;height:100%;min-height:0;display:block;cursor:pointer;border-radius:9px}
 .duo svg:hover{background:color-mix(in srgb,var(--cam,var(--ceu)) 6%,#fff)}
-.volta-duo{display:block;cursor:pointer;background:none;border:none;padding:0;margin:0 0 8px;font-family:var(--font);font-size:13px;color:var(--primary)}
+.volta-duo{display:block;cursor:pointer;background:none;border:none;padding:0;margin:0 0 4px;font-family:var(--font);font-size:13px;color:var(--primary)}
 .volta-duo:hover{text-decoration:underline}
 .v-dupla .leitura{position:relative}
 .fecha-leitura{position:absolute;top:8px;right:12px;z-index:1;cursor:pointer;background:none;border:1px solid var(--filete-forte);border-radius:50%;width:24px;height:24px;line-height:1;font-size:16px;color:var(--cinza);padding:0}
@@ -111,9 +111,9 @@ nav.barra{position:sticky;top:0;z-index:50;height:var(--header);display:flex;ali
 .achado b{display:block;font-family:var(--font);font-size:14.5px;font-weight:600;color:var(--tinta);line-height:1.25;margin-bottom:2px}
 .achado span{font-size:14px;color:var(--cinza-escuro)}
 /* o achado curto: título e texto numa escala menor, para as listas dentro de uma ficha */
-.achado.mini{margin-bottom:6px}
-.achado.mini b{font-size:13.5px;margin-bottom:0}
-.achado.mini span{font-size:13px;line-height:1.35}
+.achado.mini{margin-bottom:4px}
+.achado.mini b{font-size:13px;margin-bottom:0}
+.achado.mini span{font-size:12.5px;line-height:1.3}
 /* a tese da camada: a primeira leitura, numa caixa na cor da camada (como o pedido ao Einstein no cartão da Direção) */
 .achado.tese{padding:10px 14px 11px;border-radius:9px;background:color-mix(in srgb,var(--cam,var(--tinta)) 12%,#fff);border-left:4px solid var(--cam,var(--tinta));margin-bottom:12px}
 .achado.tese b{font-family:var(--serif);font-size:18px;font-weight:500;line-height:1.3;margin-bottom:3px}
@@ -136,7 +136,7 @@ nav.barra{position:sticky;top:0;z-index:50;height:var(--header);display:flex;ali
 .st-aberto{color:var(--cinza);border:1px dashed var(--cinza)}
 
 .lista{list-style:none}
-.lista li{font-size:13.5px;padding:5px 8px;border-left:3px solid transparent;cursor:pointer;color:var(--cinza-escuro)}
+.lista li{font-size:13px;padding:3px 8px;border-left:3px solid transparent;cursor:pointer;color:var(--cinza-escuro);line-height:1.35}
 .lista li:hover{background:var(--papel-2)}
 .lista li.on{background:var(--ouro-claro);color:var(--texto)}
 .lista li.t-confirmar{font-style:italic}
@@ -183,8 +183,8 @@ svg text{font-family:var(--font)}
 .lista li .n{display:inline-block;min-width:16px;height:16px;border-radius:50%;color:#fff;font-size:11px;font-weight:700;text-align:center;line-height:16px;margin-right:6px;vertical-align:1px}
 .lista li .cs-mini{margin-left:6px;font-size:12px;font-weight:700;color:var(--cinza);white-space:nowrap}
 /* o comparativo com o concorrente, nas palavras dos fundadores */
-.compara{width:100%;border-collapse:collapse;font-size:13.5px;line-height:1.35;margin-top:2px}
-.compara th,.compara td{text-align:left;vertical-align:top;padding:5px 8px 5px 0;border-top:1px solid var(--filete)}
+.compara{width:100%;border-collapse:collapse;font-size:12.5px;line-height:1.3;margin-top:0}
+.compara th,.compara td{text-align:left;vertical-align:top;padding:3px 6px 3px 0;border-top:1px solid var(--filete)}
 .compara thead th{border-top:0;font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--cinza);padding-bottom:2px}
 .compara tbody th{font-family:var(--serif);font-weight:500;color:var(--tinta);white-space:nowrap;width:1%}
 .compara td:nth-child(2){color:var(--tinta);font-weight:600}
@@ -243,10 +243,9 @@ svg text{font-family:var(--font)}
 /* ---- 03 · serviços (28/10/2026): o portfólio no molde da Longevidade: as linhas clínicas em cima, um cartão por pacote ---- */
 .v-cheia.on{display:block}
 .pf-rot{font-size:11.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--cinza);margin-right:10px}
-.pf-linhas{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;padding:10px 0 0;border-top:1px solid var(--filete);margin-top:10px}
+.pf-linhas{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;padding:8px 0 0;border-top:1px solid var(--filete);margin-top:8px}
 .pf-chips{display:flex;flex-wrap:wrap;gap:6px}
-.pf-linha{display:inline-grid;grid-template-columns:auto auto;column-gap:8px;align-items:baseline;padding:4px 10px 5px;border-radius:9px;border:1px solid;font-size:13px;line-height:1.5;background:#fff;max-width:300px}
-.pf-linha small{grid-column:1/-1;font-size:12px;line-height:1.3;color:var(--cinza-escuro)}
+.pf-linha{display:inline-flex;align-items:baseline;gap:8px;padding:3px 10px;border-radius:9px;border:1px solid;font-size:13px;line-height:1.5;background:#fff}
 .pf-linha b{font-weight:700;color:var(--tinta)}
 .pf-linha i{font-style:italic;font-size:11.5px;color:var(--cinza-escuro)}
 .pf-ok{border-color:var(--ok);background:var(--ok-claro)}
@@ -256,11 +255,11 @@ svg text{font-family:var(--font)}
 .pf-cinza b{color:var(--cinza)}
 .pf-trac{border-style:dashed}
 /* os três pacotes na largura inteira, cada um completo (28/10: "dê maior enfoque de tamanho e tela aos três itens do portfólio") */
-.pf-grade{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:stretch}
-.pf-cartao{background:#fff;border:1px solid var(--filete);border-top:5px solid var(--cam);border-radius:12px;padding:16px 18px 14px;display:flex;flex-direction:column;gap:6px}
+.pf-grade{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:stretch}
+.pf-cartao{background:#fff;border:1px solid var(--filete);border-top:5px solid var(--cam);border-radius:12px;padding:12px 16px 12px;display:flex;flex-direction:column;gap:4px}
 .pf-cartao.on{border-color:var(--tinta);border-top-color:var(--cam)}
 .pf-cartao.c-aberto{border-style:dashed}
-.pf-cartao h3{font-family:var(--serif);font-size:21px;font-weight:500;margin:0;line-height:1.2;color:var(--tinta)}
+.pf-cartao h3{font-family:var(--serif);font-size:19px;font-weight:500;margin:0;line-height:1.2;color:var(--tinta)}
 .pf-sub{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cinza);margin-bottom:1px}
 .pf-quem{margin:0;font-size:14px;color:var(--tinta);font-weight:600;line-height:1.3}
 .pf-desc{margin:0;font-size:14px;color:var(--cinza-escuro);line-height:1.4}
@@ -271,29 +270,27 @@ svg text{font-family:var(--font)}
 .pf-mais{margin:2px 0 0;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--primary)}
 .pf-c{margin:6px 0 0;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cor)}
 .pf-lista{list-style:none;margin:0;padding:0}
-.pf-lista li{font-size:14.5px;line-height:1.3;padding:2px 0 2px 10px;border-left:3px solid var(--cor);margin:4px 0;color:var(--tinta)}
+.pf-lista li{font-size:14px;line-height:1.3;padding:1px 0 1px 10px;border-left:3px solid var(--cor);margin:3px 0;color:var(--tinta)}
 .pf-lista li.pf-abrir{font-style:italic;color:var(--cinza-escuro);border-left-style:dashed}
 .pf-destrava{margin:auto 0 0;padding-top:8px;border-top:1px solid var(--filete);font-size:13.5px}
 .pf-mod{display:inline-block;font-size:11.5px;font-weight:600;padding:0 7px;border-radius:999px;background:var(--papel-2);color:var(--tinta);margin:2px 3px 0 0}
 .pf-pe{margin:0;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-.pf-leg{margin:8px 0 0;font-size:12.5px;color:var(--cinza-escuro);display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}
+.pf-rodape{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:4px 18px;margin-top:8px}
+.pf-leg{margin:0;font-size:12.5px;color:var(--cinza-escuro);display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}
+.pf-rodape .pf-linhas{border:0;padding:0;margin:0}
 .pf-leg-c{font-weight:700;color:var(--cor);padding-left:8px;border-left:3px solid var(--cor)}
 .pf-leg .l-elo{margin-left:auto}
 .pf-achados{margin:4px 0 0;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;font-size:13px}
 .pf-ach{color:var(--cinza-escuro)}
 .pf-ach b{color:var(--tinta);font-weight:600}
-.pf-lista li small{display:block;font-size:12.5px;line-height:1.35;color:var(--cinza-escuro);font-style:normal}
-.pf-fim{margin:4px 0 0;display:flex;justify-content:flex-end}
-.pf-fim .l-elo{width:auto;margin:0;border-top:0;padding:4px 0 0}
-.pf-sabemos{margin-top:8px;padding-top:8px;border-top:1px solid var(--filete);display:grid;grid-template-columns:auto repeat(2,minmax(0,1fr));gap:4px 14px;align-items:start}
-.pf-sabemos .pf-rot{grid-row:span 2;align-self:start;padding-top:2px}
-.pf-revela{margin:8px 0 0;padding:8px 0 0;border-top:1px solid var(--filete);font-size:14px;color:var(--cinza-escuro);line-height:1.45}
+.pf-revela{margin:6px 0 0;padding:6px 0 0;border-top:1px solid var(--filete);font-size:13.5px;color:var(--cinza-escuro);line-height:1.4;display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+.pf-revela .l-elo{width:auto;margin:0;border-top:0;padding:0;flex:0 0 auto}
 
 /* ---- 04 · jornadas: o blueprint ---- */
-.bp-pe{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-top:10px;font-size:13px;font-style:italic;color:var(--cinza);line-height:1.4}
+.bp-pe{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-top:6px;font-size:12px;font-style:italic;color:var(--cinza);line-height:1.35}
 .bp-pe .l-elo{flex:0 0 auto;width:auto;margin:0;font-style:normal}
 .bp{display:grid;grid-template-columns:100px repeat(6,minmax(0,1fr));font-size:12.5px;color:var(--cinza-escuro)}
-.bp>div{padding:6px 7px;border-bottom:1px solid var(--filete);line-height:1.35}
+.bp>div{padding:4px 6px;border-bottom:1px solid var(--filete);line-height:1.3}
 .bp .bp-zona{font-size:11px;font-weight:700;letter-spacing:.18em;color:var(--cinza);text-align:center;border-bottom:2px solid var(--primary);padding:0 0 4px}
 .bp .bp-zona.depois{color:var(--risco);border-bottom:2px dashed var(--risco)}
 .bp .bp-zona.vazio{border-bottom:none}
@@ -391,7 +388,7 @@ svg text{font-family:var(--font)}
 .pc-conta a:hover{border-bottom-color:var(--ouro)}
 
 /* ---- 00 · contexto (28/10/2026): o laço dos três momentos à esquerda (figura + legenda), a história à direita, em uma tela ---- */
-.v-contexto.on{grid-template-columns:minmax(380px,52%) minmax(0,1fr);gap:24px}
+.v-contexto.on{grid-template-columns:minmax(360px,46%) minmax(0,1fr);gap:24px}
 /* o desenho toma toda a altura que sobra (largura e altura, o que limitar primeiro); a legenda em três colunas logo abaixo e a linha de leitura no pé.
    Antes a legenda ficava ao lado e a figura saía com 400 px de largura ("não tivemos ganho de tamanho", o usuário, 28/10) */
 .cena-ctx{align-items:stretch;justify-content:flex-start;gap:8px;padding:4px 0}
@@ -433,25 +430,23 @@ svg text{font-family:var(--font)}
 .lg-item:hover,.lg-item.on,.lg-titulo:hover,.lg-titulo.on{background:color-mix(in srgb,var(--cor) 11%,#fff)}
 .lg-item:focus-visible,.lg-titulo:focus-visible{outline:2px solid var(--cor);outline-offset:1px}
 /* a abertura em sete perguntas (5W2H), molde da Longevidade: rótulo à esquerda, resposta à direita, em duas colunas; "como" e "quanto" na largura inteira */
-.w5-intro{font-family:var(--serif);font-size:15px;color:var(--cinza-escuro);margin:0 0 4px;line-height:1.35}
-.w5h{margin:0 0 8px;padding:0;display:grid;grid-template-columns:1fr 1fr;column-gap:26px}
-.w5{display:grid;grid-template-columns:76px 1fr;gap:10px;padding:7px 0;border-bottom:1px solid var(--filete)}
+.w5h{margin:0 0 6px;padding:0;display:grid;grid-template-columns:1fr 1fr;column-gap:24px}
+.w5{display:grid;grid-template-columns:74px 1fr;gap:10px;padding:5px 0;border-bottom:1px solid var(--filete)}
 .w5 dt{font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--cam,var(--tinta));padding-top:2px}
-.w5 dd{margin:0;font-size:14px;line-height:1.45;color:var(--tinta)}
+.w5 dd{margin:0;font-size:13.5px;line-height:1.4;color:var(--tinta)}
 .w5-quem,.w5-como,.w5-quanto{grid-column:1/-1}
-/* os cinco compradores em três colunas, na largura inteira: em coluna única a lista dobrava a altura do quadro */
-.w5-pes{list-style:none;margin:5px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px 14px}
-.w5-pes li{font-size:12.5px;line-height:1.35;color:var(--cinza-escuro);padding-left:14px;position:relative}
-.w5-pes li::before{content:"";position:absolute;left:0;top:6px;width:7px;height:7px;border-radius:50%;background:var(--cinza)}
-.w5-pes li.foco::before{background:var(--cam,var(--tinta));box-shadow:0 0 0 2px #fff,0 0 0 3.5px var(--cam,var(--tinta))}
-.w5-pes li b{color:var(--tinta)}
-.w5-passos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
-.w5-passo{all:unset;cursor:pointer;display:block;font-family:var(--font);font-size:12.5px;line-height:1.35;color:var(--cinza-escuro);padding:6px 9px;border:1px solid var(--filete);border-left:3px solid var(--cor);border-radius:6px;background:#fff}
+/* os cinco compradores como pontos numa linha (só o nome; a motivação vive na Direção): a farmacêutica, em foco, circulada */
+.w5-pes{display:flex;flex-wrap:wrap;gap:3px 14px;margin-top:4px}
+.w5-pes i{font-style:normal;font-size:12.5px;color:var(--cinza-escuro)}
+.w5-pes i::before{content:"";display:inline-block;width:7px;height:7px;margin-right:5px;border-radius:50%;background:var(--cinza);vertical-align:1px}
+.w5-pes i.foco{color:var(--tinta);font-weight:600}
+.w5-pes i.foco::before{background:var(--cam,var(--tinta));box-shadow:0 0 0 2px #fff,0 0 0 3.5px var(--cam,var(--tinta))}
+.w5-passos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:5px}
+.w5-passo{all:unset;cursor:pointer;display:block;font-family:var(--font);font-size:12.5px;line-height:1.3;color:var(--cinza-escuro);padding:5px 9px;border:1px solid var(--filete);border-left:3px solid var(--cor);border-radius:6px;background:#fff}
 .w5-passo b{display:block;font-family:var(--serif);font-size:14px;font-weight:500;color:var(--cor);margin-bottom:1px}
 .w5-passo:hover,.w5-passo.on{background:color-mix(in srgb,var(--cor) 9%,#fff)}
 .w5-passo:focus-visible{outline:2px solid var(--cor);outline-offset:1px}
-.w5-camadas{margin:4px 0 0;font-size:13px;color:var(--cinza-escuro)}
-.regua-svg{display:block;width:100%;max-width:460px;height:auto;overflow:visible;margin:6px 0 0}
+.regua-svg{display:block;width:100%;max-width:380px;height:auto;overflow:visible;margin:4px 0 0}
 .rg-base{stroke:var(--filete-forte);stroke-width:1.5}
 .rg-feito{stroke:var(--risco);stroke-width:6;stroke-linecap:round}
 .rg-falta{stroke:var(--risco);stroke-width:2;stroke-dasharray:5 5}
@@ -506,10 +501,6 @@ svg text{font-family:var(--font)}
   .lp-fonte{margin-left:0}
   .v-contexto.on{display:block}
   .pf-grade{grid-template-columns:1fr}
-  /* "o que já sabemos" numa coluna só, em celular: a grade de três colunas com o rótulo em duas linhas esmagava os achados */
-  .pf-sabemos{display:block}
-  .pf-sabemos .pf-rot{display:block;margin-bottom:6px}
-  .pf-sabemos .achado.mini{margin-bottom:8px}
   .pf-leg .l-elo{margin-left:0}
   .cena.cena-ctx{padding:0 0 10px;overflow:visible;align-items:center}
   .cena.cena-ctx svg{min-width:0;height:auto}
@@ -521,4 +512,4 @@ svg text{font-family:var(--font)}
 }
 
 /* celular estreito: a legenda do laço numa coluna só, para os nomes não quebrarem */
-@media (max-width:520px){.w5-passos,.w5-pes{grid-template-columns:1fr}.laco-leg{grid-template-columns:1fr}.lg-grupo{display:grid;grid-template-columns:auto 1fr 1fr;gap:2px 8px;align-items:baseline}.lg-grupo .lg-titulo{grid-column:1/-1}}
+@media (max-width:520px){.w5-passos{grid-template-columns:1fr}.laco-leg{grid-template-columns:1fr}.lg-grupo{display:grid;grid-template-columns:auto 1fr 1fr;gap:2px 8px;align-items:baseline}.lg-grupo .lg-titulo{grid-column:1/-1}}
