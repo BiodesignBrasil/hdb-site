@@ -75,12 +75,13 @@ nav.barra{position:sticky;top:0;z-index:50;height:var(--header);display:flex;ali
 .cena{display:flex;flex-direction:column;align-items:stretch;justify-content:center;min-height:0;height:100%;overflow:hidden}
 .cena svg{flex:1 1 auto;min-height:0;height:100%;width:100%;display:block}
  /* os dois olhares: dois cartões largos, o ativo tingido com a cor da camada, como a tese das outras leituras */
-.tempos{flex:0 0 auto;display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 0 8px}
-.tempos button{cursor:pointer;text-align:left;background:#fff;border:1px solid var(--filete-forte);border-left:4px solid var(--filete-forte);border-radius:9px;padding:7px 12px 8px;display:grid;grid-template-columns:auto 1fr;gap:1px 10px;align-items:baseline;color:var(--cinza-escuro);font-family:var(--font)}
-.tempos button b{grid-row:span 2;font-family:var(--serif);font-size:22px;font-weight:500;color:var(--cinza);line-height:1}
-.tempos button .tp-t{font-weight:700;font-size:14.5px;color:var(--tinta)}
-.tempos button small{grid-column:2;font-size:13px;line-height:1.3;color:var(--cinza-escuro)}
-.tempos button small b{grid-row:auto;font-family:var(--font);font-size:13px;font-weight:700;color:var(--tinta)}
+/* os dois cartões, mais baixos (o usuário, 28/10: "reduza um pouco para dar mais espaço aos esquemas visuais") */
+.tempos{flex:0 0 auto;display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 0 6px}
+.tempos button{cursor:pointer;text-align:left;background:#fff;border:1px solid var(--filete-forte);border-left:4px solid var(--filete-forte);border-radius:9px;padding:4px 10px 5px;display:grid;grid-template-columns:auto 1fr;gap:0 8px;align-items:baseline;color:var(--cinza-escuro);font-family:var(--font)}
+.tempos button b{grid-row:span 2;font-family:var(--serif);font-size:18px;font-weight:500;color:var(--cinza);line-height:1}
+.tempos button .tp-t{font-weight:700;font-size:13.5px;color:var(--tinta)}
+.tempos button small{grid-column:2;font-size:12.5px;line-height:1.25;color:var(--cinza-escuro)}
+.tempos button small b{grid-row:auto;font-family:var(--font);font-size:12.5px;font-weight:700;color:var(--tinta)}
 .tempos button:hover{border-color:var(--cinza)}
 .tempos button.on{background:color-mix(in srgb,var(--cam,var(--ceu)) 12%,#fff);border-color:var(--cam,var(--ceu))}
 .tempos button.on b{color:var(--cam,var(--ceu))}
@@ -283,7 +284,7 @@ svg text{font-family:var(--font)}
 .pf-achados{margin:4px 0 0;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;font-size:13px}
 .pf-ach{color:var(--cinza-escuro)}
 .pf-ach b{color:var(--tinta);font-weight:600}
-.pf-revela{margin:6px 0 0;padding:6px 0 0;border-top:1px solid var(--filete);font-size:13.5px;color:var(--cinza-escuro);line-height:1.4;display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+.pf-revela{margin:6px 0 0;padding:6px 0 0;border-top:1px solid var(--filete);display:flex;justify-content:flex-end}
 .pf-revela .l-elo{width:auto;margin:0;border-top:0;padding:0;flex:0 0 auto}
 
 /* ---- 04 · jornadas: o blueprint ---- */
@@ -484,9 +485,9 @@ svg text{font-family:var(--font)}
   .vista.on{display:block;height:auto}
   .cena{height:auto;overflow-x:auto}
   .cena svg{height:auto;min-width:760px}
-  .tempos{grid-template-columns:1fr}
-  .duo{grid-template-columns:1fr;overflow-x:auto}
-  .duo svg{height:auto}
+  /* os dois olhares seguem lado a lado (o usuário, 28/10: "apareciam lado a lado antes de clicar; não pedi para tirar"); só no celular empilham */
+  .duo{grid-template-columns:1fr 1fr;overflow-x:auto}
+  .duo svg{height:auto;min-width:0}
   .laco-leg{gap:6px 10px}
   .leitura{margin-top:14px;padding:14px 16px 16px}
   .leitura,.painel{height:auto;overflow:visible}
@@ -512,4 +513,5 @@ svg text{font-family:var(--font)}
 }
 
 /* celular estreito: a legenda do laço numa coluna só, para os nomes não quebrarem */
+@media (max-width:700px){.tempos,.duo{grid-template-columns:1fr}.duo svg{min-width:760px}}
 @media (max-width:520px){.w5-passos{grid-template-columns:1fr}.laco-leg{grid-template-columns:1fr}.lg-grupo{display:grid;grid-template-columns:auto 1fr 1fr;gap:2px 8px;align-items:baseline}.lg-grupo .lg-titulo{grid-column:1/-1}}

@@ -795,7 +795,8 @@
     h += "<div class='pf-rodape'><p class='pf-leg'>" + ORDEM_C.map(function (c) { return "<span class='pf-leg-c' style='--cor:" + CORW[c] + "'>" + esc(NOME_C[c]) + "</span>"; }).join("") +
       "<span><i>itálico: a construir</i> · a etiqueta diz quem paga</span></p>" + linhas + "</div>";
     /* sem "o que já sabemos": os achados desta camada vivem no recorte e na Direção (cortar o acessório para caber sem rolar, 28/10) */
-    h += "<p class='pf-revela'>" + (sintTxt("revela_servicos") ? "<span><span class='pf-rot'>O que isso revela</span>" + esc(ponto(sintTxt("revela_servicos"))) + sintConf("revela_servicos") + "</span>" : "<span></span>") + elo("servicos") + "</p>";
+    /* sem "o que isso revela" (o usuário, 28/10: "tire isso"): a chave revela_servicos segue no vault e no recorte */
+    h += "<p class='pf-revela'>" + elo("servicos") + "</p>";
     escreve(portfolio, h);
   })();
 

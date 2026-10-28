@@ -1001,6 +1001,12 @@ window.HDB = {
    "titulo": "Nada rola na janela maximizada",
    "o_que_mudou": "Medida ao vivo, a janela maximizada do usuário dá 1264 × 561. Para nenhuma aba rolar aí, com a escala no mínimo em 0,75, saiu o acessório: na 00 a introdução, a linha das camadas e a motivação dos compradores, com os textos encurtados· na 01 a tabela compacta e o fomento ligado direto à empresa· na 02 a ficha do C sem glossário e passagem· na 03 as entregas só pelo nome, as linhas clínicas só com o estado e sem \"o que já sabemos\"· na 04 e na 05 as células mais justas. A 00 na barra em maiúsculo, como as outras",
    "versao": 16
+  },
+  {
+   "data": "2026-10-28",
+   "titulo": "Ajustes na 03 e na 02",
+   "o_que_mudou": "Na aba Serviços saiu a linha \"o que isso revela\" sob os pacotes (fica só o elo). Na aba Sistema os dois cartões (1 hoje à mão · 2 com o HDB) ficaram mais baixos, para dar altura aos dois esquemas, e os dois olhares seguem lado a lado também em janelas estreitas (até 700 px), onde antes empilhavam",
+   "versao": 17
   }
  ],
  "sintese": {
@@ -1833,8 +1839,8 @@ window.HDB = {
   }
  ],
  "versao": {
-  "numero": 16,
+  "numero": 17,
   "data": "2026-10-28",
-  "titulo": "Nada rola na janela maximizada"
+  "titulo": "Ajustes na 03 e na 02"
  }
 };
