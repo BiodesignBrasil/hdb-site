@@ -3,9 +3,9 @@ window.HDB = {
  "atores": [
   {
    "id": "hdb",
-   "nome": "Spin-off HDB",
-   "papel": "empresa que cruza bases pela mesma pessoa e entrega a análise (método, curadoria dos códigos SIGTAP e CID, estatística)",
-   "curto": "Spin-off HDB",
+   "nome": "A empresa nova (Health Data Brasil)",
+   "papel": "liga a mesma pessoa entre as bases e entrega a análise: o método, a escolha dos códigos, a estatística",
+   "curto": "A empresa nova · HDB",
    "lado": "dentro",
    "confianca": "confirmado"
   },
@@ -28,7 +28,7 @@ window.HDB = {
   {
    "id": "pharma",
    "nome": "Indústria farmacêutica e empresas de pesquisa clínica",
-   "papel": "compra pacotes de análise para o dossiê que vai à CONITEC e às operadoras · segmento-alvo",
+   "papel": "compra os pacotes para pedir que o SUS e os planos de saúde adotem o remédio · é o cliente principal",
    "curto": "Farmacêutica e pesquisa clínica",
    "lado": "fora",
    "confianca": "confirmado"
@@ -36,7 +36,7 @@ window.HDB = {
   {
    "id": "einstein",
    "nome": "Hospital Israelita Albert Einstein",
-   "papel": "provável titular de parte da propriedade intelectual (código de coleta original) · papel no spin-off em aberto",
+   "papel": "dono provável de parte do método (o programa que coleta os dados) · papel na empresa nova em aberto",
    "curto": "Einstein (propriedade e licença)",
    "lado": "fora",
    "confianca": "provavel"
@@ -52,7 +52,7 @@ window.HDB = {
   {
    "id": "conitec",
    "nome": "CONITEC e SUS",
-   "papel": "recebem a evidência de mundo real nos dossiês de incorporação",
+   "papel": "quem decide o que o SUS adota: recebe a prova no pedido da farmacêutica",
    "curto": "CONITEC e SUS",
    "lado": "fora",
    "confianca": "provavel"
@@ -75,7 +75,7 @@ window.HDB = {
   },
   {
    "id": "financiador",
-   "nome": "Financiador do spin-off",
+   "nome": "Quem financia a empresa nova",
    "papel": "quem aporta o capital até o primeiro lucro · fundadores, Einstein ou investidor",
    "curto": "Financiador (a definir)",
    "lado": "fora",
@@ -84,7 +84,7 @@ window.HDB = {
   {
    "id": "techtrials",
    "nome": "Techtrials",
-   "papel": "concorrente principal · módulos por base para painéis · Roche como cliente",
+   "papel": "concorrente direto · vende acesso seguro a dados de saúde · foco em farmacêuticas e nos pedidos ao SUS",
    "curto": "Techtrials",
    "lado": "fora",
    "confianca": "confirmado"
@@ -114,8 +114,8 @@ window.HDB = {
    "fundo": "#DFECFB"
   },
   "spinoff": {
-   "rotulo": "Pago pelo spin-off",
-   "curto": "spin-off",
+   "rotulo": "Pago pela empresa nova",
+   "curto": "empresa",
    "cor": "#0C3A6F",
    "fundo": "#E6ECF3"
   },
@@ -210,7 +210,7 @@ window.HDB = {
    "id": "F6",
    "de": "pharma",
    "para": "conitec",
-   "oque": "evidência de mundo real para incorporação",
+   "oque": "a prova, no pedido para o SUS adotar o remédio",
    "tipo": "beneficio",
    "enquadramento": "nenhum",
    "etapas": [
@@ -245,54 +245,54 @@ window.HDB = {
    "id": "E1",
    "nome": "Pergunta",
    "curto": "Pergunta",
-   "oque": "o cliente define a pergunta de evidência de mundo real",
+   "oque": "o cliente faz a pergunta: este tratamento funciona em quem?",
    "recurso": "comercial (inexistente hoje)",
-   "gate": "sem carta de intenção não há volume",
+   "gate": "sem compradores por escrito, não há volume",
    "confianca": "provavel"
   },
   {
    "id": "E2",
    "nome": "Desenho do estudo",
    "curto": "Desenho",
-   "oque": "códigos SIGTAP/CID certos e protocolo, que é conhecimento clínico",
+   "oque": "escolher os códigos certos de doença e procedimento, trabalho de quem conhece a clínica",
    "recurso": "ciência e curadoria",
-   "gate": "propriedade intelectual: a curadoria é conhecimento dos fundadores?",
+   "gate": "a quem pertence o método: ao Einstein ou aos fundadores?",
    "confianca": "provavel"
   },
   {
    "id": "E3",
    "nome": "Cruzamento e coorte",
    "curto": "Cruzamento",
-   "oque": "coorte cruzada entre bases públicas, pela mesma pessoa",
+   "oque": "ligar os registros da mesma pessoa entre as bases e montar o grupo",
    "recurso": "máquina local e bases públicas",
-   "gate": "ética e LGPD: identificadores só no cruzamento",
+   "gate": "privacidade: os dados pessoais ficam só no cruzamento",
    "confianca": "provavel"
   },
   {
    "id": "E4",
    "nome": "Análise e revisão clínica",
    "curto": "Análise",
-   "oque": "p-valor e tamanho de efeito com metodologia auditável",
+   "oque": "analisar: funciona? quanto? com que certeza? De um jeito que outro pesquisador possa conferir",
    "recurso": "analista e revisor clínico",
-   "gate": "qualidade não documentada · nenhum artigo com a plataforma",
+   "gate": "a qualidade ainda não foi publicada: nenhum artigo usou o método",
    "confianca": "provavel"
   },
   {
    "id": "E5",
    "nome": "Entrega e uso",
    "curto": "Entrega",
-   "oque": "dossiê para CONITEC · operadora · periódico",
+   "oque": "entregar ao cliente, que leva ao SUS, ao plano de saúde ou à revista científica",
    "recurso": "—",
-   "gate": "conflito de interesse é risco reputacional",
+   "gate": "quem paga pela prova é quem vende o remédio: risco para a reputação",
    "confianca": "provavel"
   },
   {
    "id": "E6",
-   "nome": "Reuso e recompra",
-   "curto": "Reuso",
-   "oque": "coorte reutilizável: o cliente não paga a montagem de novo",
-   "recurso": "coorte versionada (a construir)",
-   "gate": "sem produto recorrente, cada cliente vira projeto novo",
+   "nome": "A volta",
+   "curto": "Volta",
+   "oque": "o mesmo grupo responde à próxima pergunta, sem pagar a montagem de novo",
+   "recurso": "coorte guardada (a construir)",
+   "gate": "sem cliente que volta, cada venda é um projeto novo",
    "confianca": "provavel"
   }
  ],
@@ -300,7 +300,7 @@ window.HDB = {
   {
    "camada": "ecossistema",
    "titulo": "Quem mais ganha não paga",
-   "texto": "a evidência melhor serve à CONITEC e ao SUS, mas quem paga é a farmacêutica, e só se a evidência fortalecer o próprio dossiê",
+   "texto": "a prova serve ao SUS, que decide o que adotar. Mas quem paga é a farmacêutica, e só quando a prova ajuda o pedido dela",
    "componente": "receita",
    "c": [
     "C3"
@@ -309,7 +309,7 @@ window.HDB = {
   {
    "camada": "sistema",
    "titulo": "O que se vende é o cruzamento, não o dado",
-   "texto": "a matéria-prima é pública e aberta a todos, concorrentes incluídos · o valor está em ligar a mesma pessoa entre as bases e escolher os códigos certos",
+   "texto": "a matéria-prima é pública, para todos. O valor está em ligar a mesma pessoa entre as bases e escolher os códigos certos",
    "componente": "proposta",
    "c": [
     "C1"
@@ -318,7 +318,7 @@ window.HDB = {
   {
    "camada": "servicos",
    "titulo": "Cada pacote paga o próprio custo",
-   "texto": "a contribuição por pacote é alta, o que falta é volume para cobrir a equipe",
+   "texto": "cada pacote vendido deixa sobra. O que falta é vender o bastante para pagar a equipe",
    "componente": "receita",
    "c": [
     "C3"
@@ -326,8 +326,8 @@ window.HDB = {
   },
   {
    "camada": "jornadas",
-   "titulo": "Cada cliente vira projeto novo",
-   "texto": "sem coorte reutilizável a receita não acumula, que é onde plataformas de dados costumam travar",
+   "titulo": "Cada cliente é um projeto novo",
+   "texto": "sem guardar o grupo de pacientes para a próxima pergunta, a receita não cresce. É onde empresas de dados costumam travar",
    "componente": "relacionamento",
    "c": [
     "volta"
@@ -335,8 +335,8 @@ window.HDB = {
   },
   {
    "camada": "fecho",
-   "titulo": "Propriedade intelectual licenciada pelo Einstein",
-   "texto": "antes de constituir a empresa e de captar",
+   "titulo": "A licença do método, dada pelo Einstein",
+   "texto": "antes de abrir a empresa e de buscar investidor",
    "componente": "parcerias",
    "c": [
     "C1"
@@ -345,7 +345,7 @@ window.HDB = {
   {
    "camada": "ecossistema",
    "titulo": "A matéria-prima é grátis para todos",
-   "texto": "o dado público está aberto também aos concorrentes, então o que se vende é o método, e o método ainda não tem prova pública própria",
+   "texto": "o dado público está aberto também aos concorrentes. O que se vende é o método, e o método ainda não tem um artigo publicado que o prove",
    "componente": "recursos",
    "c": [
     "C1",
@@ -355,7 +355,7 @@ window.HDB = {
   {
    "camada": "sistema",
    "titulo": "Quem autoriza ainda não autorizou",
-   "texto": "o código de coleta original é atribuído ao Departamento de Informática do Einstein, e sem licença o spin-off não capta",
+   "texto": "o programa que coleta os dados foi feito na área de informática do Einstein. Sem a licença, a empresa não consegue investidor",
    "componente": "parcerias",
    "c": [
     "C1"
@@ -364,7 +364,7 @@ window.HDB = {
   {
    "camada": "servicos",
    "titulo": "Vender contra consultoria, não contra equipe interna",
-   "texto": "contra consultoria o HDB é dominante em todos os cenários, contra uma equipe interna enxuta só empata",
+   "texto": "comparado a uma consultoria, o pacote ganha em todos os cenários. Comparado a uma equipe interna enxuta, empata",
    "componente": "proposta",
    "c": [
     "C3"
@@ -372,8 +372,8 @@ window.HDB = {
   },
   {
    "camada": "fecho",
-   "titulo": "Cartas de intenção da indústria farmacêutica e de empresas de pesquisa clínica",
-   "texto": "volume acima do empate até o ano 3",
+   "titulo": "Compradores por escrito: farmacêuticas e empresas de pesquisa",
+   "texto": "compradores suficientes para a conta fechar até o terceiro ano",
    "componente": "segmentos",
    "c": [
     "volta"
@@ -382,7 +382,7 @@ window.HDB = {
   {
    "camada": "ecossistema",
    "titulo": "Há concorrente local com a mesma promessa",
-   "texto": "a Precision Data anuncia relatórios de duas semanas em dois dias para o mesmo público",
+   "texto": "a Precision Data promete, ao mesmo público, em 2 dias o que levaria 2 semanas",
    "componente": "proposta",
    "c": [
     "C1"
@@ -391,7 +391,7 @@ window.HDB = {
   {
    "camada": "sistema",
    "titulo": "Tempo dito, não medido",
-   "texto": "os cerca de 20 minutos medem a geração da coorte na máquina, não a entrega do pacote, e vieram dos fundadores",
+   "texto": "os 20 minutos são o tempo da máquina, dito pelos fundadores. Ninguém mediu o tempo do pacote inteiro, da pergunta à entrega",
    "componente": "atividades",
    "c": [
     "C1",
@@ -400,8 +400,8 @@ window.HDB = {
   },
   {
    "camada": "servicos",
-   "titulo": "O gargalo é demanda, não capacidade",
-   "texto": "a equipe paga tem capacidade muito acima do volume previsto, e os prejuízos dos primeiros anos são capacidade ociosa",
+   "titulo": "O problema não é fazer, é vender",
+   "texto": "a equipe consegue entregar muito mais do que vende. O prejuízo dos primeiros anos é gente parada",
    "componente": "segmentos",
    "c": [
     "volta"
@@ -409,8 +409,8 @@ window.HDB = {
   },
   {
    "camada": "fecho",
-   "titulo": "Preço ancorado na consultoria",
-   "texto": "validado em entrevista com decisores de acesso e economia da saúde",
+   "titulo": "Preço parecido com o de uma consultoria",
+   "texto": "conferido em entrevistas com quem decide compras nas farmacêuticas",
    "componente": "receita",
    "c": [
     "C3"
@@ -422,7 +422,7 @@ window.HDB = {
    "id": "pacote",
    "nome": "Pacote de coorte",
    "curto": "Pacote",
-   "descricao": "Uma pergunta, uma coorte cruzada entre bases públicas e a análise pronta para o dossiê. Sob encomenda, projeto a projeto",
+   "descricao": "Uma pergunta, o grupo de pacientes montado e a análise pronta. Sob encomenda, um projeto por vez",
    "enquadramento": "pharma",
    "confianca": "confirmado",
    "etapas": [
@@ -435,9 +435,9 @@ window.HDB = {
   },
   {
    "id": "reuso",
-   "nome": "Coorte reutilizável",
-   "curto": "Reuso",
-   "descricao": "O cliente volta com nova pergunta sobre a mesma coorte e não paga a montagem de novo",
+   "nome": "A volta: a mesma coorte, nova pergunta",
+   "curto": "Volta",
+   "descricao": "O cliente volta com nova pergunta sobre o mesmo grupo e não paga a montagem de novo",
    "enquadramento": "pharma",
    "confianca": "aberto",
    "etapas": [
@@ -448,7 +448,7 @@ window.HDB = {
    "id": "assinatura",
    "nome": "Assinatura",
    "curto": "Assinatura",
-   "descricao": "Acesso recorrente à plataforma, com coortes guardadas e versionadas",
+   "descricao": "Acesso contínuo, com os grupos de pacientes guardados",
    "enquadramento": "pharma",
    "confianca": "aberto",
    "etapas": [
@@ -459,7 +459,7 @@ window.HDB = {
    "id": "academico",
    "nome": "Estudo acadêmico",
    "curto": "Acadêmico",
-   "descricao": "Coorte para artigo científico, paga por fomento à pesquisa",
+   "descricao": "Grupo de pacientes para artigo científico, pago com verba de pesquisa",
    "enquadramento": "fomento",
    "confianca": "aberto",
    "etapas": [
@@ -474,7 +474,7 @@ window.HDB = {
    "id": "licitacao",
    "nome": "Painéis para o gestor público",
    "curto": "Licitação",
-   "descricao": "O gestor público hoje licita painéis de indicadores, não coortes · a coorte precisaria entrar num escopo de painel",
+   "descricao": "O gestor público compra painéis de indicadores, não grupos de pacientes. O grupo teria de entrar no escopo de um painel",
    "enquadramento": "publico",
    "confianca": "aberto",
    "etapas": [
@@ -487,7 +487,7 @@ window.HDB = {
   {
    "etapa": "E1",
    "quando": "no início",
-   "vive": "A equipe de acesso e economia da saúde formula a pergunta de evidência para o dossiê",
+   "vive": "A gerente de acesso faz a pergunta: este tratamento funciona em quem?",
    "atua": "contato comercial com o HDB (hoje, os próprios fundadores)",
    "bastidor": "—",
    "recurso": "comercial, que hoje não existe",
@@ -500,9 +500,9 @@ window.HDB = {
   {
    "etapa": "E2",
    "quando": "primeira semana",
-   "vive": "Define com o HDB o desenho do estudo: população, período, desfecho",
+   "vive": "Define com a equipe o desenho: quais pacientes, qual período, o que medir",
    "atua": "o cientista dos fundadores e a curadoria clínica",
-   "bastidor": "escolha dos códigos de procedimento e de doença (SIGTAP e CID) que capturam cada caso",
+   "bastidor": "escolha dos códigos de doença e de procedimento que capturam cada caso",
    "recurso": "ciência e curadoria clínica",
    "decide": "cliente e HDB, juntos",
    "fonte": "inferencia",
@@ -530,7 +530,7 @@ window.HDB = {
    "quando": "semanas seguintes",
    "vive": "Recebe o rascunho e devolve dúvidas",
    "atua": "o estatístico dos fundadores, com revisão clínica",
-   "bastidor": "estatística pronta e metodologia auditável",
+   "bastidor": "análise pronta, de um jeito que outro pesquisador possa conferir",
    "recurso": "analista e revisor clínico",
    "decide": "HDB",
    "fonte": "inferencia",
@@ -546,11 +546,11 @@ window.HDB = {
   {
    "etapa": "E5",
    "quando": "na entrega",
-   "vive": "Recebe a coorte e a análise e as usa no dossiê",
-   "atua": "cliente, que leva à CONITEC, à operadora ou ao periódico",
+   "vive": "Recebe o grupo e a análise, e usa no pedido ao SUS",
+   "atua": "o cliente, que leva ao SUS, ao plano de saúde ou à revista científica",
    "bastidor": "—",
    "recurso": "—",
-   "decide": "CONITEC, comitê da operadora ou editor",
+   "decide": "o SUS, o plano de saúde ou a revista",
    "fonte": "inferencia",
    "espera": "",
    "paga": [
@@ -565,10 +565,10 @@ window.HDB = {
   {
    "etapa": "E6",
    "quando": "depois",
-   "vive": "Volta com nova pergunta sobre a mesma coorte",
+   "vive": "Volta com nova pergunta sobre o mesmo grupo",
    "atua": "cliente · pesquisadores",
-   "bastidor": "coorte guardada e versionada, ainda a construir",
-   "recurso": "coorte versionada",
+   "bastidor": "grupo guardado, ainda a construir",
+   "recurso": "grupo guardado (a construir)",
    "decide": "cliente",
    "fonte": "inferencia",
    "espera": "sem data: só se houver nova pergunta",
@@ -789,16 +789,16 @@ window.HDB = {
    "id": "capacidade",
    "rotulo": "Capacidade da equipe",
    "unidade": "pacotes por ano",
-   "leitura": "o que três pessoas em tempo integral conseguem entregar, com duas analisando e uma em ciência e revisão",
+   "leitura": "o que 3 pessoas em tempo integral conseguem entregar: 2 analisando, 1 revisando",
    "confianca": "provavel",
    "valor": 65,
    "c": []
   },
   {
    "id": "empate",
-   "rotulo": "Empate",
+   "rotulo": "Para a conta fechar",
    "unidade": "pacotes por ano",
-   "leitura": "o volume que cobre o custo fixo da equipe ao preço de referência",
+   "leitura": "quantos pacotes por ano pagam a equipe, ao preço de hoje",
    "confianca": "provavel",
    "valor": 17,
    "c": [
@@ -809,7 +809,7 @@ window.HDB = {
    "id": "vendidos",
    "rotulo": "Vendidos até hoje",
    "unidade": "pacotes, no total",
-   "leitura": "três contratos pontuais, sem receita recorrente",
+   "leitura": "3 projetos avulsos. Nenhum cliente voltou",
    "confianca": "confirmado",
    "valor": 3,
    "c": [
@@ -820,7 +820,7 @@ window.HDB = {
    "id": "equipe",
    "rotulo": "Equipe",
    "unidade": "pessoas em tempo integral",
-   "leitura": "os três fundadores, dedicação ainda não acordada",
+   "leitura": "os 3 fundadores, com o tempo de dedicação ainda não combinado",
    "confianca": "provavel",
    "valor": 3,
    "c": []
@@ -829,7 +829,7 @@ window.HDB = {
    "id": "cruzamento",
    "rotulo": "Tempo de cruzamento",
    "unidade": "minutos",
-   "leitura": "geração da coorte cruzada entre bases, dito pelos fundadores · a entrega do pacote leva semanas",
+   "leitura": "o tempo da máquina para cruzar as bases, segundo os fundadores. Entregar o pacote inteiro leva semanas",
    "confianca": "confirmado",
    "valor": 20,
    "c": [
@@ -840,7 +840,7 @@ window.HDB = {
    "id": "primeiro_lucro",
    "rotulo": "Primeiro ano com lucro operacional",
    "unidade": "ano",
-   "leitura": "no caso-base, com o volume crescendo de 3 para 30 pacotes por ano",
+   "leitura": "se as vendas subirem de 3 para 30 pacotes por ano",
    "confianca": "provavel",
    "valor": 4,
    "c": [
@@ -968,133 +968,170 @@ window.HDB = {
    "titulo": "A direção e os ausentes",
    "o_que_mudou": "A Sistemática ganhou a quinta camada, a Direção: o modelo de negócio bloco a bloco, cada um com o que precisamos da instituição, o que já temos, o que já sabemos e o que falta definir, com quem resolve. O fio público termina nela, e a conta virou anexo, aberta só pelos blocos de custos e receitas. A entrada abre em sete perguntas, com os compradores como pontos. Cada passagem entre os Cs diz quem leva, e a volta mostra o laço que faria o reuso valer. Quem ainda não ouvimos ganhou lugar na Direção e no percurso, e o blueprint mostra as esperas",
    "versao": 8
+  },
+  {
+   "data": "2026-10-27",
+   "titulo": "Uma peça só",
+   "o_que_mudou": "A síntese passou a ser uma peça só, em seis abas que cabem numa tela: 00 De onde partimos, com a roda dos três Cs e o contexto (quem precisa da evidência, os três pacotes vendidos, a virada: 3 vendidos, 17 de empate, 65 de capacidade, e a frase que o leitor leva) · 01 a 04, o núcleo · 05 O que decidir, com as três respostas da instituição, o teste de valor e o modelo de negócio. A entrada separada saiu e o endereço antigo da Sistemática redireciona. Cada ideia passou a ter um nome só: a volta, as três respostas, o que falta e quem resolve. O recorte sai na ordem do contexto, dos três Cs e da direção",
+   "versao": 9
   }
  ],
  "sintese": {
-  "em_uma_frase": {
-   "texto": "O Health Data Brasil liga a mesma pessoa entre as bases públicas de saúde do Brasil e entrega a coorte com a análise pronta para quem decide: indústria farmacêutica, pesquisadores, gestores",
-   "confianca": "confirmado"
-  },
   "pergunta": {
-   "texto": "Em que condições o spin-off Health Data Brasil para de pé?",
-   "confianca": "confirmado"
-  },
-  "por_que_agora": {
-   "texto": "O sprint de 20 dias terminou com o modelo escolhido, mas sem três dados que só os fundadores e o Einstein têm: a licença da propriedade intelectual, a dedicação da equipe e o volume de clientes dispostos a pagar",
+   "texto": "O que precisa acontecer para a empresa Health Data Brasil nascer?",
    "confianca": "confirmado"
   },
   "resposta": {
-   "texto": "No caso-base, ainda não. Cada pacote paga com folga o próprio custo, mas uma equipe de três pessoas exige 17 pacotes por ano, e o histórico é de 3 no total. O gargalo é demanda, não capacidade",
+   "texto": "Hoje, ainda não nasce. Cada pacote vendido paga o próprio custo com folga. Mas uma equipe de 3 pessoas precisa de 17 pacotes por ano, e até hoje foram 3 no total. O problema não é fazer, é vender",
    "confianca": "provavel"
   },
   "porque": {
-   "texto": "Contra consultoria, o pacote é dominante em todos os cenários · contra uma equipe interna enxuta, só empata. O que mais pesa no resultado é a equipe, depois o volume, depois o preço",
+   "texto": "Comparado a uma consultoria, o pacote sai melhor e mais barato em todos os cenários. Comparado a uma equipe interna enxuta, empata. O que mais pesa no resultado é o custo da equipe, depois quantos pacotes se vendem, depois o preço",
    "confianca": "provavel"
   },
   "teste_de_valor": {
-   "texto": "Depois de ler isto, a mesa consegue decidir as condições de constituição do spin-off e quem fecha cada lacuna. Se não conseguir, a peça falhou, não a mesa",
+   "texto": "Depois de ler isto, a direção do Einstein consegue dar as três respostas e dizer quem resolve o que falta. Se não conseguir, a falha é desta peça",
    "confianca": "confirmado"
-  },
-  "olhar_do_cliente": {
-   "texto": "Para a gerente de acesso de uma farmacêutica, o pacote é uma pergunta de evidência respondida em semanas, não meses: ela define a pergunta, espera o cruzamento, recebe o rascunho, leva ao dossiê. O que ela ainda não tem é garantia de qualidade publicada nem a certeza de que o fornecedor existirá no ano que vem",
-   "confianca": "provavel"
-  },
-  "convergencia": {
-   "texto": "Três Cs, uma convergência: as bases convergem na mesma pessoa, as pessoas numa coorte, a coorte numa comprovação que vai ao dossiê. O ciclo só fecha quando a mesma coorte responde à próxima pergunta, e isso ainda está por construir",
-   "confianca": "provavel"
-  },
-  "w_oque": {
-   "texto": "Uma empresa nova que liga a mesma pessoa entre dez bases públicas de saúde e entrega a análise pronta para quem decide",
-   "confianca": "confirmado"
-  },
-  "w_porque": {
-   "texto": "O dado é público e gratuito, mas ligá-lo pela mesma pessoa leva semanas de trabalho especializado · quem precisa da evidência paga para tê-la em dias",
-   "confianca": "provavel"
-  },
-  "w_paraquem": {
-   "texto": "Primeiro, a área de acesso das farmacêuticas, que leva a evidência ao dossiê de incorporação. Os outros compradores ainda não foram ouvidos",
-   "confianca": "provavel"
-  },
-  "w_onde": {
-   "texto": "Nasce do método de pesquisadores ligados ao Einstein, como empresa separada que licencia esse método",
-   "confianca": "provavel"
-  },
-  "w_quando": {
-   "texto": "O modelo foi escolhido no sprint de outubro de 2026 · abrir a empresa depende de três decisões da instituição",
-   "confianca": "confirmado"
-  },
-  "w_como": {
-   "texto": "Em três passos, que formam um ciclo",
-   "confianca": "confirmado"
-  },
-  "w_quanto": {
-   "texto": "Para se pagar, dezessete pacotes por ano · até hoje foram três, no total",
-   "confianca": "provavel"
   },
   "direcao": {
-   "texto": "O spin-off depende de três respostas da instituição: a licença do método, a porta para os primeiros compradores e o papel do Einstein no capital",
+   "texto": "A empresa nasce se o Einstein der três respostas: a licença do método, a equipe e o capital, e a porta para os primeiros compradores",
    "confianca": "provavel"
   },
   "manchete_ecossistema": {
-   "texto": "Quem paga é a farmacêutica · quem mais ganha é o SUS, que não paga",
+   "texto": "Quem paga é a farmacêutica. Quem mais ganha é o SUS, que não paga",
    "confianca": "provavel"
   },
   "manchete_sistema": {
-   "texto": "O que se vende não é o dado, que é de todos: é ligar a mesma pessoa entre as bases",
+   "texto": "O dado é de todos. O que se vende é o trabalho de ligar a mesma pessoa entre as bases",
    "confianca": "confirmado"
   },
   "manchete_servicos": {
-   "texto": "Hoje se vende um serviço só, sob encomenda · o que acumularia receita ainda não existe",
+   "texto": "Hoje se vende um pacote por vez, sob encomenda. O cliente que volta, e faria a receita crescer, ainda não existe",
    "confianca": "confirmado"
   },
   "manchete_jornadas": {
-   "texto": "Da pergunta ao dossiê levam semanas · depois da entrega, ninguém acompanha o cliente",
+   "texto": "Da pergunta à entrega levam semanas. Depois da entrega, ninguém acompanha o cliente",
    "confianca": "provavel"
   },
   "manchete_direcao": {
-   "texto": "Para o spin-off ficar de pé, cada bloco do modelo de negócio pede uma resposta da instituição",
+   "texto": "Três respostas do Einstein: a licença do método, a equipe e o capital, a porta para os compradores",
    "confianca": "provavel"
   },
   "laco_titulo": {
-   "texto": "O laço que faria o reuso valer",
+   "texto": "O que faria o cliente voltar",
    "confianca": "provavel"
   },
   "laco_nota": {
-   "texto": "Hoje não gira: cada cliente vira projeto novo. A coorte guardada é o que religa",
+   "texto": "Hoje não gira: cada cliente é um projeto novo. Guardar o grupo de pacientes é o que faria girar",
+   "confianca": "provavel"
+  },
+  "frase_unica": {
+   "texto": "O método funciona: já foi vendido 3 vezes. A empresa ainda não existe. Faltam três coisas, e as três dependem do Einstein: a licença do método, a equipe e o capital, e os primeiros compradores",
+   "confianca": "provavel"
+  },
+  "ato1_historia": {
+   "texto": "A gerente de acesso de uma farmacêutica precisa provar que um remédio funciona em pacientes brasileiros de verdade, para o SUS adotá-lo",
+   "confianca": "provavel"
+  },
+  "ato1_obstaculos": {
+   "texto": "Fazer a pergunta certa · Achar os pacientes certos, espalhados em 10 bases públicas que não se falam · Esperar semanas ou meses por uma consultoria · Provar que o número está certo · Se vier outra pergunta, pagar tudo de novo",
+   "confianca": "provavel"
+  },
+  "ato1_filme": {
+   "texto": "Isso já aconteceu 3 vezes. A farmacêutica levou a pergunta a pesquisadores do Einstein, por contato pessoal, sem vendedor. Eles ligaram os registros da mesma pessoa em várias bases públicas, montaram o grupo de pacientes e entregaram a análise. A farmacêutica usou no pedido ao SUS. Depois, silêncio: ninguém voltou com uma segunda pergunta, e ninguém perguntou por quê",
+   "confianca": "provavel"
+  },
+  "ato1_porque": {
+   "texto": "O dado é público: qualquer um pode baixar. O trabalho caro é ligar os registros da mesma pessoa entre as bases e escolher os códigos certos. Quem mais ganha com a resposta é o SUS, e o SUS não paga por ela",
+   "confianca": "provavel"
+  },
+  "ato1_entrega": {
+   "texto": "O método entrega. O que não acontece é a próxima venda",
+   "confianca": "provavel"
+  },
+  "ato2_virada": {
+   "texto": "O problema não é fazer, é vender. 3 pessoas dão conta de 65 pacotes por ano. A conta fecha com 17. Até hoje foram 3",
+   "confianca": "provavel"
+  },
+  "ato2_outra_metade": {
+   "texto": "Cada pacote paga o próprio custo com folga. Contra uma consultoria, o pacote ganha em todos os cenários. Contra uma equipe interna, empata. O que não existe é a empresa: alguém que venda, guarde o grupo de pacientes e receba a próxima pergunta",
+   "confianca": "provavel"
+  },
+  "ato2_entrega": {
+   "texto": "Então, o que é que se vende? E o que falta para o cliente voltar?",
+   "confianca": "provavel"
+  },
+  "ato3_como": {
+   "texto": "Três passos: cruzar as bases, construir o grupo de pacientes, comprovar o resultado. A volta, quando o mesmo grupo responde à próxima pergunta, ainda não existe",
+   "confianca": "confirmado"
+  },
+  "resposta_licenca": {
+   "texto": "A licença do método: o método pertence ao Einstein. Sem a licença, a empresa não pode nascer nem buscar investidor",
+   "confianca": "provavel"
+  },
+  "resposta_gente_capital": {
+   "texto": "A equipe e o capital: quanto tempo os 3 fundadores vão dedicar, e se o Einstein entra como sócio",
+   "confianca": "provavel"
+  },
+  "resposta_compradores": {
+   "texto": "A porta para os primeiros compradores: farmacêuticas e empresas de pesquisa dizendo por escrito que vão comprar, a um preço parecido com o de uma consultoria",
+   "confianca": "provavel"
+  },
+  "reflexao_fit": {
+   "texto": "Dinheiro: ninguém definiu quem banca a empresa até o primeiro ano de lucro · Infraestrutura: hoje o cruzamento roda numa máquina própria, e ninguém mediu o custo na nuvem em escala · Talento: o método, a curadoria clínica e a estatística estão nos 3 fundadores, e o tempo deles ainda não está combinado",
+   "confianca": "provavel"
+  },
+  "reflexao": {
+   "texto": "O que sabemos está marcado como confirmado. O que lemos dos dados, como provável. O que ninguém sabe ainda está em aberto, com quem resolve ao lado",
+   "confianca": "confirmado"
+  },
+  "fator_limitante": {
+   "texto": "Um sistema cresce só até onde o recurso mais escasso deixa: é a lei do mínimo. Aqui sobra capacidade: 65 pacotes por ano. Falta demanda: 3 vendidos, 17 para a conta fechar. O mínimo hoje é quem compra, e antes disso a licença, sem a qual nada começa. Reforçar o que já sobra não muda o resultado",
+   "confianca": "provavel"
+  },
+  "fator_minimo": {
+   "texto": "resposta_compradores",
    "confianca": "provavel"
   }
  },
  "glossario": [
   {
    "termo": "Cruzamento pela mesma pessoa",
-   "explicacao": "Ligar os registros de uma mesma pessoa que aparecem em bases diferentes (internação, óbito, nascimento, vacina) sem um número comum entre elas: pelo nome, nome da mãe, data de nascimento e município. É o que o HDB faz em cerca de 20 minutos e que, à mão, leva semanas",
+   "explicacao": "As bases públicas não têm um número comum: a mesma pessoa aparece numa internação, numa vacina, num óbito, sem ligação entre elas. Cruzar é ligar esses registros pelo nome, nome da mãe, data de nascimento e município. À mão leva semanas. Com o método, cerca de 20 minutos",
    "c": [
     "C1"
    ]
   },
   {
    "termo": "Coorte",
-   "explicacao": "Um grupo de pessoas acompanhado ao longo do tempo nos registros de saúde: quem fez tal procedimento, o que aconteceu depois, com que frequência. É a matéria-prima da evidência de mundo real",
+   "explicacao": "Um grupo de pacientes acompanhado ao longo do tempo nos registros de saúde: quem fez tal tratamento e o que aconteceu depois. É a matéria-prima da prova",
    "c": [
     "C2"
    ]
   },
   {
    "termo": "Comprovação",
-   "explicacao": "O que o pacote entrega: p-valor e tamanho de efeito, com metodologia auditável, que a farmacêutica leva ao dossiê apresentado à CONITEC ou a uma operadora para que um medicamento seja incorporado. É onde a coorte vira decisão",
+   "explicacao": "A resposta à pergunta: o tratamento funciona? Quanto? Com que certeza? Feita de um jeito que outro pesquisador possa conferir. É o que a farmacêutica leva ao pedido para o SUS adotar o remédio",
    "c": [
     "C3"
    ]
   },
   {
    "termo": "Pacote",
-   "explicacao": "O que o HDB vende hoje: uma pergunta, uma coorte cruzada e a análise pronta (p-valor e tamanho de efeito), entregue à farmacêutica para o dossiê que vai à CONITEC ou à operadora",
+   "explicacao": "O que se vende hoje: uma pergunta, o grupo de pacientes montado e a análise pronta. Um projeto por vez, sob encomenda",
    "c": []
   },
   {
    "termo": "Spin-off",
-   "explicacao": "Uma empresa nova, fora do Einstein, que licencia a propriedade intelectual e opera o produto. Foi o modelo escolhido · a pergunta aberta é em que condições ela se sustenta",
+   "explicacao": "Uma empresa nova, fora do Einstein, que recebe a licença do método e o opera. Foi o modelo escolhido",
    "c": []
+  },
+  {
+   "termo": "A volta",
+   "explicacao": "O mesmo grupo de pacientes respondendo à próxima pergunta, sem pagar a montagem de novo. É o que faria a receita crescer. Hoje não existe: cada cliente é um projeto novo",
+   "c": [
+    "volta"
+   ]
   }
  ],
  "convergencia": [
@@ -1102,7 +1139,7 @@ window.HDB = {
    "sigla": "C1",
    "nome": "Cruzamento",
    "verbo": "cruzar",
-   "oque": "ligar a mesma pessoa entre as bases públicas, com os códigos certos para a pergunta",
+   "oque": "ligar os registros da mesma pessoa entre as bases públicas",
    "estado": "feito",
    "confianca": "confirmado",
    "etapas": [
@@ -1115,7 +1152,7 @@ window.HDB = {
    "sigla": "C2",
    "nome": "Coorte",
    "verbo": "construir",
-   "oque": "a população recortada pela pergunta, pronta para a análise e guardada para a próxima",
+   "oque": "o grupo de pacientes que responde à pergunta, pronto para a análise e guardado para a próxima",
    "estado": "feito",
    "confianca": "confirmado",
    "etapas": [
@@ -1126,7 +1163,7 @@ window.HDB = {
    "sigla": "C3",
    "nome": "Comprovação",
    "verbo": "comprovar",
-   "oque": "p-valor e tamanho de efeito com metodologia auditável, no dossiê de quem decide",
+   "oque": "a prova de que o tratamento funciona, e quanto, no pedido de quem decide",
    "estado": "feito",
    "confianca": "provavel",
    "etapas": [
@@ -1136,9 +1173,9 @@ window.HDB = {
   },
   {
    "sigla": "volta",
-   "nome": "Reuso",
+   "nome": "Volta",
    "verbo": "voltar",
-   "oque": "a mesma coorte responde à próxima pergunta sem pagar a montagem de novo",
+   "oque": "o mesmo grupo de pacientes responde à próxima pergunta, sem pagar a montagem de novo",
    "estado": "aberto",
    "confianca": "aberto",
    "etapas": [
@@ -1152,9 +1189,9 @@ window.HDB = {
    "bloco": "Segmentos de clientes",
    "componente": "quem compra",
    "cor": "#0F766E",
-   "temos": "um comprador que já pagou: a área de acesso de farmacêuticas, que leva a evidência ao dossiê de incorporação · três pacotes vendidos",
-   "preciso": "qual dos cinco compradores paga primeiro, quanto paga e em quanto tempo fecha",
-   "pedido": "abrir conversas com as áreas de acesso de três farmacêuticas e com dois gestores públicos, para ouvir quem ainda não ouvimos",
+   "temos": "um tipo de comprador que já pagou: a área de acesso das farmacêuticas, 3 pacotes",
+   "preciso": "qual dos 5 tipos de comprador paga primeiro, quanto e em quanto tempo",
+   "pedido": "abrir conversa com 3 farmacêuticas e 2 gestores públicos: ouvir quem ainda não ouvimos",
    "confianca": "provavel"
   },
   {
@@ -1162,8 +1199,8 @@ window.HDB = {
    "bloco": "Proposta de valor",
    "componente": "o que se entrega",
    "cor": "#00539A",
-   "temos": "ligar a mesma pessoa entre dez bases públicas e entregar a análise pronta para quem decide, em dias e não em semanas",
-   "preciso": "provar, lado a lado com os concorrentes, que esse cruzamento é o diferencial e não algo que já se vende",
+   "temos": "ligar a mesma pessoa entre 10 bases públicas e entregar a análise pronta, em dias e não em semanas",
+   "preciso": "provar, lado a lado com os concorrentes, que o cruzamento é diferente do que já se vende",
    "pedido": "validar o método com uma área de pesquisa do Einstein, num estudo que possa ser publicado",
    "confianca": "provavel"
   },
@@ -1172,7 +1209,7 @@ window.HDB = {
    "bloco": "Canais",
    "componente": "como o cliente chega",
    "cor": "#0F766E",
-   "temos": "o relacionamento pessoal dos fundadores · nenhuma prospecção ativa",
+   "temos": "o contato pessoal dos fundadores. Ninguém sai para vender",
    "preciso": "um caminho que traga cliente sem depender da agenda dos fundadores",
    "pedido": "definir se e como o nome Einstein pode aparecer na apresentação a clientes",
    "confianca": "provavel"
@@ -1183,8 +1220,8 @@ window.HDB = {
    "componente": "por que o cliente volta",
    "cor": "#0F766E",
    "temos": "atendimento sob medida, um projeto por cliente · ninguém acompanha o cliente depois da entrega",
-   "preciso": "um jeito de o cliente voltar com outra pergunta sobre a mesma coorte, sem pagar a montagem de novo",
-   "pedido": "indicar uma área do Einstein que possa ser o primeiro usuário recorrente da coorte guardada",
+   "preciso": "um jeito de o cliente voltar com outra pergunta sobre o mesmo grupo, sem pagar a montagem de novo",
+   "pedido": "indicar uma área do Einstein que possa ser o primeiro cliente que volta",
    "confianca": "aberto"
   },
   {
@@ -1192,9 +1229,9 @@ window.HDB = {
    "bloco": "Fontes de receita",
    "componente": "quem paga e como",
    "cor": "#A8730E",
-   "temos": "pacote por projeto, sob encomenda · nenhuma receita recorrente",
-   "preciso": "um preço recorrente testado com quem compra, ancorado no que uma consultoria cobra",
-   "pedido": "validar a âncora de preço com a área de economia da saúde do Einstein",
+   "temos": "um pacote por projeto, sob encomenda. Nenhuma receita que se repete",
+   "preciso": "um preço de assinatura testado com quem compra, parecido com o de uma consultoria",
+   "pedido": "conferir o preço com a área de economia da saúde do Einstein",
    "confianca": "provavel"
   },
   {
@@ -1203,8 +1240,8 @@ window.HDB = {
    "componente": "o que não pode faltar",
    "cor": "#16233A",
    "temos": "o método, a curadoria clínica dos códigos e as bases já tratadas numa máquina própria",
-   "preciso": "a dedicação acordada da equipe e quem responde pela ciência se uma pessoa sair",
-   "pedido": "dizer se pesquisadores ligados ao Einstein podem dedicar horas ao spin-off, e em que regime",
+   "preciso": "o tempo combinado de cada fundador, e quem responde pela ciência se um deles sair",
+   "pedido": "dizer se pesquisadores do Einstein podem dedicar horas à empresa nova, e como",
    "confianca": "provavel"
   },
   {
@@ -1212,9 +1249,9 @@ window.HDB = {
    "bloco": "Atividades-chave",
    "componente": "o que se faz todo dia",
    "cor": "#16233A",
-   "temos": "cruzar as bases, construir a coorte e analisar, em parte ainda à mão",
-   "preciso": "o tempo real de entrega de um pacote, medido do pedido ao dossiê, e não só o da máquina",
-   "pedido": "ceder um estudo já publicado para uma sessão cronometrada, refeita do zero",
+   "temos": "cruzar as bases, montar o grupo e analisar, em parte ainda à mão",
+   "preciso": "o tempo real de um pacote, do pedido à entrega, e não só o da máquina",
+   "pedido": "ceder um estudo já publicado para refazer do zero, com o relógio ligado",
    "confianca": "provavel"
   },
   {
@@ -1222,9 +1259,9 @@ window.HDB = {
    "bloco": "Parcerias-chave",
    "componente": "quem precisa estar junto",
    "cor": "#16233A",
-   "temos": "o Einstein como origem do método e casa provável do spin-off · a relação ainda não está escrita",
-   "preciso": "a licença da propriedade intelectual e o papel do Einstein na empresa nova",
-   "pedido": "decidir a licença do método e se o Einstein quer participação na empresa",
+   "temos": "o Einstein como origem do método e casa provável da empresa. A relação ainda não está no papel",
+   "preciso": "a licença do método e o papel do Einstein na empresa nova",
+   "pedido": "decidir a licença do método e se o Einstein quer ser sócio",
    "confianca": "aberto"
   },
   {
@@ -1232,49 +1269,49 @@ window.HDB = {
    "bloco": "Estrutura de custos",
    "componente": "o que custa ficar de pé",
    "cor": "#A8730E",
-   "temos": "custo de operação baixo hoje, com processamento em máquina própria · o custo maior é a equipe",
-   "preciso": "o custo de cada coorte entregue e quem financia a empresa até o primeiro ano com lucro",
-   "pedido": "dizer se o Einstein entra no capital inicial, ou se a busca é por investidor de fora",
+   "temos": "custo baixo hoje, com uma máquina própria. O custo grande é a equipe",
+   "preciso": "quanto custa cada pacote entregue, e quem banca a empresa até o primeiro ano de lucro",
+   "pedido": "dizer se o Einstein põe o dinheiro inicial, ou se a empresa busca investidor de fora",
    "confianca": "provavel"
   }
  ],
  "nao_ouvidos": [
   {
-   "grupo": "Áreas de acesso de farmacêuticas fora da oncologia",
-   "por_que": "os três pacotes vendidos vêm de uma área terapêutica só · não sabemos se as outras pagam",
-   "como_ouvir": "três entrevistas com gerentes de acesso de outras áreas",
+   "grupo": "Farmacêuticas fora da oncologia",
+   "por_que": "os 3 pacotes vieram de uma área só. Não sabemos se as outras pagam",
+   "como_ouvir": "3 conversas com gerentes de acesso de outras áreas",
    "c": [
     "C3"
    ]
   },
   {
    "grupo": "Pesquisadores acadêmicos",
-   "por_que": "têm a coorte pública do Cidacs sem custo · não sabemos por que pagariam",
-   "como_ouvir": "duas conversas com grupos que já usam o Cidacs",
+   "por_que": "já usam de graça a base do Cidacs, na Bahia. Não sabemos por que pagariam",
+   "como_ouvir": "2 conversas com grupos que usam o Cidacs",
    "c": [
     "C2"
    ]
   },
   {
    "grupo": "Gestores públicos",
-   "por_que": "compram painéis por licitação, não coortes",
-   "como_ouvir": "uma conversa com uma secretaria de saúde que licitou painel",
+   "por_que": "compram painéis de indicadores por licitação, não grupos de pacientes",
+   "como_ouvir": "1 conversa com uma secretaria de saúde que comprou painel",
    "c": [
     "C3"
    ]
   },
   {
-   "grupo": "Operadoras de saúde",
-   "por_que": "recebem o dossiê da farmacêutica e podem ser compradoras diretas",
-   "como_ouvir": "uma conversa com a área de avaliação de tecnologias de uma operadora",
+   "grupo": "Planos de saúde",
+   "por_que": "recebem o pedido da farmacêutica e podem comprar a prova direto",
+   "como_ouvir": "1 conversa com quem avalia tratamentos num plano de saúde",
    "c": [
     "C3"
    ]
   },
   {
    "grupo": "Quem comprou uma vez e não voltou",
-   "por_que": "a volta é o que faz o negócio acumular · nunca se perguntou por que não houve segundo pacote",
-   "como_ouvir": "uma conversa com cada um dos três clientes",
+   "por_que": "o cliente que volta é o que faz o negócio crescer. Nunca se perguntou por que não houve segundo pacote",
+   "como_ouvir": "1 conversa com cada um dos 3 clientes",
    "c": [
     "volta"
    ]
@@ -1283,12 +1320,12 @@ window.HDB = {
  "compradores": [
   {
    "nome": "Farmacêutica",
-   "motivacao": "levar evidência brasileira ao dossiê de incorporação em semanas",
+   "motivacao": "provar ao SUS, em semanas, que o remédio funciona em brasileiros",
    "foco": "sim"
   },
   {
    "nome": "Pesquisador",
-   "motivacao": "publicar com uma coorte grande, pagando com fomento",
+   "motivacao": "publicar com um grupo grande de pacientes, pago com verba de pesquisa",
    "foco": ""
   },
   {
@@ -1298,7 +1335,7 @@ window.HDB = {
   },
   {
    "nome": "Operadora",
-   "motivacao": "decidir o que incorporar com dado de mundo real",
+   "motivacao": "decidir o que cobrir com dados de pacientes reais",
    "foco": ""
   },
   {
@@ -1312,7 +1349,7 @@ window.HDB = {
    "id": "c1-c2",
    "de": "C1",
    "para": "C2",
-   "rotulo": "dos códigos certos à coorte",
+   "rotulo": "dos códigos certos ao grupo de pacientes",
    "quem": "curadoria clínica",
    "confianca": "provavel"
   },
@@ -1320,7 +1357,7 @@ window.HDB = {
    "id": "c2-c3",
    "de": "C2",
    "para": "C3",
-   "rotulo": "da coorte à análise revisada",
+   "rotulo": "do grupo à análise revisada",
    "quem": "analista e revisor clínico",
    "confianca": "provavel"
   },
@@ -1498,8 +1535,8 @@ window.HDB = {
   }
  ],
  "versao": {
-  "numero": 8,
-  "data": "2026-10-26",
-  "titulo": "A direção e os ausentes"
+  "numero": 9,
+  "data": "2026-10-27",
+  "titulo": "Uma peça só"
  }
 };

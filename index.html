@@ -4,103 +4,79 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Health Data Brasil · síntese do projeto</title>
-<meta name="description" content="A síntese do projeto Health Data Brasil como uma roda: a convergência em três Cs (cruzamento, coorte, comprovação), com um painel curto por passo e a volta do reuso como arco de retorno; os seis movimentos do percurso, para aprofundar.">
+<meta name="description" content="A síntese do projeto Health Data Brasil em uma tela: o contexto (quem precisa da prova, os três pacotes vendidos, a virada), as camadas da empresa nova (quem paga e quem ganha · das bases públicas à coorte · o que se vende · o que o cliente vive) e a direção: as três respostas que o Einstein precisa dar.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Health Data Brasil · síntese do projeto">
-<meta property="og:description" content="O dado é de todos. A coorte, alguém paga para ter. A síntese navegável do projeto, para quem decide dentro da instituição.">
+<meta property="og:title" content="Health Data Brasil · o dado é de todos; a coorte, alguém paga para ter">
+<meta property="og:description" content="Coortes a partir das bases públicas de saúde do Brasil, cruzadas pela mesma pessoa. O contexto, as camadas da empresa nova e o que o Einstein precisa decidir, em uma tela.">
 <meta property="og:url" content="https://biodesignbrasil.github.io/hdb-site/">
+<meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/styles.css?v=pub-9">
 </head>
 <body>
 
-<header class="topo">
+<!-- uma barra só (molde: a Sistemática da Longevidade): a marca, as abas como pílulas, o anel dos três Cs -->
+<nav class="barra">
   <a class="wordmark" href="./"><span class="wm-nome">Health<span>Data</span> Brasil</span><span class="wm-sub">Síntese do projeto</span></a>
-  <h1 class="tese">O dado é de todos. A <em>coorte</em>, alguém paga para ter.</h1>
-  <nav class="trilha" aria-label="as duas peças"><span>Início</span><a href="sistematica/">Sistemática</a></nav>
-</header>
+  <div class="nav-links" id="camadas" role="tablist" aria-label="o contexto, as camadas e a direção"></div>
+  <div class="cv-header" id="cv-header"></div>
+</nav>
 
-<main class="palco" id="palco">
+<main class="palco">
+  <p class="pergunta" id="pergunta"></p>
+  <p class="manchete" id="manchete"></p>
 
-  <!-- ============ A RODA · a convergência: três Cs e a volta; no centro, o percurso ============ -->
-  <section class="roda-caixa" aria-label="a convergência: cruzamento, coorte, comprovação; a volta do reuso é o arco de retorno">
-    <div class="roda" id="roda"></div>
-    <p class="roda-dica"><button type="button" class="percurso-link" data-folha="0">o percurso completo, em seis movimentos →</button></p>
-  </section>
+  <div class="vistas">
+    <!-- 00 · o contexto: a roda dos três Cs à esquerda, a história à direita -->
+    <section class="vista v-contexto" id="v-contexto" role="tabpanel" aria-label="Contexto">
+      <div class="cena cena-ctx" id="cena-ctx">
+        <div class="roda" id="roda" aria-label="a convergência: cruzamento, coorte, comprovação; a volta é o arco de retorno"></div>
+        <p class="roda-rot" id="roda-rot"></p>
+      </div>
+      <aside class="leitura leitura-ctx" id="leitura-ctx" aria-live="polite" data-piso="0.5"></aside>
+    </section>
 
-  <!-- ============ O PAINEL · um passo da convergência de cada vez, curto ============ -->
-  <section class="painel" id="painel" aria-live="polite">
-    <article id="p-inicio" class="pc on"></article>
-    <article id="p-c1" class="pc" data-c="C1"></article>
-    <article id="p-c2" class="pc" data-c="C2"></article>
-    <article id="p-c3" class="pc" data-c="C3"></article>
-  </section>
+    <section class="vista v-dupla" id="v-ecossistema" role="tabpanel" aria-label="Ecossistema">
+      <div class="cena"><svg id="eco" viewBox="0 0 900 540" role="img" aria-label="Quem paga a empresa nova, a empresa, e quem ganha com ela"></svg></div>
+      <aside class="leitura" id="leitura-eco" aria-live="polite"></aside>
+    </section>
+
+    <section class="vista v-dupla" id="v-sistema" role="tabpanel" aria-label="Sistema">
+      <div class="cena">
+        <div class="tempos" id="tempos" role="tablist" aria-label="o que olhar no sistema"></div>
+        <svg id="sis" viewBox="0 0 900 440" role="img" aria-label="Das bases públicas à coorte: hoje à mão, e com o HDB"></svg>
+      </div>
+      <aside class="leitura" id="leitura-sis" aria-live="polite"></aside>
+    </section>
+
+    <section class="vista v-dupla" id="v-servicos" role="tabpanel" aria-label="Serviços">
+      <div class="painel" id="matriz"></div>
+      <aside class="leitura" id="leitura-serv" aria-live="polite"></aside>
+    </section>
+
+    <section class="vista v-jornadas" id="v-jornadas" role="tabpanel" aria-label="Jornadas">
+      <div class="painel" id="blueprint"></div>
+      <aside class="leitura" id="leitura-jor"></aside>
+    </section>
+
+    <section class="vista v-direcao" id="v-direcao" role="tabpanel" aria-label="Direção">
+      <div class="painel" id="direcao" data-piso="0.55"></div>
+    </section>
+  </div>
+
+  <p class="legenda-procedencia">
+    <span class="lp lp-ok">confirmado</span>
+    <span class="lp lp-prov">provável, ou leitura nossa</span>
+    <span class="lp lp-aberto">em aberto, ou a confirmar</span>
+    <span class="lp-fonte" id="carimbo">Base: vault do projeto Health Data Brasil. Sem valores em reais nesta peça.</span>
+  </p>
 </main>
 
-<!-- ============ A FOLHA · o percurso em seis movimentos, para aprofundar ============ -->
-<aside class="folha" id="folha" hidden aria-label="o percurso, em seis movimentos">
-  <div class="folha-barra">
-    <p class="rotulo"><b id="folha-num">01</b><span id="folha-nome"></span><span class="folha-sub">· o percurso, para aprofundar</span></p>
-    <button type="button" class="fechar" id="folha-fechar" aria-label="fechar o percurso">×</button>
-  </div>
-  <div class="folha-corpo" id="folha-corpo">
-
-    <article id="partida" class="mov" data-n="1">
-      <h2>Uma pergunta, e as palavras para ler o resto</h2>
-      <p class="lead" id="lead"></p>
-      <div class="numeros" id="numeros" aria-label="o projeto em números"></div>
-      <p class="pergunta-mov" id="pergunta"></p>
-      <p class="texto" id="por-que-agora"></p>
-      <div class="glossario" id="glossario"></div>
-    </article>
-
-    <article id="camadas" class="mov" data-n="2">
-      <h2>Cinco camadas, da mais larga à decisão</h2>
-      <p class="sub">A Sistemática lê a mesma base em quatro escalas, uma clicando na outra, e termina no que a instituição precisa decidir. Cada camada responde a uma pergunta e aponta para a seguinte.</p>
-      <div class="cartoes" id="cartoes-camadas"></div>
-    </article>
-
-    <article id="achados" class="mov" data-n="3">
-      <h2>Os achados, camada a camada</h2>
-      <p class="sub">Cada frase diz de onde veio e que C da convergência toca. Clique na etiqueta da camada para abrir a Sistemática onde o achado aparece.</p>
-      <div class="achados" id="lista-achados"></div>
-      <aside class="olhar" id="olhar-cliente"></aside>
-    </article>
-
-    <article id="fecha" class="mov" data-n="4">
-      <h2 id="resposta-titulo"></h2>
-      <p class="texto grande" id="resposta"></p>
-      <p class="texto" id="porque"></p>
-      <div class="contagem-dupla" id="contagem-dupla"></div>
-      <a class="btn navy" href="sistematica/?vista=direcao">O que a instituição precisa decidir, bloco a bloco →</a>
-      <div class="condicoes" id="condicoes"></div>
-      <p class="teste" id="teste-de-valor"></p>
-    </article>
-
-    <article id="falta" class="mov" data-n="5">
-      <h2>Três portões antes do spin-off</h2>
-      <p class="sub">O que ainda não se sabe, agrupado pela decisão que trava. Cada item tem quem resolve e até quando; onde não há prazo, está dito.</p>
-      <div class="portoes" id="portoes"></div>
-      <div class="nao-ouvidos" id="nao-ouvidos"></div>
-    </article>
-
-    <article id="mudou" class="mov" data-n="6">
-      <h2>Esta síntese é viva; isto é o que já mudou nela</h2>
-      <ol class="publicacoes" id="publicacoes"></ol>
-      <p class="sub">Para citar: use o número da publicação e a data do carimbo. Cada publicação tem uma marca própria no repositório, e a anterior continua consultável.</p>
-    </article>
-
-  </div>
-</aside>
-<div class="veu" id="veu" hidden></div>
-
-<footer><span id="carimbo"></span><span>Biodesign Brasil · 2026</span></footer>
-
-<script src="sistematica/js/data.js"></script>
-<script src="sistematica/js/convergencia.js"></script>
-<script src="sistematica/js/roda.js"></script>
-<script src="js/script.js"></script>
+<script src="js/data.js?v=pub-9"></script>
+<script src="js/convergencia.js?v=pub-9"></script>
+<script src="js/roda.js?v=pub-9"></script>
+<script src="js/script.js?v=pub-9"></script>
 </body>
 </html>
