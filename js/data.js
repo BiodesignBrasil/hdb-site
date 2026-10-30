@@ -1082,6 +1082,12 @@ window.HDB = {
    "titulo": "O tempo como métrica",
    "o_que_mudou": "A revisão com o par de projeto, aba a aba. O tempo passa a ser a métrica: na Abertura, o quanto é a régua do tempo (2 a 8 semanas à mão contra dias com o HDB, com o cruzamento em cerca de 20 minutos), e na aba Sistema um relógio fica entre os dois olhares. A aba 01 mostra sete atores, do macro (indústria farmacêutica, pesquisa clínica, pesquisador acadêmico e empresarial, órgãos públicos, hospitais e operadoras), ligados ao HDB, em codesenvolvimento com o Einstein, e o desfecho que cada um espera · no rodapé, os três concorrentes e o código aberto, com o site de cada um no quadro à direita. A aba 03 passa a três produtos, nesta ordem: a Coorte One Page, a porta de entrada e retenção, o Pacote de coorte, já vendido 3 vezes, e a Coorte viva, sem dizer para quem, porque servem a todos os atores. A volta saiu de todas as abas. A aba 04 fica oculta até ser retrabalhada",
    "versao": 18
+  },
+  {
+   "data": "2026-10-29",
+   "titulo": "O tempo na ordem da 02",
+   "o_que_mudou": "Na Abertura, a régua do quanto passou à mesma ordem da aba Sistema: a montagem à mão, de 2 a 8 semanas, à esquerda, e o HDB, em dias, à direita",
+   "versao": 19
   }
  ],
  "sintese": {
@@ -1873,8 +1879,8 @@ window.HDB = {
   }
  ],
  "versao": {
-  "numero": 18,
+  "numero": 19,
   "data": "2026-10-29",
-  "titulo": "O tempo como métrica"
+  "titulo": "O tempo na ordem da 02"
  }
 };

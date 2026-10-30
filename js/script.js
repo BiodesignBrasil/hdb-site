@@ -365,23 +365,25 @@
   }
   /* a régua do tempo (29/10/2026: "no Quanto, a nossa métrica será tempo"): a montagem à mão, de 2 a 8 semanas por análise,
      contra o HDB, em dias, com o cruzamento em cerca de 20 minutos. Só os rótulos com fonte: sem eixo numérico inventado.
-     O 3 · 17 · 65 (vendidos · empate · capacidade) saiu da Abertura e segue na 05, na lei do mínimo. */
+     O 3 · 17 · 65 (vendidos · empate · capacidade) saiu da Abertura e segue na 05, na lei do mínimo.
+     A ordem é a da 02 (o usuário, 29/10: "o concorrente à esquerda e o HDB à direita, assim como em 02 Sistema"):
+     o eixo corre de 8 semanas, à esquerda, até perto de zero, à direita, onde fica o HDB. */
   function regua() {
     var a = CONT.manual_min, b = CONT.manual_max, c = CONT.cruzamento;
     if (!a || !b || !c) return "";
     var W = 600, x0 = 20, x1 = W - 20, y = 56, max = b.valor * 1.06;
-    function X(n) { return +(x0 + (x1 - x0) * n / max).toFixed(1); }
+    function X(n) { return +(x1 - (x1 - x0) * n / max).toFixed(1); }
     var xa = X(a.valor), xb = X(b.valor);
     var h = "<svg class='regua-svg' viewBox='0 0 " + W + " 120' role='img' aria-label='" + esc("à mão, " + MANUAL + " por análise; com o HDB, dias, com o cruzamento em cerca de " + c.valor + " " + c.unidade) + "'>";
     h += "<line class='rg-base' x1='" + x0 + "' y1='" + y + "' x2='" + x1 + "' y2='" + y + "'/>";
-    h += "<line class='rg-feito' x1='" + xa + "' y1='" + y + "' x2='" + xb + "' y2='" + y + "'/>";
-    h += "<circle class='rg-no rg-risco' cx='" + xa + "' cy='" + y + "' r='5.5'/><circle class='rg-no rg-risco' cx='" + xb + "' cy='" + y + "' r='5.5'/>";
-    h += "<text class='rg-num rg-risco' x='" + xb + "' y='" + (y - 16) + "' text-anchor='end'>" + esc(MANUAL) + "</text>";
-    h += "<text class='rg-rot' x='" + xb + "' y='" + (y + 28) + "' text-anchor='end'>à mão, por análise</text>";
-    h += "<circle class='rg-no rg-ceu' cx='" + x0 + "' cy='" + y + "' r='6.5'/>";
-    h += "<text class='rg-num rg-ceu' x='" + x0 + "' y='" + (y - 16) + "' text-anchor='start'>dias</text>";
-    h += "<text class='rg-rot' x='" + x0 + "' y='" + (y + 28) + "' text-anchor='start'>com o HDB</text>";
-    h += "<text class='rg-rot rg-fino' x='" + x0 + "' y='" + (y + 52) + "' text-anchor='start'>cruzamento: cerca de " + c.valor + " " + esc(c.unidade) + "</text>";
+    h += "<line class='rg-feito' x1='" + xb + "' y1='" + y + "' x2='" + xa + "' y2='" + y + "'/>";
+    h += "<circle class='rg-no rg-risco' cx='" + xb + "' cy='" + y + "' r='5.5'/><circle class='rg-no rg-risco' cx='" + xa + "' cy='" + y + "' r='5.5'/>";
+    h += "<text class='rg-num rg-risco' x='" + xb + "' y='" + (y - 16) + "' text-anchor='start'>" + esc(MANUAL) + "</text>";
+    h += "<text class='rg-rot' x='" + xb + "' y='" + (y + 28) + "' text-anchor='start'>à mão, por análise</text>";
+    h += "<circle class='rg-no rg-ceu' cx='" + x1 + "' cy='" + y + "' r='6.5'/>";
+    h += "<text class='rg-num rg-ceu' x='" + x1 + "' y='" + (y - 16) + "' text-anchor='end'>dias</text>";
+    h += "<text class='rg-rot' x='" + x1 + "' y='" + (y + 28) + "' text-anchor='end'>com o HDB</text>";
+    h += "<text class='rg-rot rg-fino' x='" + x1 + "' y='" + (y + 52) + "' text-anchor='end'>cruzamento: cerca de " + c.valor + " " + esc(c.unidade) + "</text>";
     return h + "</svg>";
   }
   /* a abertura em sete perguntas (5W2H), para quem chega sem contexto: o molde é a Longevidade (montaAbertura). O usuário,
