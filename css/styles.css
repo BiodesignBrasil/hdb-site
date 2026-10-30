@@ -62,9 +62,25 @@ nav.barra{position:sticky;top:0;z-index:50;height:var(--header);display:flex;ali
 .v-dupla.cheia .leitura{display:none}
 .v-dupla.cheia #sis{display:none}
 .v-dupla:not(.cheia) #duo{display:none}
-.duo{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.duo{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 118px minmax(0,1fr);gap:12px}
 .duo svg{width:100%;height:100%;min-height:0;display:block;cursor:pointer;border-radius:9px}
 .duo svg:hover{background:color-mix(in srgb,var(--cam,var(--ceu)) 6%,#fff)}
+/* o relógio entre os dois olhares (29/10/2026): o tempo é o gancho e a métrica do HDB; a fatia é o cruzamento */
+.relogio{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:4px;padding-top:28px;text-align:center}
+.relogio p{margin:0}
+.rl-rot{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--tinta)}
+/* o relógio não herda a largura mínima dos esquemas (.duo svg, .cena svg) */
+.duo svg.rl-svg{display:block;width:96px;height:96px;min-width:0;overflow:visible;cursor:default}
+.duo svg.rl-svg:hover{background:none}
+.rl-fatia{fill:color-mix(in srgb,var(--ceu) 26%,#fff)}
+.rl-marca{stroke:var(--tinta);stroke-width:1.4;stroke-linecap:round}
+.rl-ponteiro{stroke:var(--tinta);stroke-width:2.6;stroke-linecap:round}
+.rl-ponteiro.rl-min{stroke:#0369a1;stroke-width:2}
+.rl-lado{font-size:11.5px;line-height:1.25;color:var(--cinza-escuro)}
+.rl-lado b{display:block;font-family:var(--serif);font-size:15px;font-weight:500}
+.rl-hoje b{color:var(--risco)}
+.rl-hdb b{color:#0369a1}
+.rl-nota{margin-top:4px!important;font-size:11px;font-style:italic;line-height:1.3;color:var(--cinza)}
 .volta-duo{display:block;cursor:pointer;background:none;border:none;padding:0;margin:0 0 4px;font-family:var(--font);font-size:13px;color:var(--primary)}
 .volta-duo:hover{text-decoration:underline}
 .v-dupla .leitura{position:relative}
@@ -154,7 +170,7 @@ svg text{font-family:var(--font)}
 .clicavel{cursor:pointer}
 .nota-svg{font-size:10px;fill:var(--cinza);font-style:italic}
 
-/* ---- 01 · ecossistema: quem paga → a empresa nova → quem ganha ---- */
+/* ---- 01 · ecossistema: os atores → o HDB, em codesenvolvimento com o Einstein → os desfechos (29/10/2026) ---- */
 .col-rot{font-size:10.5px;font-weight:700;letter-spacing:.2em;fill:var(--tinta)}
 .col-sub{font-size:10.5px;fill:var(--cinza);font-style:italic}
 .col-fio{stroke:var(--filete)}
@@ -192,6 +208,26 @@ svg text{font-family:var(--font)}
 .compara td:nth-child(3){color:var(--cinza-escuro)}
 .faixa{fill:var(--papel-2)}
 .faixa-rot{font-size:10px;font-weight:700;letter-spacing:.18em;fill:var(--cinza-escuro)}
+/* 29/10/2026: o desfecho de cada ator, à direita, e o fio do HDB até ele */
+.ator.desfecho rect{fill:var(--ok-claro);stroke:#0F7A6488}
+.ator text.desf{font-size:12px;fill:var(--tinta)}
+.ator.desfecho.c-provavel text.desf,.ator.desfecho.c-aberto text.desf{font-style:italic}
+.fio-desfecho{fill:none;stroke:var(--ok);stroke-width:1.2;opacity:.35;transition:opacity .2s}
+.fio-desfecho.on{opacity:1;stroke-width:2.2}
+.fio-desfecho.apaga{opacity:.07}
+.desf-txt{font-family:var(--serif);font-size:16px!important;color:var(--tinta)!important;line-height:1.35}
+/* o site do concorrente no quadro à direita: ao vivo a 40 % (cabe inteiro) ou o print do dia */
+.embed-janela{display:block;position:relative;height:160px;overflow:hidden;border:1px solid var(--filete-forte);border-radius:8px;background:var(--papel)}
+.embed-janela iframe{position:absolute;top:0;left:0;width:250%;height:250%;border:0;transform:scale(.4);transform-origin:0 0}
+.embed-janela img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
+.embed-nota{margin-top:6px;font-size:12.5px!important;line-height:1.35!important}
+.embed-pe{margin-top:4px;font-size:12.5px!important;color:var(--cinza)!important}
+.embed-pe a{color:var(--primary);font-weight:600;text-decoration:none}
+.embed-pe a:hover{text-decoration:underline}
+.alterna{display:flex;gap:6px;margin:0 0 10px}
+.alterna button{cursor:pointer;font-family:var(--font);font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--cinza-escuro);background:#fff;border:1px solid var(--filete-forte);border-radius:999px;padding:3px 11px}
+.alterna button:hover{border-color:var(--tinta);color:var(--tinta)}
+.alterna button.on{background:var(--tinta);border-color:var(--tinta);color:#fff}
 
 /* ---- 02 · sistema: das bases públicas à coorte ---- */
 /* as três bandas do sistema dos Cs (clicáveis); as caixas dentro deixam o clique passar */
@@ -209,9 +245,7 @@ svg text{font-family:var(--font)}
 .no-saida.a-construir text{fill:var(--risco)}
 .fio-c{fill:none;stroke:var(--tinta);stroke-width:2}
 .ponta-c{fill:var(--tinta)}
-.fio-volta{fill:none;stroke:var(--risco);stroke-width:1.8;stroke-dasharray:5 4}
-.ponta-volta{fill:var(--risco)}
-.volta-rot{font-size:10px;font-weight:700;fill:var(--risco);letter-spacing:.08em}
+.construir-rot{font-size:10px;font-weight:700;fill:var(--risco);letter-spacing:.08em}
 .base rect{fill:#fff;stroke:var(--tinta);stroke-width:1.1}
 .base.c-provavel rect{stroke-dasharray:5 4}
 .base text.nome{font-size:12px;font-weight:700;fill:var(--tinta)}
@@ -457,6 +491,10 @@ svg text{font-family:var(--font)}
 .rg-num{font-family:var(--serif);font-size:32px;font-weight:500;letter-spacing:-.02em;fill:var(--tinta)}
 .rg-num.rg-risco{fill:var(--risco)}.rg-num.rg-ouro{fill:var(--ouro)}
 .rg-rot{font-size:18px;font-weight:600;fill:var(--tinta)}
+/* a régua do tempo (29/10/2026): o HDB em céu, a montagem à mão em risco */
+.rg-no.rg-ceu{stroke:#0369a1;fill:#0369a1}
+.rg-num.rg-ceu{fill:#0369a1}
+.rg-rot.rg-fino{font-size:15px;font-weight:500;font-style:italic;fill:var(--cinza-escuro)}
 .pontos{display:flex;flex-wrap:wrap;gap:4px 14px;margin:2px 0 4px}
 .pontos span{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;color:var(--tinta)}
 .pontos i{width:8px;height:8px;border-radius:50%;background:var(--ok)}
@@ -486,7 +524,7 @@ svg text{font-family:var(--font)}
   .cena{height:auto;overflow-x:auto}
   .cena svg{height:auto;min-width:760px}
   /* os dois olhares seguem lado a lado (o usuário, 28/10: "apareciam lado a lado antes de clicar; não pedi para tirar"); só no celular empilham */
-  .duo{grid-template-columns:1fr 1fr;overflow-x:auto}
+  .duo{grid-template-columns:minmax(0,1fr) 108px minmax(0,1fr);overflow-x:auto}
   .duo svg{height:auto;min-width:0}
   .laco-leg{gap:6px 10px}
   .leitura{margin-top:14px;padding:14px 16px 16px}
@@ -513,5 +551,9 @@ svg text{font-family:var(--font)}
 }
 
 /* celular estreito: a legenda do laço numa coluna só, para os nomes não quebrarem */
-@media (max-width:700px){.tempos,.duo{grid-template-columns:1fr}.duo svg{min-width:760px}}
+@media (max-width:700px){.tempos,.duo{grid-template-columns:1fr}.duo svg{min-width:760px}
+  /* empilhados, o relógio vira uma faixa entre os dois olhares */
+  .relogio{flex-direction:row;flex-wrap:wrap;justify-content:flex-start;align-items:center;gap:4px 14px;padding:6px 0;text-align:left;width:calc(100vw - 32px);position:sticky;left:0}
+  .duo svg.rl-svg{width:64px;height:64px;min-width:0}
+  .rl-rot,.rl-nota{flex:1 1 100%}}
 @media (max-width:520px){.w5-passos{grid-template-columns:1fr}.laco-leg{grid-template-columns:1fr}.lg-grupo{display:grid;grid-template-columns:auto 1fr 1fr;gap:2px 8px;align-items:baseline}.lg-grupo .lg-titulo{grid-column:1/-1}}

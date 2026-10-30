@@ -4,74 +4,83 @@ window.HDB = {
   {
    "id": "hdb",
    "nome": "Health Data Brasil",
-   "papel": "liga a mesma pessoa entre as bases e entrega a análise: o método, a escolha dos códigos, a estatística",
+   "papel": "liga a mesma pessoa entre as bases e entrega a coorte analisada: o método, a escolha dos códigos, a estatística · em codesenvolvimento com o Einstein",
    "curto": "Health Data Brasil",
    "lado": "dentro",
-   "confianca": "confirmado"
-  },
-  {
-   "id": "fundadores",
-   "nome": "Fundadores (produto · estatística · ciência)",
-   "papel": "produto/app · estatística e engenharia de dados · ciência",
-   "curto": "Fundadores",
-   "lado": "dentro",
-   "confianca": "confirmado"
-  },
-  {
-   "id": "infra",
-   "nome": "Infraestrutura local",
-   "papel": "processamento em máquina local de 32 GB · nuvem bloqueada de propósito",
-   "curto": "Infraestrutura local",
-   "lado": "dentro",
-   "confianca": "confirmado"
-  },
-  {
-   "id": "pharma",
-   "nome": "Indústria farmacêutica e empresas de pesquisa clínica",
-   "papel": "compra os pacotes para pedir que o SUS e os planos de saúde adotem o remédio · é o cliente principal",
-   "curto": "Farmacêutica e pesquisa clínica",
-   "lado": "fora",
-   "confianca": "confirmado"
+   "confianca": "confirmado",
+   "desfecho": ""
   },
   {
    "id": "einstein",
    "nome": "Hospital Israelita Albert Einstein",
-   "papel": "dono provável de parte do método (o programa que coleta os dados) · papel na empresa nova em aberto",
-   "curto": "Einstein (propriedade e licença)",
+   "papel": "codesenvolve o método com a Health Data Brasil · a licença e a participação na empresa estão em definição",
+   "curto": "Einstein · codesenvolvimento",
+   "lado": "dentro",
+   "confianca": "provavel",
+   "desfecho": ""
+  },
+  {
+   "id": "pharma",
+   "nome": "Indústria farmacêutica",
+   "papel": "compra a prova de que o remédio funciona em brasileiros, para pedir que o SUS e os planos de saúde o adotem · é quem já comprou",
+   "curto": "Indústria farmacêutica",
    "lado": "fora",
-   "confianca": "provavel"
+   "confianca": "confirmado",
+   "desfecho": "o remédio incorporado pelo SUS e pelos planos de saúde"
+  },
+  {
+   "id": "cro",
+   "nome": "Empresas de pesquisa clínica",
+   "papel": "desenham e conduzem estudos clínicos para a indústria · precisam saber onde estão os pacientes, e quantos são",
+   "curto": "Pesquisa clínica (CROs)",
+   "lado": "fora",
+   "confianca": "provavel",
+   "desfecho": "o estudo desenhado e recrutado mais cedo"
+  },
+  {
+   "id": "pesq_academico",
+   "nome": "Pesquisadores acadêmicos",
+   "papel": "usam a coorte para artigo · pagam com verba de pesquisa · têm o Cidacs como substituto gratuito",
+   "curto": "Pesquisador acadêmico",
+   "lado": "fora",
+   "confianca": "provavel",
+   "desfecho": "o artigo publicado, com muitos pacientes brasileiros"
+  },
+  {
+   "id": "pesq_empresarial",
+   "nome": "Pesquisadores em empresas",
+   "papel": "pesquisa e desenvolvimento em empresas de saúde, de dispositivos e de tecnologia · precisam de dado de pacientes reais para decidir produto",
+   "curto": "Pesquisador empresarial",
+   "lado": "fora",
+   "confianca": "aberto",
+   "desfecho": "a decisão de produto com dado de pacientes reais"
   },
   {
    "id": "orgaos",
-   "nome": "Órgãos públicos donos das bases",
-   "papel": "DATASUS · IBGE · CadÚnico (via convênio) · fornecem a matéria-prima gratuita",
-   "curto": "DATASUS · IBGE · CadÚnico",
+   "nome": "Órgãos públicos",
+   "papel": "ministério, secretarias de saúde, agências de fomento e de avaliação de tecnologias · são donos das bases públicas e podem usar a coorte para planejar",
+   "curto": "Órgãos públicos",
    "lado": "fora",
-   "confianca": "confirmado"
+   "confianca": "provavel",
+   "desfecho": "a política e a rede planejadas com dado da população"
   },
   {
-   "id": "conitec",
-   "nome": "CONITEC e SUS",
-   "papel": "quem decide o que o SUS adota: recebe a prova no pedido da farmacêutica",
-   "curto": "CONITEC e SUS",
+   "id": "hospital",
+   "nome": "Hospitais",
+   "papel": "comparam os seus desfechos com os da população e planejam as linhas de cuidado",
+   "curto": "Hospitais",
    "lado": "fora",
-   "confianca": "provavel"
+   "confianca": "aberto",
+   "desfecho": "a qualidade do cuidado comparada com a população"
   },
   {
-   "id": "pesquisador",
-   "nome": "Pesquisadores acadêmicos",
-   "papel": "usam a coorte para artigo · pagam com fomento · têm o Cidacs como substituto gratuito",
-   "curto": "Pesquisadores",
+   "id": "operadora",
+   "nome": "Operadoras de saúde",
+   "papel": "decidem o que cobrir e acompanham o risco da carteira",
+   "curto": "Operadoras de saúde",
    "lado": "fora",
-   "confianca": "provavel"
-  },
-  {
-   "id": "fomento",
-   "nome": "Fomento à pesquisa",
-   "papel": "FAPESP · CNPq · até hoje zero resultado para o HDB",
-   "curto": "Fomento (FAPESP · CNPq)",
-   "lado": "fora",
-   "confianca": "confirmado"
+   "confianca": "provavel",
+   "desfecho": "a cobertura e o risco da carteira medidos"
   },
   {
    "id": "techtrials",
@@ -79,23 +88,35 @@ window.HDB = {
    "papel": "concorrente direto · vende acesso seguro a dados de saúde · foco em farmacêuticas e nos pedidos ao SUS",
    "curto": "Techtrials",
    "lado": "fora",
-   "confianca": "confirmado"
+   "confianca": "confirmado",
+   "desfecho": ""
   },
   {
    "id": "precision",
    "nome": "Precision Data",
-   "papel": "concorrente direto · ambiente seguro Tab4u · foco em pharma e ANVISA/CONITEC",
+   "papel": "concorrente direto · ambiente seguro Tab4u · foco em farmacêuticas e nos pedidos à ANVISA e à CONITEC",
    "curto": "Precision Data",
    "lado": "fora",
-   "confianca": "provavel"
+   "confianca": "provavel",
+   "desfecho": ""
   },
   {
    "id": "cidacs",
    "nome": "Cidacs/Fiocruz",
-   "papel": "coorte pública de 140 milhões de pessoas, cruzada entre bases · substituto gratuito no segmento acadêmico",
-   "curto": "Cidacs (substituto público)",
+   "papel": "a Coorte de 100 Milhões de Brasileiros: bases públicas cruzadas numa coorte só, que serve a muitos estudos · substituto gratuito na pesquisa acadêmica",
+   "curto": "Cidacs/Fiocruz",
    "lado": "fora",
-   "confianca": "confirmado"
+   "confianca": "confirmado",
+   "desfecho": ""
+  },
+  {
+   "id": "opensource",
+   "nome": "Código aberto",
+   "papel": "concorrente indireto: programadores, principalmente de código aberto · o OMOP, do OHDSI, padroniza dados de pacientes reais no mundo · PySUS e microdatasus baixam e limpam o DATASUS de graça",
+   "curto": "Código aberto (OHDSI)",
+   "lado": "fora",
+   "confianca": "confirmado",
+   "desfecho": ""
   }
  ],
  "enquadramentos": {
@@ -106,10 +127,16 @@ window.HDB = {
    "fundo": "#DFECFB"
   },
   "spinoff": {
-   "rotulo": "Pago pela empresa nova",
-   "curto": "empresa",
+   "rotulo": "Pago pela Health Data Brasil",
+   "curto": "HDB",
    "cor": "#0C3A6F",
    "fundo": "#E6ECF3"
+  },
+  "industria": {
+   "rotulo": "Pago pela empresa do pesquisador",
+   "curto": "empresa",
+   "cor": "#4338CA",
+   "fundo": "#E5E7FB"
   },
   "fomento": {
    "rotulo": "Pago por fomento à pesquisa",
@@ -129,6 +156,12 @@ window.HDB = {
    "cor": "#6D28D9",
    "fundo": "#EDE9FE"
   },
+  "hospital": {
+   "rotulo": "Pago pelo hospital",
+   "curto": "hospital",
+   "cor": "#0E7490",
+   "fundo": "#DCF1F5"
+  },
   "nenhum": {
    "rotulo": "Ninguém paga (benefício sem pagamento)",
    "curto": "sem pagamento",
@@ -141,19 +174,22 @@ window.HDB = {
    "id": "F1",
    "de": "pharma",
    "para": "hdb",
-   "oque": "pacote de análise",
+   "oque": "o pacote de coorte",
    "tipo": "pagamento",
    "enquadramento": "pharma",
    "etapas": [
-    "E4",
-    "V"
+    "E1",
+    "E2",
+    "M",
+    "E3",
+    "E4"
    ]
   },
   {
    "id": "F2",
    "de": "hdb",
    "para": "einstein",
-   "oque": "pagamento de licença da propriedade intelectual",
+   "oque": "a licença do método, em codesenvolvimento",
    "tipo": "confirmar",
    "enquadramento": "spinoff",
    "etapas": [
@@ -164,10 +200,23 @@ window.HDB = {
    ]
   },
   {
+   "id": "F3",
+   "de": "cro",
+   "para": "hdb",
+   "oque": "a coorte para desenhar o estudo",
+   "tipo": "confirmar",
+   "enquadramento": "pharma",
+   "etapas": [
+    "E1",
+    "E2",
+    "M"
+   ]
+  },
+  {
    "id": "F4",
    "de": "orgaos",
    "para": "hdb",
-   "oque": "dado público (matéria-prima)",
+   "oque": "o dado público, de graça",
    "tipo": "beneficio",
    "enquadramento": "nenhum",
    "etapas": [
@@ -176,59 +225,57 @@ window.HDB = {
   },
   {
    "id": "F5",
-   "de": "hdb",
-   "para": "fundadores",
-   "oque": "remuneração dos fundadores",
+   "de": "pesq_academico",
+   "para": "hdb",
+   "oque": "o pacote para o artigo",
    "tipo": "confirmar",
-   "enquadramento": "spinoff",
+   "enquadramento": "fomento",
    "etapas": [
+    "E1",
+    "E2",
+    "M",
+    "E3",
+    "E4"
+   ]
+  },
+  {
+   "id": "F6",
+   "de": "pesq_empresarial",
+   "para": "hdb",
+   "oque": "a coorte para decidir produto",
+   "tipo": "confirmar",
+   "enquadramento": "industria",
+   "etapas": [
+    "E1",
     "E2",
     "M",
     "E3"
    ]
   },
   {
-   "id": "F6",
-   "de": "pharma",
-   "para": "conitec",
-   "oque": "a prova, no pedido para o SUS adotar o remédio",
-   "tipo": "beneficio",
-   "enquadramento": "nenhum",
+   "id": "F7",
+   "de": "hospital",
+   "para": "hdb",
+   "oque": "a comparação com a população",
+   "tipo": "confirmar",
+   "enquadramento": "hospital",
    "etapas": [
+    "M",
+    "E3",
     "E4"
    ]
   },
   {
-   "id": "F7",
-   "de": "fomento",
-   "para": "hdb",
-   "oque": "estudo acadêmico, via pesquisador",
-   "tipo": "confirmar",
-   "enquadramento": "fomento",
-   "etapas": [
-    "V"
-   ]
-  },
-  {
-   "id": "F9",
-   "de": "pesquisador",
-   "para": "hdb",
-   "oque": "pacote para o artigo, pago com o fomento",
-   "tipo": "confirmar",
-   "enquadramento": "fomento",
-   "etapas": [
-    "V"
-   ]
-  },
-  {
    "id": "F8",
-   "de": "hdb",
-   "para": "infra",
-   "oque": "processamento local",
-   "tipo": "pagamento",
-   "enquadramento": "spinoff",
+   "de": "operadora",
+   "para": "hdb",
+   "oque": "a coorte para decidir a cobertura",
+   "tipo": "confirmar",
+   "enquadramento": "operadora",
    "etapas": [
-    "M"
+    "M",
+    "E3",
+    "E4"
    ]
   }
  ],
@@ -279,16 +326,25 @@ window.HDB = {
    "confianca": "provavel"
   },
   {
-   "id": "V",
-   "nome": "A volta",
-   "curto": "Volta",
-   "oque": "o mesmo grupo responde à próxima pergunta, sem pagar a montagem de novo",
+   "id": "R",
+   "nome": "A retenção",
+   "curto": "Retenção",
+   "oque": "o cliente fica com a coorte: guardada (One Page) ou atualizada (coorte viva), pronta para a próxima pergunta",
    "recurso": "coorte guardada (a construir)",
-   "gate": "sem cliente que volta, cada venda é um projeto novo",
+   "gate": "sem um produto que retenha o cliente, cada venda é um projeto novo",
    "confianca": "provavel"
   }
  ],
  "achados": [
+  {
+   "camada": "ecossistema",
+   "titulo": "Uma coorte serve a muitos fins",
+   "texto": "a Coorte de 100 Milhões de Brasileiros, do Cidacs, é uma só e já sustenta estudos de crescimento infantil, saúde mental, HIV e proteção social. Por isso a peça fala de atores, não de nichos",
+   "componente": "",
+   "c": [
+    "C2"
+   ]
+  },
   {
    "camada": "ecossistema",
    "titulo": "Quem mais ganha não paga",
@@ -322,7 +378,7 @@ window.HDB = {
    "texto": "sem guardar o grupo de pacientes para a próxima pergunta, a receita não cresce. É onde empresas de dados costumam travar",
    "componente": "relacionamento",
    "c": [
-    "volta"
+    "C2"
    ]
   },
   {
@@ -367,9 +423,7 @@ window.HDB = {
    "titulo": "Compradores por escrito: farmacêuticas e empresas de pesquisa",
    "texto": "compradores suficientes para a conta fechar até o terceiro ano",
    "componente": "segmentos",
-   "c": [
-    "volta"
-   ]
+   "c": []
   },
   {
    "camada": "ecossistema",
@@ -395,9 +449,7 @@ window.HDB = {
    "titulo": "O problema não é fazer, é vender",
    "texto": "a equipe consegue entregar muito mais do que vende. O prejuízo dos primeiros anos é gente parada",
    "componente": "segmentos",
-   "c": [
-    "volta"
-   ]
+   "c": []
   },
   {
    "camada": "fecho",
@@ -420,14 +472,29 @@ window.HDB = {
  ],
  "servicos": [
   {
+   "id": "onepage",
+   "nome": "Coorte One Page",
+   "curto": "One Page",
+   "descricao": "A coorte guardada, ou montada com pouco aprofundamento, resumida numa página: quantos são, quem são, o que lhes aconteceu. O produto de entrada, e o que mantém o cliente por perto",
+   "enquadramento": "pharma",
+   "confianca": "aberto",
+   "para_quem": "",
+   "destrava": "Pacote de coorte · Coorte viva",
+   "etapas": [
+    "E1",
+    "E2",
+    "M"
+   ]
+  },
+  {
    "id": "pacote",
    "nome": "Pacote de coorte",
    "curto": "Pacote",
-   "descricao": "Uma pergunta, o grupo de pacientes montado e a análise pronta, em dias. Sob encomenda, um projeto por vez",
+   "descricao": "Uma pergunta, o grupo de pacientes montado e a análise pronta, em dias. O produto padrão, já vendido 3 vezes",
    "enquadramento": "pharma",
    "confianca": "confirmado",
-   "para_quem": "Farmacêutica · Consultoria",
-   "destrava": "A volta · Coorte viva",
+   "para_quem": "",
+   "destrava": "Coorte viva",
    "etapas": [
     "E1",
     "E2",
@@ -437,34 +504,19 @@ window.HDB = {
    ]
   },
   {
-   "id": "reuso",
-   "nome": "A volta: a mesma coorte, nova pergunta",
-   "curto": "Volta",
-   "descricao": "Quem já comprou um pacote volta com nova pergunta sobre o mesmo grupo e não paga a montagem de novo. Mais rápido e mais barato que o primeiro",
-   "enquadramento": "pharma",
-   "confianca": "aberto",
-   "para_quem": "Quem já comprou um pacote",
-   "destrava": "Coorte viva",
-   "etapas": [
-    "V",
-    "E3",
-    "E4"
-   ]
-  },
-  {
    "id": "viva",
    "nome": "Coorte viva",
    "curto": "Coorte viva",
-   "descricao": "O grupo guardado e atualizado a cada nova carga das bases, com um relatório do que mudou. Assinatura por ano",
+   "descricao": "A coorte constante: guardada e atualizada a cada nova carga das bases, com um relatório do que mudou. Assinatura por ano",
    "enquadramento": "operadora",
    "confianca": "aberto",
-   "para_quem": "Operadora · Farmacêutica, depois do lançamento",
+   "para_quem": "",
    "destrava": "Receita que se repete",
    "etapas": [
     "M",
     "E3",
     "E4",
-    "V"
+    "R"
    ]
   }
  ],
@@ -524,8 +576,7 @@ window.HDB = {
     "spinoff"
    ],
    "ganha": [
-    "fundadores",
-    "infra"
+    "hdb"
    ]
   },
   {
@@ -544,15 +595,15 @@ window.HDB = {
    "ganha": [
     "hdb",
     "pharma",
-    "conitec"
+    "orgaos"
    ]
   },
   {
-   "etapa": "V",
+   "etapa": "R",
    "quando": "depois",
-   "vive": "Volta com nova pergunta sobre o mesmo grupo",
+   "vive": "Fica com a coorte guardada ou viva e traz a próxima pergunta",
    "atua": "cliente · pesquisadores",
-   "bastidor": "grupo guardado, ainda a construir",
+   "bastidor": "grupo guardado e atualizado, ainda a construir",
    "recurso": "grupo guardado (a construir)",
    "decide": "cliente",
    "fonte": "inferencia",
@@ -786,15 +837,13 @@ window.HDB = {
    "leitura": "quantos pacotes por ano pagam a equipe, ao preço de hoje",
    "confianca": "provavel",
    "valor": 17,
-   "c": [
-    "volta"
-   ]
+   "c": []
   },
   {
    "id": "vendidos",
    "rotulo": "Vendidos até hoje",
    "unidade": "pacotes, no total",
-   "leitura": "3 projetos avulsos. Nenhum cliente voltou",
+   "leitura": "3 projetos avulsos. Nenhum cliente comprou de novo",
    "confianca": "confirmado",
    "valor": 3,
    "c": [
@@ -828,8 +877,28 @@ window.HDB = {
    "leitura": "se as vendas subirem de 3 para 30 pacotes por ano",
    "confianca": "provavel",
    "valor": 4,
+   "c": []
+  },
+  {
+   "id": "manual_min",
+   "rotulo": "Montagem à mão, no mínimo",
+   "unidade": "semanas",
+   "leitura": "o tempo de montar a base à mão, por análise de média complexidade: estimativa, sem referência padronizada",
+   "confianca": "provavel",
+   "valor": 2,
    "c": [
-    "volta"
+    "C1"
+   ]
+  },
+  {
+   "id": "manual_max",
+   "rotulo": "Montagem à mão, no máximo",
+   "unidade": "semanas",
+   "leitura": "o tempo de montar a base à mão, por análise de média complexidade: estimativa, sem referência padronizada",
+   "confianca": "provavel",
+   "valor": 8,
+   "c": [
+    "C1"
    ]
   }
  ],
@@ -1007,6 +1076,12 @@ window.HDB = {
    "titulo": "Ajustes na 03 e na 02",
    "o_que_mudou": "Na aba Serviços saiu a linha \"o que isso revela\" sob os pacotes (fica só o elo). Na aba Sistema os dois cartões (1 hoje à mão · 2 com o HDB) ficaram mais baixos, para dar altura aos dois esquemas, e os dois olhares seguem lado a lado também em janelas estreitas (até 700 px), onde antes empilhavam",
    "versao": 17
+  },
+  {
+   "data": "2026-10-29",
+   "titulo": "O tempo como métrica",
+   "o_que_mudou": "A revisão com o par de projeto, aba a aba. O tempo passa a ser a métrica: na Abertura, o quanto é a régua do tempo (2 a 8 semanas à mão contra dias com o HDB, com o cruzamento em cerca de 20 minutos), e na aba Sistema um relógio fica entre os dois olhares. A aba 01 mostra sete atores, do macro (indústria farmacêutica, pesquisa clínica, pesquisador acadêmico e empresarial, órgãos públicos, hospitais e operadoras), ligados ao HDB, em codesenvolvimento com o Einstein, e o desfecho que cada um espera · no rodapé, os três concorrentes e o código aberto, com o site de cada um no quadro à direita. A aba 03 passa a três produtos, nesta ordem: a Coorte One Page, a porta de entrada e retenção, o Pacote de coorte, já vendido 3 vezes, e a Coorte viva, sem dizer para quem, porque servem a todos os atores. A volta saiu de todas as abas. A aba 04 fica oculta até ser retrabalhada",
+   "versao": 18
   }
  ],
  "sintese": {
@@ -1031,16 +1106,16 @@ window.HDB = {
    "confianca": "provavel"
   },
   "manchete_ecossistema": {
-   "texto": "Quem paga é a farmacêutica. Quem mais ganha é o SUS, que não paga",
+   "texto": "Sete atores, sete desfechos, um método. Todos precisam de tempo para chegar lá",
    "confianca": "provavel"
   },
   "manchete_sistema": {
-   "texto": "O dado é de todos. O que se vende é o trabalho de ligar a mesma pessoa entre as bases",
-   "confianca": "confirmado"
+   "texto": "O dado é de todos. O que se vende é tempo: a mesma pessoa ligada entre as bases em minutos, e a coorte analisada em dias",
+   "confianca": "provavel"
   },
   "manchete_servicos": {
-   "texto": "Três pacotes, um método. A pergunta é do cliente, a coorte é do HDB, a comprovação é a análise",
-   "confianca": "confirmado"
+   "texto": "Três produtos, um método: a One Page abre a porta e retém, o pacote é o padrão, a coorte viva acompanha. Servem a todos os atores",
+   "confianca": "provavel"
   },
   "manchete_jornadas": {
    "texto": "Da pergunta à entrega levam semanas. Depois da entrega, ninguém acompanha o cliente",
@@ -1048,14 +1123,6 @@ window.HDB = {
   },
   "manchete_direcao": {
    "texto": "Três definições em aberto: a licença do método, a equipe e o capital, os primeiros compradores",
-   "confianca": "provavel"
-  },
-  "laco_titulo": {
-   "texto": "O que faria o cliente voltar",
-   "confianca": "provavel"
-  },
-  "laco_nota": {
-   "texto": "Hoje não gira: cada cliente é um projeto novo. Guardar o grupo de pacientes é o que faria girar",
    "confianca": "provavel"
   },
   "frase_unica": {
@@ -1087,15 +1154,15 @@ window.HDB = {
    "confianca": "provavel"
   },
   "ato2_entrega": {
-   "texto": "Então, o que é que se vende? E o que falta para o cliente voltar?",
+   "texto": "Então, o que é que se vende? E o que mantém o cliente por perto?",
    "confianca": "provavel"
   },
   "ato3_como": {
-   "texto": "Três passos: cruzar as bases, construir o grupo de pacientes, comprovar o resultado. A volta, quando o mesmo grupo responde à próxima pergunta, ainda não existe",
+   "texto": "Três passos: cruzar as bases, construir o grupo de pacientes, comprovar o resultado",
    "confianca": "confirmado"
   },
   "resposta_licenca": {
-   "texto": "A licença do método: o método nasceu no Einstein. A licença define em que condições a empresa pode usá-lo e buscar investidor",
+   "texto": "A licença do método: o método é codesenvolvido com o Einstein. A licença define em que condições a empresa pode usá-lo e buscar investidor",
    "confianca": "provavel"
   },
   "resposta_gente_capital": {
@@ -1143,15 +1210,15 @@ window.HDB = {
    "confianca": "confirmado"
   },
   "entrega_prova": {
-   "texto": "o número que vai no pedido ao SUS, ao plano ou à revista. E, quando o cliente volta, a volta",
+   "texto": "o número que vai no pedido ao SUS, ao plano ou à revista",
    "confianca": "provavel"
   },
   "revela_servicos": {
-   "texto": "A linha clínica não é o pacote: a mesma coorte de oncologia sai como pacote, volta ou coorte viva. A coorte sozinha não se vende: o valor está na comprovação",
+   "texto": "A linha clínica não é o produto: a mesma coorte de oncologia sai como One Page, pacote ou coorte viva. A One Page abre a porta, e o valor está na comprovação",
    "confianca": "provavel"
   },
   "w_oque": {
-   "texto": "Empresa nova, nascida no Einstein: cruza as bases públicas de saúde pela mesma pessoa e entrega a coorte analisada, em dias",
+   "texto": "Empresa em codesenvolvimento com o Einstein: cruza as bases públicas de saúde pela mesma pessoa e entrega a coorte analisada, em dias",
    "confianca": "confirmado"
   },
   "w_porque": {
@@ -1159,16 +1226,16 @@ window.HDB = {
    "confianca": "provavel"
   },
   "w_quem": {
-   "texto": "Quem precisa provar, com pacientes brasileiros, que um tratamento funciona. Até hoje comprou a área de acesso de farmacêuticas",
+   "texto": "Quem precisa de uma coorte de brasileiros para chegar ao seu desfecho. Até hoje comprou a indústria farmacêutica",
    "confianca": "provavel"
   },
   "w_onde": {
-   "texto": "Nas dez bases públicas de saúde do Brasil, cruzadas numa máquina própria, sem nuvem. O método nasceu no Einstein",
+   "texto": "Nas dez bases públicas de saúde do Brasil, cruzadas numa máquina própria, sem nuvem",
    "confianca": "confirmado"
   },
   "w_quando": {
-   "texto": "Dias em vez de semanas: o cruzamento leva cerca de 20 minutos, a leitura clínica e a análise levam o resto",
-   "confianca": "provavel"
+   "texto": "Agora: o CNPJ está em abertura e o contrato de sócios, em andamento. O método já foi vendido 3 vezes",
+   "confianca": "confirmado"
   },
   "w_como": {
    "texto": "Em três momentos, que se repetem a cada nova pergunta (o desenho ao lado)",
@@ -1187,7 +1254,7 @@ window.HDB = {
    "confianca": "confirmado"
   },
   "w_quanto": {
-   "texto": "Cada pacote pago cobre o próprio custo com folga. A equipe dá conta de 65 por ano, a conta fecha com 17, até hoje foram 3",
+   "texto": "Medido em tempo: à mão, 2 a 8 semanas por análise. Com o HDB, o cruzamento leva cerca de 20 minutos e a coorte analisada sai em dias",
    "confianca": "provavel"
   }
  },
@@ -1220,14 +1287,14 @@ window.HDB = {
   },
   {
    "termo": "Spin-off",
-   "explicacao": "Uma empresa nova, fora do Einstein, que recebe a licença do método e o opera. Foi o modelo escolhido",
+   "explicacao": "Uma empresa fora do Einstein, em codesenvolvimento com ele, que recebe a licença do método e o opera. Foi o modelo escolhido",
    "c": []
   },
   {
-   "termo": "A volta",
-   "explicacao": "O mesmo grupo de pacientes respondendo à próxima pergunta, sem pagar a montagem de novo. É o que faria a receita crescer. Hoje não existe: cada cliente é um projeto novo",
+   "termo": "Coorte One Page",
+   "explicacao": "A coorte guardada, ou montada com pouco aprofundamento, resumida numa página. É a porta de entrada e o que mantém o cliente por perto",
    "c": [
-    "volta"
+    "C2"
    ]
   }
  ],
@@ -1267,17 +1334,6 @@ window.HDB = {
     "E3",
     "E4"
    ]
-  },
-  {
-   "sigla": "volta",
-   "nome": "Volta",
-   "verbo": "voltar",
-   "oque": "o mesmo grupo de pacientes responde à próxima pergunta, sem pagar a montagem de novo",
-   "estado": "aberto",
-   "confianca": "aberto",
-   "etapas": [
-    "V"
-   ]
   }
  ],
  "proposta": [
@@ -1314,11 +1370,11 @@ window.HDB = {
   {
    "id": "relacionamento",
    "bloco": "Relacionamento",
-   "componente": "por que o cliente volta",
+   "componente": "por que o cliente fica",
    "cor": "#0F766E",
    "temos": "atendimento sob medida, um projeto por cliente · ninguém acompanha o cliente depois da entrega",
-   "preciso": "um jeito de o cliente voltar com outra pergunta sobre o mesmo grupo, sem pagar a montagem de novo",
-   "pedido": "uma área do Einstein que possa ser o primeiro cliente que volta",
+   "preciso": "um produto que retenha o cliente: a One Page guardada e a coorte viva, atualizada",
+   "pedido": "uma área do Einstein que possa ser a primeira assinante da coorte viva",
    "confianca": "aberto"
   },
   {
@@ -1338,7 +1394,7 @@ window.HDB = {
    "cor": "#16233A",
    "temos": "o método, a curadoria clínica dos códigos e as bases já tratadas numa máquina própria",
    "preciso": "o tempo combinado de cada fundador, e quem responde pela ciência se um deles sair",
-   "pedido": "se pesquisadores do Einstein podem dedicar horas à empresa nova, e como",
+   "pedido": "se pesquisadores do Einstein podem dedicar horas à empresa, e como",
    "confianca": "provavel"
   },
   {
@@ -1356,8 +1412,8 @@ window.HDB = {
    "bloco": "Parcerias-chave",
    "componente": "quem precisa estar junto",
    "cor": "#16233A",
-   "temos": "o Einstein como origem do método e casa provável da empresa. A relação ainda não está no papel",
-   "preciso": "a licença do método e o papel do Einstein na empresa nova",
+   "temos": "o Einstein como codesenvolvedor do método e casa provável da empresa. A relação ainda não está no papel",
+   "preciso": "a licença do método e o papel do Einstein na empresa",
    "pedido": "a licença do método e se o Einstein participa da empresa",
    "confianca": "aberto"
   },
@@ -1406,12 +1462,10 @@ window.HDB = {
    ]
   },
   {
-   "grupo": "Quem comprou uma vez e não voltou",
-   "por_que": "o cliente que volta é o que faz o negócio crescer. Nunca se perguntou por que não houve segundo pacote",
+   "grupo": "Quem comprou uma vez e não comprou de novo",
+   "por_que": "o cliente que fica é o que faz o negócio crescer. Nunca se perguntou por que não houve segundo pacote",
    "como_ouvir": "1 conversa com cada um dos 3 clientes",
-   "c": [
-    "volta"
-   ]
+   "c": []
   }
  ],
  "compradores": [
@@ -1457,32 +1511,6 @@ window.HDB = {
    "rotulo": "do grupo à análise revisada",
    "quem": "analista e revisor clínico",
    "confianca": "provavel"
-  },
-  {
-   "id": "c3-c1",
-   "de": "C3",
-   "para": "C1",
-   "rotulo": "da entrega à próxima pergunta · hoje ninguém acompanha o cliente depois da entrega",
-   "quem": "a definir",
-   "confianca": "aberto"
-  }
- ],
- "laco": [
-  {
-   "rotulo": "coorte entregue",
-   "fonte": "inferencia"
-  },
-  {
-   "rotulo": "coorte guardada",
-   "fonte": "inferencia"
-  },
-  {
-   "rotulo": "próxima pergunta mais rápida",
-   "fonte": "inferencia"
-  },
-  {
-   "rotulo": "mais pacotes por ano",
-   "fonte": "inferencia"
   }
  ],
  "comparativo": [
@@ -1564,6 +1592,13 @@ window.HDB = {
    "estado": "a_construir"
   },
   {
+   "id": "retrato",
+   "c": "C2",
+   "nome": "O retrato em uma página",
+   "descricao": "quantos são, quem são e o que lhes aconteceu, sem a análise de efeito",
+   "estado": "a_construir"
+  },
+  {
    "id": "atualizacao",
    "c": "C2",
    "nome": "A atualização",
@@ -1597,16 +1632,29 @@ window.HDB = {
    "nome": "O que mudou",
    "descricao": "o relatório do que mudou desde a última carga",
    "estado": "a_construir"
-  },
-  {
-   "id": "volta",
-   "c": "volta",
-   "nome": "A próxima pergunta, direto à análise",
-   "descricao": "sem montar o grupo de novo",
-   "estado": "a_construir"
   }
  ],
  "componentes": [
+  {
+   "servico": "onepage",
+   "entrega": "codigos"
+  },
+  {
+   "servico": "onepage",
+   "entrega": "cruzamento"
+  },
+  {
+   "servico": "onepage",
+   "entrega": "coorte"
+  },
+  {
+   "servico": "onepage",
+   "entrega": "guarda"
+  },
+  {
+   "servico": "onepage",
+   "entrega": "retrato"
+  },
   {
    "servico": "pacote",
    "entrega": "codigos"
@@ -1629,26 +1677,6 @@ window.HDB = {
   },
   {
    "servico": "pacote",
-   "entrega": "relatorio"
-  },
-  {
-   "servico": "reuso",
-   "entrega": "guarda"
-  },
-  {
-   "servico": "reuso",
-   "entrega": "volta"
-  },
-  {
-   "servico": "reuso",
-   "entrega": "analise"
-  },
-  {
-   "servico": "reuso",
-   "entrega": "revisao"
-  },
-  {
-   "servico": "reuso",
    "entrega": "relatorio"
   },
   {
@@ -1686,10 +1714,6 @@ window.HDB = {
   {
    "servico": "viva",
    "entrega": "mudou"
-  },
-  {
-   "servico": "viva",
-   "entrega": "volta"
   }
  ],
  "lacunas_publicas": [
@@ -1697,9 +1721,7 @@ window.HDB = {
    "titulo": "Preço recorrente e faixas de preço",
    "gate": "G2",
    "papel": "fundadores, com entrevistas de mercado",
-   "c": [
-    "volta"
-   ],
+   "c": [],
    "componente": "receita",
    "prazo": "a definir"
   },
@@ -1775,9 +1797,7 @@ window.HDB = {
    "titulo": "Curva de adoção (clientes por ano)",
    "gate": "G2",
    "papel": "a definir",
-   "c": [
-    "volta"
-   ],
+   "c": [],
    "componente": "canais",
    "prazo": "a definir"
   },
@@ -1813,9 +1833,7 @@ window.HDB = {
    "titulo": "Quem financia o capital até o primeiro lucro",
    "gate": "G2",
    "papel": "mesa de decisão e fundadores",
-   "c": [
-    "volta"
-   ],
+   "c": [],
    "componente": "custos",
    "prazo": "a definir"
   },
@@ -1836,11 +1854,27 @@ window.HDB = {
    "c": [],
    "componente": "canais",
    "prazo": "imediato"
+  },
+  {
+   "titulo": "Os desfechos esperados de cada ator, a validar",
+   "gate": "G2",
+   "papel": "fundadores, com entrevistas de mercado",
+   "c": [],
+   "componente": "",
+   "prazo": "a definir"
+  },
+  {
+   "titulo": "Escopo e preço da Coorte One Page",
+   "gate": "G2",
+   "papel": "fundadores",
+   "c": [],
+   "componente": "",
+   "prazo": "a definir"
   }
  ],
  "versao": {
-  "numero": 17,
-  "data": "2026-10-28",
-  "titulo": "Ajustes na 03 e na 02"
+  "numero": 18,
+  "data": "2026-10-29",
+  "titulo": "O tempo como métrica"
  }
 };
